@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" >
+	
+	<class name="de.act.common.types.nonstaticobjects.RFStick" table="f_stick">
+		<cache usage="transactional"/>
+		<id name="id" column="stick_id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+		<list name="infos" lazy="false" table="f_info" access="field" cascade="all" inverse="true" batch-size="2"  >
+			<cache usage="transactional"/>					
+			<key column="stick_id" />
+			<list-index column="info_seq" />
+			<one-to-many class="de.act.common.types.nonstaticobjects.RFInfo"  not-found="ignore"  />
+		</list>
+	</class>
+	
+	<class name="de.act.common.types.nonstaticobjects.RFInfo" table="f_info">
+		<cache usage="transactional"/>
+		<composite-id >
+			<key-many-to-one name="sticker" class="de.act.common.types.nonstaticobjects.RFStick" column="stick_id" />
+			<key-property name="seq" column="info_seq" />	
+		</composite-id>
+		<many-to-one name="hai" class="de.act.common.types.staticobjects.RSHai" column="info_id" not-found="ignore"  />
+		<property name="remark" column="info_rem" />	
+		<property name="fId" column= "f_id" />			
+	</class>
+
+	<class name="de.act.common.types.nonstaticobjects.RFAci" table="f_aci">
+		<cache usage="transactional"/>
+		<composite-id >
+			<key-many-to-one name="metadata" class="de.act.common.types.attachment.CAcceptanceAttachment" column="att_id" />
+			<key-property name="seq" column="aci_seq" />
+		</composite-id>
+		<many-to-one name="aci" class="de.act.common.types.staticobjects.RSAci" column="aci_id" not-found="ignore"  />
+		<property name="remark" column="aci_rem" />
+	</class>
+</hibernate-mapping>
+
+<!--
+
+ stick_id int8 NOT NULL,
+  info_seq int2 NOT NULL,
+  info_id varchar(8),
+  info_rem varchar(100),
+  corr timestamp DEFAULT now(),
+
+-->

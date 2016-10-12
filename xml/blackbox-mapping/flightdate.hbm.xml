@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" >
+	<class name="de.act.common.types.nonstaticobjects.FlightDate" table="f_bkg_flt" >
+		<cache usage="transactional"/>
+		<id name="bkg_id" column="bkg_item_id" unsaved-value="-1"  >
+			<generator class="assigned"/>
+		</id>
+		<property name="date" column="bkg_flt_date" />
+	</class>
+</hibernate-mapping>

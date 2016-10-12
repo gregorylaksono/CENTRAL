@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" >
+
+	<class name="de.act.common.types.AUldTypeBooking" table="a_uld_type_bkg" >
+		<cache usage="transactional"/>
+		<id name="uld_type_id" column="uld_type_id" unsaved-value="-1"  access="field" >
+			<generator class="assigned"/>
+		</id>
+		<properties name="name" unique="true" update="true" >
+			<property name="uld_type_id" access="field"  />
+			<property name="bkg_id" access="field"  />
+		</properties>
+	</class>
+</hibernate-mapping>
+
+
+<!--
+
+f_id varchar(21),
+  ca_3dg varchar(3) NOT NULL,
+  awb_stock int2 NOT NULL,
+  awb_no int2 NOT NULL,
+  corr
+  
+  -->

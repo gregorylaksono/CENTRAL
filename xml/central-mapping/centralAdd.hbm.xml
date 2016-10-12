@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+		
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="property" >
+	<class name="de.act.common.types.staticobjects.RCAddConf" table = "c_add_conf" mutable="true" batch-size="3">
+		<cache usage = "transactional"/>
+		<id name="add_conf_id" column="add_conf_id"> 
+			<generator class="native">
+			<param name="sequence">c_add_conf_add_conf_id_seq</param>
+			</generator>
+		</id>
+		<property name="add_id" column="add_id" insert="false" update="false" />
+		<property name="gender" column="add_conf_gender" />
+		<property name="ctcName" column="add_conf_ctc_name" />
+		<property name="lastName" column="add_conf_last_name" />
+		<property name="meansOfContact" column="means_of_contact" />
+		<property name="actUserName" column="act_user_name" />
+		<property name="verifiedTime" column="verified_time" insert="false" update="false" />
+		<property name="isApproved" column="is_approved" />
+		<property name="corr" column="corr" insert="false" update="false" />
+		<many-to-one name="add" column="add_id" class="de.act.common.types.staticobjects.RCAdd" not-found="ignore" />
+	</class>
+	
+	<class name="de.act.common.types.staticobjects.RCAddAdd" table = "c_add_add" mutable="true" batch-size="3">
+		<cache usage = "transactional"/>
+		<id name="add_add_id" column="add_add_id"> 
+			<generator class="native">
+			<param name="sequence">c_add_add_add_add_id_seq</param>
+			</generator>
+		</id>
+		<property name="add_id" column="add_id" insert="false" update="false" />
+		<property name="add_add_value" column="add_add_value" />
+		<property name="add_add_type" column="add_add_type" />
+		<property name="add_add_order" column="add_add_order" />
+		<many-to-one name="add" column="add_id" class="de.act.common.types.staticobjects.RCAdd" not-found="ignore" />
+	</class>
+	
+	<class name="de.act.common.types.staticobjects.RCAdd" table="c_add" dynamic-update="true" dynamic-insert="true" >
+		<cache usage="transactional"/>
+		<id name="add_id" column="add_id"> 
+			<generator class="native">
+			<param name="sequence">c_add_add_id_seq</param>
+			</generator>
+		</id>
+		
+		<property name="companyName"  column="add_name" update="false" />
+		<!-- <property name="street" column="street_name" update="false" />
+		<property name="no" column="street_no" update="false" />
+		<property name="place" column="add_place" update="false" />
+		<property name="zip" column="add_zip" update="false" />
+		<property name="state" column="add_state" update="false" /> -->
+		<property name="di_2lc" column="di_2lc" update="false" />
+		<many-to-one name="country" class="de.act.common.types.staticobjects.RSCo" column="co_2lc" not-found="ignore" />
+		<property name="gender"  column="add_gender" update="false" />
+		<property name="firstName" column="add_first_name" update="false" />
+		<property name="lastName" column="add_last_name" update="false" />
+		<!-- <property name="telpString" column="add_tlp" update="false" />
+		<property name="faxString" column="add_fax" update="false" /> -->
+		<property name="emailString" column="add_email" update="false" />
+		<property name="airport" column="ap_3lc" update="false" />
+		<property name="type" column="add_type" update="false" />
+		<property name="createDate"  column="created_date" update="false" />
+		<!-- <property name="contactName"  column="ctc_name"  />
+		<property name="actUserName"  column="act_user_name"  />
+		<property name="verifiedTime"  column="verified_time"  />
+		<property name="approved"  column="is_approved"  /> -->
+		<property name="caId"  column="ca_id"  />
+		<property name="currency"  column="curr"  />
+		<property name="isTAndCConfirmed"  column="is_t_and_c_confirmed"  />
+		<property name="ipAddress"  column="ip_address"  />
+		<property name="addCheck"  column="add_check"  />
+		<property name="longitude"  column="longitude"  />
+		<property name="latitude"  column="latitude"  />
+		<set name="add_add" table="c_add_add" lazy="false" cascade="all">
+			<cache usage="transactional"/>
+			<key column="add_id"/>
+			<one-to-many class="de.act.common.types.staticobjects.RCAddAdd" />
+		</set>
+		<set name="add_conf" table="c_add_conf" lazy="false" cascade="all">
+			<cache usage="transactional"/>
+			<key column="add_id"/>
+			<one-to-many class="de.act.common.types.staticobjects.RCAddConf" />
+		</set>
+	</class>
+</hibernate-mapping>

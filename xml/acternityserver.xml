@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+	http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-2.0.xsd
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd">
+
+  	<import resource="acternity-server-db-context.xml" />
+  	<import resource="acternity-jms-services.xml" />
+  	<!-- import resource="central.xml"/ -->
+
+	<bean id ="acternityGateway" class="de.act.centralserver.applayer.gateway.ActernityGateway" init-method="init">
+		<property name="serverJmsTemplate" >
+			<ref bean="serverJmsTemplate" />
+		</property>
+		<property name="clientSendTopic" value="ToGui" />
+		<property name="clientRecieveTopic" value="ActernityServer" />
+		<property name="serverSendTopic" value="ToCentralServer" />
+		<property name="serverRecieveTopic" value="ToActernityBox" />
+		
+		<property name="serverReceiveSAreaTopic" value="CentralReceiveSArea" />
+		<property name="serverReceiveFAreaTopic" value="CentralReceiveFArea" />
+		<property name="serverReceiveCAreaTopic" value="CentralReceiveCArea" />
+		<!--property name="serverSendSAreaTopic" value="SendSArea" />
+		<property name="serverSendFAreaTopic" value="SendFArea" / -->
+		<property name="table" value="c_jms_temp" />
+		<property name="centralArea">
+			<ref bean="centralArea"/>
+		</property>
+		<property name="staticArea">
+			<ref bean="staticArea"/>
+		</property>
+		<property name="formularArea">
+			<ref bean="formularArea"/>
+		</property>
+		<property name="staticDataService">
+			<ref bean="staticDataService"/>
+		</property>
+		<property name="dbSessionManager">
+			<ref bean="dbSessionManager" />
+		</property>
+	</bean>
+	<bean id="CentralBean" class="de.act.centralserver.applayer.RmiMainBean" />
+	
+</beans>

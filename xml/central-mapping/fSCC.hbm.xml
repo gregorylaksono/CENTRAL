@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="property" package="de.act.common.types.nonstaticobjects" >
+	<class name="de.act.common.types.nonstaticobjects.RFSccHandling" table="f_scc">	             
+		<cache usage="transactional"/>
+		<id  name="f_scc_id" column="f_scc_id" >
+			<generator class="assigned"/>
+		</id>		
+		<property name="SCC" column="scc" />
+		<property name="ca_2lc" column="ca_2lc" />
+		<property name="from_dept" column="from_dept" />
+		<property name="to_dest" column="to_dest" />
+		<property name="commodity" column="commodity" />
+		<property name="consignee" column="consignee" />
+		<property name="departure" column="departure" />
+		<property name="awb" column="awb" />
+		<property name="pcs" column="pcs" />
+		<property name="wgt" column="wgt" />
+		<property name="vol" column="vol" />
+		<property name="flt_no" column="flight_no" />
+		<property name="date" column="date" />
+	</class>	
+</hibernate-mapping>

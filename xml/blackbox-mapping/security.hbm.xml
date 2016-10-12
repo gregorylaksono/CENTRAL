@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" package="de.act.common.types" >
+
+</hibernate-mapping>
+
+
+	<!--class name="de.act.blackbox.dblayer.daos.CSecurityParamsDao$UseCase" table="d_use_case">
+		<cache usage="transactional"/>
+		<id name="ucId" column="uc_id" unsaved-value="-1">
+            <generator class="assigned"/>
+        </id>
+
+        <property name="ucName" column="uc_name"/>
+    </class>
+
+    <class name="de.act.blackbox.dblayer.daos.CSecurityParamsDao$UcParam" table="d_uc_param">
+    	<cache usage="transactional"/>
+        <id name="ucParamId" column="uc_param_id" unsaved-value="-1">
+            <generator class="assigned"/>
+        </id>
+
+        <many-to-one name="useCase"   column="uc_id" class="de.act.blackbox.dblayer.daos.CSecurityParamsDao$UseCase"/>
+        <property    name="paramName" column="param_name"/>
+        <property    name="paramType" column="param_type"/>
+    </class>
+
+    <class name="de.act.blackbox.dblayer.daos.CSecurityParamsDao$Auth" table="d_auth">
+    	<cache usage="transactional"/>
+        <id name="authId" column="auth_id" unsaved-value="-1">
+            <generator class="assigned"/>
+        </id>
+
+        <property name="authName" column="auth_name"/>
+    </class>
+
+    <class name="de.act.blackbox.dblayer.daos.CSecurityParamsDao$StrSecurityParam" table="d_str_sec_param">
+    	<cache usage="transactional"/>
+        <id name="secParamId" column="sec_param_id" unsaved-value="-1">
+ 		    <generator class="native">
+ 		 	    <param name="sequence">d_db_seq</param>
+ 		    </generator>
+        </id>
+
+        <many-to-one name="param" column="uc_param_id" class="de.act.blackbox.dblayer.daos.CSecurityParamsDao$UcParam"/>
+        <many-to-one name="auth"  column="auth_id" class="de.act.blackbox.dblayer.daos.CSecurityParamsDao$Auth"/>
+        <property name="strValue" column="str_value"/>
+    </class-->

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" package="de.act.common.types" >
+
+</hibernate-mapping>
+
+
+<!--
+	<class name="de.act.common.types.nonstaticobjects.RFAwbItem" table="f_awb_item" >
+		
+        <id name="awb_item_id" column="awb_item_id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+		
+		<properties name="name" unique="true" > 
+	        	<property name="id" 		column="att_id"  />
+	        	<property name="AWB_ROW"  	column="awb_row" />
+        </properties>
+        
+		<property name="SLI_ROW" 	column="link_row" />
+		<property name="PCS" 		column="sli_row" />
+		<property name="WGT" 		column="wgt" />
+		<many-to-one name="WGT_UNIT" class="de.act.common.types.staticobjects.RSUnit" column="wgt_unit" />	
+		<property name="SERVICE_CODE" column="service_code" />
+		<property name="RATE_ID" 	column="rate_id" />
+		<property name="CLASS_ID" 	column="class_id" />
+		<property name="CHRGBL_WGT" column="chrgbl_wgt" />
+		<property name="TOTAL" 		column="total" />
+		
+		<list name="fawbComs" lazy="false" table="f_awb_com" access="field" cascade="all" >
+			<key> 
+				<column name="awb_item_id"/>
+			</key>
+			<list-index column="seq" />
+			<one-to-many class="de.act.common.types.nonstaticobjects.RFAwbCom" />
+		</list>
+		
+		<list name="fawbItems" lazy="false" table="f_awb_item" access="field" cascade="all" >
+			<key>
+			  <column name="att_id" />
+			</key>
+			<list-index column="sli_row" />
+			<one-to-many class="de.act.common.types.nonstaticobjects.RFAwbItem" />
+		</list>
+		 
+	</class>
+-->

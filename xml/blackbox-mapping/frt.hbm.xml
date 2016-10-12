@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" >
+
+	<class name="de.act.common.types.nonstaticobjects.RFRt" table="f_rt"   >
+		<cache usage="transactional"/>
+		<id name="rtId" column="rt_id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+        	  	</generator>
+		</id>
+		<properties name="name" unique="true" >
+			<many-to-one name="metadata" class="de.act.common.types.attachment.CRoutingAttachment" cascade="all" column="att_id" />
+			<property name="RT_SEQ" column="rt_seq" />
+			<property name="CORR" column="corr" insert="false" update="false"/>
+		</properties>
+		<many-to-one name="AP" class="de.act.common.types.staticobjects.RSAp" column="ap_3lc" cascade="none" />
+		<set name="RFRtCuc" table="f_rt_cuc" lazy="false" cascade="all">
+			<cache usage="transactional"/>
+			<key column="rt_cuc_id"/>
+			<one-to-many class="de.act.common.types.nonstaticobjects.RFRtCuc" />
+		</set>
+   	</class>
+   	
+   	<class name="de.act.common.types.nonstaticobjects.RFRtCuc" table="f_rt_cuc" >
+		<cache usage="transactional" />
+		<id name="rtCucId" column="rt_cuc_id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>		
+		<property name="corr" column="corr" />
+		<property name="rtSeq" column="rt_seq" />
+		<property name="custRuleId" column="cust_rule_id" />
+		<many-to-one name="rtId" class="de.act.common.types.nonstaticobjects.RFRt" column="rt_id" cascade="none" />
+		<many-to-one name="AP"  class="de.act.common.types.staticobjects.RSAp" column="ap_3lc" cascade="none" />
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" package="de.act.common.types" >
+
+	<class name="de.act.common.types.nonstaticobjects.ULDObject" table="a_uld" mutable="true" dynamic-update="true" dynamic-insert="true" >
+		<cache usage="transactional"/>
+		<!--id name="uld_id" column="uld_id" unsaved-value="-1"  >
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id-->
+		<id name="uld_id" column="uld_id" unsaved-value="-1"  >
+ 			<generator class="assigned"/>
+		</id>
+		<property name="uld_prefix" access="field" />
+		<property name="uld_no" access="field" />
+		<property name="uld_rem" access="field" />
+		<property name="owner_add_id" access="field" />
+		<property name="holder_add_id" access="field" />
+		<property name="holder_ap_3lc" access="field" />
+		<property name="isUsed" column="is_used" access="field" />
+		<property name="stat_descr" column="stat_descr" access="field" />
+		<property name="discr_id" column="discr_id"/>
+		<property name="stat_id" column="stat_id"/>
+		<!-- referenced Types 
+		<property name="ca_id" access="field"   />
+		<property name="discr_id"    />
+		<property name="uld_type_id"  />
+		-->
+		
+		<!--many-to-one name="carrier" class="de.act.common.types.staticobjects.RSCaConx" column="ca_id"  /-->
+		<property name="ca_id" column="ca_id" access="field" />
+		<many-to-one name="discrepancies" class="de.act.common.types.staticobjects.Discrepancies" insert="false" update="false" column="discr_id"  />
+		<many-to-one name="stat" class="de.act.common.types.staticobjects.RSState" insert="false" update="false" column="stat_id" />
+		<!--many-to-one name="uldType" class="de.act.common.types.staticobjects.RSUldType" column="uld_type_id"  insert="false" update="false" />
+		<many-to-one name="parent" class="de.act.common.types.staticobjects.RSUldType" column="uld_type_id" insert="false" update="false"/-->
+		<property name ="s_uld_id" column ="s_uld_id" access="field"/>
+		<many-to-one name="storage" class="de.act.common.types.localobjects.Storage" column="loc_id"  />
+		
+		<!--list name="shippments" lazy="false" access="field" inverse="true" cascade="all" table="f_acc_item" batch-size="5" -->
+			<!--<cache usage="transactional"/>-->
+			<!--key column="uld_id" />
+			<list-index column="row_no" />
+			<one-to-many class="de.act.common.types.handling.Shipments" />
+		</list--> 
+	</class>
+	
+	<class name="de.act.common.types.staticobjects.RSUldTypeStock" table="a_uld_type_stock" mutable="true">
+		<composite-id>
+			<key-property name="uld_type_id" column="uld_type_id" />
+			<key-many-to-one name="airport" column="ap_3lc" class="de.act.common.types.staticobjects.RSAp"/>
+		</composite-id>
+		<property name ="min_stock" column="min_stock" />
+	</class>
+	
+	<class name="de.act.common.types.staticobjects.RSUldLocStock" table="a_uld_loc_stock" mutable="true">
+		<id name="ap_3lc" column="ap_3lc"/>
+		<property name="min_stock" column="min_stock" />
+	</class>
+	
+	<class name="de.act.common.types.handling.AULDTrans" table="a_uld_trans" schema="public">
+		<cache usage="transactional" />
+		<id name="uldId" type="java.lang.Long" >
+			<column name="uld_id" />
+			<generator class="assigned"/>
+		</id>
+		<property name="uldTransMode" type="java.lang.String">
+			<column name="uld_trans_mode" not-null="true" />
+		</property>
+		<property name="uldDest" type="java.lang.String">
+			<column name="uld_dest" length="3" />
+		</property>
+		<property name="uldUser" type="java.lang.Long">
+			<column name="uld_user" length="10" />
+		</property>
+		<property name="uldConsignee" type="java.lang.Long">
+			<column name="uld_consignee" length="10" />
+		</property>
+	</class>
+</hibernate-mapping>

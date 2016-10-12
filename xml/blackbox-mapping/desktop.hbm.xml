@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" package="de.act.common.types" >
+
+	<class name="de.act.common.types.localobjects.IconFolder" table="d_icon" mutable="true" dynamic-update="true" dynamic-insert="true">
+		<cache usage="transactional"/>
+		<id name="id" column="icon_id" unsaved-value="-1"  >
+			<generator class="native">
+				<param name="sequence">d_icon_icon_id_seq</param>
+			</generator>
+		</id>
+		<property name="image_id" column="image_id"  />
+		<property name="x" column="x" />
+		<property name="y" column="y" />
+		<property name="windowW" column="w_width" />
+		<property name="windowH" column="w_height" />
+		<property name="windowX" column="w_x" />
+		<property name="windowY" column="w_y" />
+		<property name="created" column="created" />
+		<property name="changed" column="changed" />
+		<properties name="ame" unique="true" >
+			<property name="name" column="name"  />
+			<many-to-one name="parent" class="de.act.common.types.localobjects.IconFolder" column="parent_id" cascade="all" /> 	
+		</properties>
+		<property name="type" />
+		<property name="staticIcon" column="static" />
+
+		<set name="childs" table="d_folder" cascade="all" inverse="true" lazy="false"  batch-size="1" >
+			<cache usage="transactional"/>
+			<key column="parent_id" />
+			<one-to-many class="de.act.common.types.localobjects.IconFolder" />
+		</set>
+		<!--<many-to-one name="attachedData" class="de.act.common.types.localobjects.IconFolderLeaf" column="icon_id" cascade="all" not-found="ignore" update="false" insert="false" />	-->
+		<one-to-one name="attachedData" class="de.act.common.types.localobjects.IconFolderLeaf" cascade="all" />
+   	</class>
+   	   	
+	<class name="de.act.common.types.localobjects.IconFolderLeaf" table="d_icon_leaf" mutable="true" dynamic-update="true" dynamic-insert="true"  >
+		<cache usage="transactional"/>
+		<!--cache usage="read-write"/-->
+		<id name="id" column="icon_id" unsaved-value="-1"  >
+			<generator class="foreign" >
+				<param name="property" >icon</param> 
+			</generator> 
+		</id>
+		<one-to-one name="icon" class="de.act.common.types.localobjects.IconFolder" constrained="true" cascade="all" />
+		<!--id name="id" column="icon_id" unsaved-value="-1"  >
+			<generator class="foreign" >
+				<param name="property" >icon</param> 
+			</generator> 
+		</id-->
+		<many-to-one name="form" class="de.act.common.types.nonstaticobjects.RFForm" column="f_id" cascade="none"  not-found="ignore"/> 
+		<many-to-one name="uld" class="de.act.common.types.nonstaticobjects.ULDObject" column="uld_id" cascade="none" not-found="ignore"/> 
+		<many-to-one name="shipments" class="de.act.common.types.handling.Shipments" column="acc_item_id" cascade="none" not-found="ignore"/> 
+		<many-to-one name="manifest" class="de.act.common.types.handling.AManifestData" column="mani_id" cascade="none" not-found="ignore"/> 
+	</class>
+
+</hibernate-mapping>
+
+<!--
+"1",,"d","Desktop","0","0","0","0","0","1024","768","2006-02-17 11:01:37.932458","2006-02-17 11:01:37.932458","1"
+"2","1","f","Inbox","10","791","387","50","50","600","600","2006-02-17 11:05:23.393198","2006-02-17 11:05:23.393198","1"
+"3","1","f","Waste","20","820","178","50","50","600","600","2006-02-17 11:06:39.957537","2006-02-17 11:06:39.957537","1"
+"4",,"d","Desktop","0","0","0","0","0","1024","768","2006-02-17 11:01:37.932458","2006-02-17 11:01:37.932458","1"
+"5","4","f","Inbox","10","500","50","50","50","600","600","2006-02-17 11:05:23.393198","2006-02-17 11:05:23.393198","1"
+"6","4","f","Waste","20","500","60","50","50","600","600","2006-02-17 11:06:39.957537","2006-02-17 11:06:39.957537","1"
+"7",,"d","Desktop","0","0","0","0","0","1024","768","2006-02-17 11:01:37.932458","2006-02-17 11:01:37.932458","1"
+"8","7","f","Inbox","10","500","50","50","50","600","600","2006-02-17 11:05:23.393198","2006-02-17 11:05:23.393198","1"
+"9","9","f","Waste","20","500","60","50","50","600","600","2006-02-17 11:06:39.957537","2006-02-17 11:06:39.957537","1"
+"10",,"d","Desktop","0","0","0","0","0","1024","768","2006-02-17 11:01:37.932458","2006-02-17 11:01:37.932458","1"
+"11","10","f","Inbox","10","500","50","50","50","600","600","2006-02-17 11:05:23.393198","2006-02-17 11:05:23.393198","1"
+"12","10","f","Waste","20","500","60","50","50","600","600","2006-02-17 11:06:39.957537","2006-02-17 11:06:39.957537","1"
+"13",,"d","Desktop","0","0","0","0","0","1024","768","2006-02-17 11:01:37.932458","2006-02-17 11:01:37.932458","1"
+"14","13","f","Inbox","10","500","50","50","50","600","600","2006-02-17 11:05:23.393198","2006-02-17 11:05:23.393198","1"
+"15","13","f","Waste","20","500","60","50","50","600","600","2006-02-17 11:06:39.957537","2006-02-17 11:06:39.957537","1"
+"16",,"d","Desktop","0","0","0","0","0","1024","768","2006-02-17 11:01:37.932458","2006-02-17 11:01:37.932458","1"
+"17","16","f","Inbox","10","500","50","50","50","600","600","2006-02-17 11:05:23.393198","2006-02-17 11:05:23.393198","1"
+"18","16","f","Waste","20","500","60","50","50","600","600","2006-02-17 11:06:39.957537","2006-02-17 11:06:39.957537","1"
+"19",,"d","Desktop","0","0","0","0","0","1024","768","2006-02-17 11:01:37.932458","2006-02-17 11:01:37.932458","1"
+"20","19","f","Inbox","10","500","50","50","50","600","600","2006-02-17 11:05:23.393198","2006-02-17 11:05:23.393198","1"
+"21","19","f","Waste","20","500","60","50","50","600","600","2006-02-17 11:06:39.957537","2006-02-17 11:06:39.957537","1"
+"22",,"d","Desktop","0","0","0","0","0","1024","768","2006-02-17 11:01:37.932458","2006-02-17 11:01:37.932458","1"
+"23","22","f","Inbox","10","500","50","50","50","600","600","2006-02-17 11:05:23.393198","2006-02-17 11:05:23.393198","1"
+"24","22","f","Waste","20","500","60","50","50","600","600","2006-02-17 11:06:39.957537","2006-02-17 11:06:39.957537","1"
+"25",,"d","Desktop","0","0","0","0","0","1024","768","2006-02-17 11:01:37.932458","2006-02-17 11:01:37.932458","1"
+"26","25","f","Inbox","10","500","50","50","50","600","600","2006-02-17 11:05:23.393198","2006-02-17 11:05:23.393198","1"
+"27","25","f","Waste","20","500","60","50","50","600","600","2006-02-17 11:06:39.957537","2006-02-17 11:06:39.957537","1"
+"28","1","o","Unknown","100","243","254","50","50","400","400","2006-02-20 08:19:43.093","2006-02-20 08:19:43.093","1"
+"29","1","o","Unknown","100","589","195","50","50","400","400","2006-02-20 08:20:36.89","2006-02-20 08:20:36.89","1"
+"30","1","o","Unknown","100","159","394","50","50","400","400","2006-02-20 08:24:15.843","2006-02-20 08:24:15.843","1"
+"31","1","o","sli","100","452","396","50","50","400","400","2006-02-20 13:32:15.578","2006-02-20 13:32:15.578","1"
+"32","1","f","folder","0","676","531","50","50","400","400","2006-02-20 13:33:31.843","2006-02-20 13:33:31.843","1"
+"33","1","f","folder","0","395","533","50","50","400","400","2006-02-20 13:36:58.953","2006-02-20 13:36:58.953","0"
+
+
+
+  private Integer id;
+    private Boolean staticIcon=false;
+    /*
+     * Icon Position on DesktopPane
+     */
+    private int x=0;
+    private int y=0;
+    
+    /*
+     * Window position 
+     */
+    private int windowX;
+    private int windowY;
+    /*
+     * Width and Height of opened Window
+     */
+    private int windowW;
+    private int windowH;
+    
+    /*
+     * ChangeDate and createDate
+     */
+    private Date created = new Date();
+    private Date changed = new Date();
+    
+    private String name = FastDateFormat.getInstance().toString();
+    private Integer type = 0;
+    private Integer image_id;
+    
+    // icon data
+    private RFForm form;
+    private ULDObject uld;
+    private FAcceptanceItem acceptanceItem;
+
+    
+    private Set<IconFolder> iconList = new HashSet<IconFolder>();
+    private Set<IconFolder> childs = new HashSet<IconFolder>();
+    private IconFolder parent = null;
+
+	private AManifest manifest;
+
+		-->

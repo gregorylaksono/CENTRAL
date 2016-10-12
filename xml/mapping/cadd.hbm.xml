@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" >
+
+	<class name="de.act.common.types.staticobjects.RSAdd" table="c_add" mutable="true"  batch-size="3" >
+	<cache usage="transactional"/>
+		<id name="add_id" column="add_id"> <!-- type="java.lang.String" -->
+			<generator class="assigned"/>
+		</id>
+		<properties name="name" unique="true" >
+			<property name="companyName"  column="add_name" update="false" />
+			<property name="street" column="street_name" update="false" />
+			<property name="no" column="street_no" update="false" />
+			<property name="place" column="add_place" update="false" />
+			<property name="zip" column="add_zip" update="false" />
+			<property name="state" column="add_state" update="false" />
+			<property name="di_2lc" column="di_2lc" update="false" />	
+			<many-to-one name="country" class="de.act.common.types.staticobjects.RSCo" column="co_2lc" not-found="ignore" /> <!-- update="false" -->
+		</properties>
+		<property name="contactPerson" column="add_ctc" update="false" />
+		<property name="telpString" column="add_tlp" update="false" />
+		<property name="faxString" column="add_fax" update="false" />
+		<property name="emailString" column="add_email" update="false" />
+		<property name="airport" column="ap_3lc" update="false" />
+		<many-to-one name="objectAirport" column="ap_3lc" update="false" insert="false"/>
+		<property name="type" column="add_type" update="false" />
+		<property name="createDate"  column="created_date" update="false" />
+	</class>
+	
+	<class name="de.act.common.types.staticobjects.RSCo" table="s_co" mutable="false"  batch-size="3">
+		<cache usage="transactional"/>
+		<id name="co_2lc" column="co_2lc"  >
+			<generator class="assigned"/>
+		</id>
+		<many-to-one name="cc" class="de.act.common.types.staticobjects.RSCc" column="co_2lc" not-found="ignore" update="false" insert="false" /> 
+		<property name="co_3lc" column="co_3lc" />
+		<property name="co_name" column="co_name" />
+		<property name="co_gmt" column="co_gmt" />
+		<property name="co_tcom" column="co_tcom" />
+		<many-to-one name="cur_3lc" class="de.act.common.types.staticobjects.RSCur" column="cur_3lc" />
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+	</class>
+	
+	<class name="de.act.common.types.staticobjects.RSDi" table="s_di" mutable="false" batch-size="3">
+		<cache usage = "transactional" />
+		<composite-id>
+			<key-property name="di_2lc" column="di_2lc" />
+			<key-property name="co_2lc" column="co_2lc" />
+		</composite-id>
+		<property name="di_name" column="di_name" update="false" />
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+	</class>
+	
+</hibernate-mapping>

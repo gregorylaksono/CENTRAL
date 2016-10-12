@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field"  >
+
+	<class name="de.act.common.types.staticobjects.RSState" table="s_stat"  mutable="false"  batch-size="5">
+		<!-- rec <cache usage="read-only"/>--> <cache usage="transactional"/>
+		<id name="stat_id" column="stat_id" unsaved-value="-1"  access="field" >
+			<generator class="assigned"/>
+		</id>
+		<property name="stat_iata" />
+		<property name="stat_badness" />
+		<property name="stat_name" />
+		<property name="stat_screen_name" />
+		<property name="stat_typ" />
+    	<!--property name="vad_id" /-->
+    	<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+	</class>
+</hibernate-mapping>

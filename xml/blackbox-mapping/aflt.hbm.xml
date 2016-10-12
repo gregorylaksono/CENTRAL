@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" package="de.act.common.types" >
+
+	<class name="de.act.common.types.Aflt" table="a_flt" mutable="true" dynamic-update="true" dynamic-insert="true" >
+		<cache usage="transactional"/>
+		<id name="a_flt_id" column="flt_id" unsaved-value="-1"  >
+ 			<generator class="assigned"/>
+		</id>
+		<property name="flt_group" column="flt_group" />	
+		<property name="s_flt_id" column="s_flt_id" />
+		<property name="dep" column="dep" type="timestamp" />	<!-- give type="timestamp" for make sure the hibernate access the field as timestamp so it can use as a timestamp when doing the query (select, insert, dll ) -->
+		<property name="arr" column="arr" type="timestamp" />
+		<!--many-to-one name="ac" column="ac_id" class="de.act.common.types.staticobjects.RSAc" /-->
+		<property name="ac" column="ac_id" />
+		<property name="auto_wgt" column="auto_wgt" />
+		<property name="auto_vol" column="auto_vol" />	
+		<property name="manual_wgt" column="manual_wgt" />
+		<property name="manual_vol" column="manual_vol" />
+		<property name="max_wgt" column="max_wgt" />
+		<property name="max_vol" column="max_vol" />
+		<property name="open_for_cargo" column="open_for_cargo" />	
+		<property name="depDate" column="dep" insert="false" update="false" type="java.util.Date"/>
+   	</class>
+     	
+</hibernate-mapping>

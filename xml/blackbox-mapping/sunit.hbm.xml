@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" >
+	<class name="de.act.common.types.staticobjects.RSUnit" table="s_unit" mutable="false"  batch-size="5">
+	<!-- rec <cache usage="read-only"/>--> <cache usage="transactional"/>
+		<id name="UNIT_ID" column="unit_id" unsaved-value="-1"  >
+			<generator class="assigned"/>
+		</id>
+		<property name="UNIT_ABRV" column="unit_abrv" access="field" />
+		<property name="UNIT_NAME" column="unit_name" access="field" />
+		<property name="UNIT_TYPE" column="unit_type" access="field" />
+		<property name="UNIT_CODE" column="unit_code" access="field" />
+		<property name="UNIT_FAC" column="unit_fac" access="field" />
+		<property name="UNIT_SUM" column="unit_sum" access="field" />
+		<!--<property name="VAD_ID" column="vad_id" access="field"   /> -->
+	</class>
+
+	<class name="de.act.common.types.localobjects.RDDefUnit" table="d_def_unit"> <!-- mutable="false" -->
+		<cache usage="transactional"/>
+		<id name="DEF_UNIT_ID" column="def_unit_id" unsaved-value="-1"  >
+			<generator class="assigned"/>
+		</id>
+		<many-to-one name="unit" class="de.act.common.types.staticobjects.RSUnit" column="unit_id" update = "false" insert="false" access="field" />
+		<property name = "UNIT_ID" column ="unit_id" />
+		<property name = "UNIT_TYPE" column="unit_type"/>
+		<property name = "OWNER_ADD_ID" column ="owner_add_id"/>
+   	</class>
+</hibernate-mapping>
+
+<!--
+unit_id varchar(2) NOT NULL,
+  unit_abrv varchar(10),
+  unit_name varchar(30),
+  unit_type cn_unit_type,
+  unit_code cn_unit_code,
+  unit_fac numeric(24,12),
+  unit_sum numeric(24,12),
+  vad_id varchar(8),
+-->

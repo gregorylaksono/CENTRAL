@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" >
+	<class name="de.act.common.types.RAUld" table="a_uld" >
+		<cache usage="transactional"/>
+		<id name="uld_id" column="uld_id" unsaved-value="-1" >
+			<generator class="assigned"/>
+		</id>
+		<property name="uld_prefix" column="uld_prefix" />
+		<property name="uld_no" column="uld_no" />
+		<property name="uld_type_id" column="uld_type_id" />
+		<property name="discr_id" column="discr_id" />
+		<property name="uld_rem" column="uld_rem" />
+		<property name="add_id" column="add_id" />
+		<property name="stat_id" column="stat_id" />
+	</class>
+</hibernate-mapping>

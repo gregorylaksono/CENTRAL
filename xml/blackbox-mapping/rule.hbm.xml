@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+      "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false" package="de.act.common.types.ruleobject" default-access="property">
+
+	<class name="RBase" table="r_base" dynamic-update="true" dynamic-insert="true">
+		<cache usage="transactional" />
+		<id name="ruleID" column="r_id">
+			<generator class="assigned" />
+		</id>
+		<many-to-one name="RParent" column="r_parent" class="de.act.common.types.ruleobject.RBase" />
+		<property name="RType" column="r_type" access="property" />
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+		
+		<one-to-one name="RAp" class="RAp" cascade="all" /> 
+		<one-to-one name="RAdd" class="RAdd" cascade="all" /> 
+		<one-to-one name="RNt" class="RNt" cascade="all" /> 
+		<one-to-one name="RItem" class="RItem" cascade="all" /> 
+		<one-to-one name="RCa" class="RCa" cascade="all" /> 
+		<one-to-one name="RCo" class="RCo" cascade="all" /> 
+		<one-to-one name="RAr" class="RAr" cascade="all" /> 
+		<one-to-one name="RDi" class="RDi" cascade="all" /> 
+		<one-to-one name="RCharges" class="RCharges" cascade="all" /> 
+		<one-to-one name="RCaGeo" class="RCaGeo" cascade="all" /> 
+		<one-to-one name="RUld" class="RUld" cascade="all" /> 
+		<one-to-one name="RWgt" class="RWgt" cascade="all" /> 
+		<one-to-one name="RCur" class="RCur" cascade="all" />
+		<one-to-one name="RCom" class="RCom" cascade="all" /> 
+		<one-to-one name="RUldNet" class="RUldNet" cascade="all" /> 
+	</class>
+
+	<class name="RAdd" table="r_add" schema="public">
+		<id name="RId" type="long">
+			<column name="r_id" />
+			<generator class="foreign">
+				<param name="property">RBase</param>
+			</generator>
+		</id>
+		<one-to-one name="RBase" class="RBase" />
+		<property name="addBool" column="add_bool" />
+		<property name="addId" column="add_id" />
+		<property name="addType" column="add_type" />
+		<property name="addSpecType" column="add_spec_type" />
+	</class>
+
+	<class name="RAp" table="r_ap" schema="public">
+		<id name="RId" type="long">
+			<column name="r_id" />
+			<generator class="foreign">
+				<param name="property">RBase</param>
+			</generator>
+		</id>
+		<one-to-one name="RBase" class="RBase" />
+		<property name="apBool" column="ap_bool" />
+		<property name="ap3lc" column="ap_3lc" />
+		<property name="apSect" column="ap_sect" />
+	</class>
+
+	<class name="RAr" table="r_ar" schema="public">
+		<id name="RId" type="long">
+			<column name="r_id" />
+			<generator class="foreign">
+				<param name="property">RBase</param>
+			</generator>
+		</id>
+		<one-to-one name="RBase" class="RBase" />
+		<property name="arBool" column="ar_bool" />
+		<property name="arCode" column="ar_code" />
+		<property name="arSect" column="ar_sect" />
+	</class>
+
+	<class name="RCa" table="r_ca" schema="public">
+		<id name="RId" type="long">
+			<column name="r_id" />
+			<generator class="foreign">
+				<param name="property">RBase</param>
+			</generator>
+		</id>
+		<one-to-one name="RBase" class="RBase" />
+		<property name="caBool" column="ca_bool" />
+		<property name="caLock" column="ca_lock" />
+		<property name="caId" column="ca_id" />
+		<property name="caSect" column="ca_sect" />
+		<property name="allianceId" column="alliance_id" />
+		<property name="iataStat" column="iata_stat" />
+	</class>
+
+	<class name="RCaGeo" table="r_ca_geo" schema="public">
+		<id name="RId" type="long">
+			<column name="r_id" />
+			<generator class="foreign">
+				<param name="property">RBase</param>
+			</generator>
+		</id>
+		<one-to-one name="RBase" class="RBase" />
+		<property name="caGeoBool" column="ca_geo_bool" />
+		<property name="caGeoSect" column="ca_geo_sect" />
+		<property name="caGeoCa" column="ca_geo_ca" />
+		<property name="caGeoAlliance" column="ca_geo_alliance" />
+		<property name="caGeoIataStat" column="ca_geo_iata_stat" />
+		<property name="caGeoFrom" column="ca_geo_from" />
+		<property name="caGeoTo" column="ca_geo_to" />
+	</class>
+
+	<class name="RCharges" table="r_charges" schema="public">
+		<id name="RId" type="long">
+			<column name="r_id" />
+			<generator class="foreign">
+				<param name="property">RBase</param>
+			</generator>
+		</id>
+		<one-to-one name="RBase" class="RBase" />
+		<property name="chargesBool" column="charges_bool" />
+		<property name="chargesType" column="charges_type" />
+	</class>
+
+	<class name="RCo" table="r_co" schema="public">
+		<id name="RId" type="long">
+			<column name="r_id" />
+			<generator class="foreign">
+				<param name="property">RBase</param>
+			</generator>
+		</id>
+		<one-to-one name="RBase" class="RBase" />
+		<property name="coBool" column="co_bool" />
+		<property name="co2lc" column="co_2lc" />
+		<property name="coSect" column="co_sect" />
+	</class>
+
+	<class name="RCur" table="r_cur" schema="public">
+		<id name="RId" type="long">
+			<column name="r_id" />
+			<generator class="foreign">
+				<param name="property">RBase</param>
+			</generator>
+		</id>
+		<one-to-one name="RBase" class="RBase" />
+		<property name="curBool" column="cur_bool" />
+		<property name="cur3lc" column="cur_3lc" />
+	</class>
+
+	<class name="RDi" table="r_di" schema="public">
+		<id name="RId" type="long">
+			<column name="r_id" />
+			<generator class="foreign">
+				<param name="property">RBase</param>
+			</generator>
+		</id>
+		<one-to-one name="RBase" class="RBase" constrained="true"></one-to-one>
+		<property name="diBool" column="di_bool" />
+		<property name="diCo2lc" column="di_co_2lc" />
+		<property name="di2lc" column="di_2lc" />
+		<property name="diSect" column="di_sect" />
+	</class>
+
+	<class name="RItem" table="r_item" schema="public">
+		<id name="RId" type="long">
+			<column name="r_id" />
+			<generator class="foreign">
+				<param name="property">RBase</param>
+			</generator>
+		</id>
+		<one-to-one name="RBase" class="RBase" />
+		<property name="itemBool" column="item_bool" />
+		<property name="itemNo" column="item_no" />
+	</class>
+
+	<class name="RNt" table="r_nt" schema="public">
+		<id name="RId" type="long">
+			<column name="r_id" />
+			<generator class="foreign">
+				<param name="property">RBase</param>
+			</generator>
+		</id>
+		<one-to-one name="RBase" class="RBase" />
+		<property name="ntCa" column="nt_ca" />
+		<property name="ntId" column="nt_id" />
+	</class>
+
+	<class name="RParams" table="r_params" schema="public">
+		<composite-id name="param" class="RParamsId">
+			<key-property name="retBool" column="ret_bool" />
+			<key-property name="retLock" column="ret_lock" />
+			<key-property name="paramBool" column="param_bool" />
+			<key-property name="timeBool" column="time_bool" />
+			<key-property name="caBool" column="ca_bool" />
+			<key-property name="apBool" column="ap_bool" />
+			<key-property name="itemBool" column="item_bool" />
+			<key-property name="uldBool" column="uld_bool" />
+			<key-property name="chargesBool" column="charges_bool" />
+			<key-property name="curBool" column="cur_bool" />
+			<key-property name="addBool" column="add_bool" />
+			<key-property name="wgtBool" column="wgt_bool" />
+			<key-property name="ntId" column="nt_id" />
+		</composite-id>
+	</class>
+
+	<class name="RUld" table="r_uld" schema="public">
+		<id name="RId" type="long">
+			<column name="r_id" />
+			<generator class="foreign">
+				<param name="property">RBase</param>
+			</generator>
+		</id>
+		<one-to-one name="RBase" class="RBase" />
+		<property name="uldBool" column="uld_bool" />
+		<property name="uldClass" column="uld_class" />
+		<property name="uldRate" column="uld_rate" />
+	</class>
+	
+	<class name="RUldNet" table="r_uld_net" schema="public">
+		<id name="RId" type="long">
+			<column name="r_id" />
+			<generator class="foreign">
+				<param name="property">RBase</param>
+			</generator>
+		</id>
+		<one-to-one name="RBase" class="RBase" />
+		<property name="uldBool" column="uld_bool" />
+		<property name="uldType" column="uld_type" />
+		<property name="uldMinWgt" column="uld_min_weigth" />
+		<property name="uldMinPercent" column="uld_min_percent" />
+	</class>
+
+	<class name="RWgt" table="r_wgt" schema="public">
+		<id name="RId" type="long">
+			<column name="r_id" />
+			<generator class="foreign">
+				<param name="property">RBase</param>
+			</generator>
+		</id>
+		<one-to-one name="RBase" class="RBase" />
+		<property name="wgtMax" column="wgt_max" />
+		<property name="wgt" column="wgt" />
+	</class>
+	
+	<class name="RCom" table="r_com" schema="public">
+		<id name="RId" type="long">
+			<column name="r_id" />
+			<generator class="foreign">
+				<param name="property">RBase</param>
+			</generator>
+		</id>
+		<one-to-one name="RBase" class="RBase" />
+		<property name="comBool" column="com_bool" />
+		<property name="comId" column="com_id" />
+		<property name="annId" column="ann_id" />
+	</class>
+</hibernate-mapping>

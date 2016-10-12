@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" package="de.act.common.types.staticobjects" >
+
+	<class name="de.act.common.types.staticobjects.RSCaConx" table="s_ca"  mutable="false"  batch-size="20" where="ca_id &lt;&gt; '000' and ca_2lc is not null">
+		<!-- 
+		where="vad_id is null OR (vad_from &lt;= now() AND now() &lt;= vad_to )"
+		 -->
+		<!-- rec <cache usage="read-only"/>--> <cache usage="transactional"/>
+		<!--id name="ca_id" column="ca_id" unsaved-value="-1"  >
+		<generator class="assigned"/>
+		</id-->
+		<id name="s_ca_id" column="s_ca_id" unsaved-value="-1"  >
+			<generator class="assigned"/>
+		</id>
+		<property name="ca_id" />
+		<!--property name="ca_id" insert="false" update="false" /-->
+		<property name="ca_name"/>
+		<property name="ca_3dg"/>
+		<property name="ca_2lc"/>
+		<property name="ca_3lc"/>
+		<property name="alliance_id"/>
+		<property name="iata_stat"/>
+		<property name="vad_id"/>
+		<many-to-one name="VAD" class="RSVad" column="vad_id" insert="false" update="false" not-found="ignore" />
+		<!-- (slows all down) set name="connections"  batch-size="20" mutable="false">-->
+		<!-- rec <cache usage="read-only"/>--> 
+		<!--	
+			<cache usage="transactional"/>
+			<key column="ca_id" />
+			<one-to-many class="RSConx" />
+		</set-->
+		<!--join table="s_vad" fetch="join" optional="true">
+			<key column="vad_id" />
+			<property name="vad_from" access="property"/>
+			<property name="vad_to" access="property" />
+		</join-->
+	</class>
+
+	<class name="de.act.common.types.staticobjects.RSCa" table="s_ca"  mutable="false"  batch-size="20" where="ca_id &lt;&gt; '000'">
+		<!--  -->
+		<!-- rec <cache usage="read-only"/>--> <cache usage="transactional"/>
+		<!--id name="ca_id" column="ca_id" unsaved-value="-1"  >
+		 <generator class="assigned"/>
+		</id-->
+		<id name="s_ca_id" column="s_ca_id" unsaved-value="-1">
+			<generator class="assigned"/>
+		</id>
+		<property name="ca_id"/>
+		<property name="ca_name"/>
+		<property name="ca_3dg"/>
+		<property name="ca_2lc"/>
+		<property name="ca_3lc"/>
+		<property name="alliance_id"/>
+		<property name="iata_stat"/>
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />			
+	</class>
+	
+	<class name="de.act.common.types.staticobjects.Carrier" table="s_ca"  mutable="false"  batch-size="20" where="ca_id &lt;&gt; '000'">
+		<!--  -->
+		<!-- rec <cache usage="read-only"/>--> <cache usage="transactional"/>
+		<!--id name="ca_id" column="ca_id" unsaved-value="-1"  >
+		 <generator class="assigned"/>
+		</id-->
+		<id name="ca_id" column="ca_id" unsaved-value="-1">
+			<generator class="assigned"/>
+		</id>
+		<property name="ca_name"/>
+		<property name="ca_3dg"/>
+		<property name="ca_2lc"/>
+		<property name="ca_3lc"/>
+		<property name="alliance_id"/>
+		<property name="iata_stat"/>
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />			
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="property" package="de.act.common.types" >
+
+	<class name="de.act.common.types.packageitems.ItemBKG" table="f_bkg_item"  >
+		<cache usage="transactional" />
+		<id name="id" column="bkg_item_id" unsaved-value="-1"  >
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+ 			</generator>
+		</id>
+		<many-to-one name="metadata" class="de.act.common.types.attachment.CPackageAttachment" column="att_id" cascade="none" not-found="ignore" />
+		<!--many-to-one name="packages" class="de.act.common.types.formulars.CFormularPackage" /-->
+		<!--list name="bkg_flts" inverse="true" cascade="none" lazy="false" >
+			<key>
+				<column name="bkg_item_id" />
+			</key>
+			<index column="flt_row" />
+			<one-to-many class="de.act.common.types.nonstaticobjects.BookingRequestFlight" not-found="ignore" />
+		</list-->
+		<property name="isParent" column="parent" />
+		<property name="rowNo" column="part" access="property" />
+		<property name="corr" column="corr" />
+		<property name="pcs" />
+		<property name="wgt" />
+		<property name="vol" />
+		<property name="requestedDepartureDate" column="req_dep" />
+		<property name="requestedArrivalDate" column="req_arr" />
+		<property name="requestedStat" column="req_stat"  not-null="false" />
+		<!--many-to-one name="requestedCarrier" 	class="de.act.common.types.staticobjects.RSCa" column="req_ca_id"  insert="false" update = "false" not-null="false" not-found="ignore" /-->
+		<property name = "requestedCarrier" column = "req_ca_id" />
+		<property name="hops" column="req_hops" />
+		<property name="prio" column="prio" />
+		<many-to-one name="from" 	class="de.act.common.types.staticobjects.RSAp" column="req_from"  not-null="false" not-found="ignore" />
+		<many-to-one name="to" 	class="de.act.common.types.staticobjects.RSAp" column="req_to"  not-null="false" not-found="ignore" />
+		<!--
+			Date requestedDepartureDate;
+			private Date requestedArrivalDate;
+			private RSCa requestedCarrier;
+			private int hops;
+			private RSAp from;
+    		private RSAp to;
+    	-->
+		<many-to-one name="commodity" class="de.act.common.types.staticobjects.CCommodityTree" column="com_id"  not-null="false" not-found="ignore" />
+		<many-to-one name="scc" class="de.act.common.types.staticobjects.RSScc" column="scc_3lc"  not-null="false" not-found="ignore" />
+		<many-to-one name="annotation" class="de.act.common.types.staticobjects.RSAnn" column="ann_id" cascade="none" not-found="ignore" />
+		<!--list name="listAWB" lazy="false" table="f_awb_item" access="property"  cascade="none" inverse="true">
+			<key column="bkg_item_id" />
+			<list-index column="awb_row" />
+			<one-to-many class="de.act.common.types.packageitems.ItemAWB" not-found="ignore"  />
+		</list-->
+
+		<set name="subItems" lazy="false" table="f_pkg" access="property" cascade="all" inverse="true" order-by="row_no asc"  >
+			<cache usage="transactional"/>
+			<key column="bkg_item_id"/>
+			<one-to-many class="de.act.common.types.packageitems.ItemPKG" not-found="ignore" />
+		</set>
+		<!--set name="acceptedShipments" lazy="false" table="f_acc_item" cascade="all" inverse="true" access="property" >
+			<cache usage="transactional"/>
+			<key column="bkg_item_id"/>
+			<one-to-many class="de.act.common.types.handling.Shipments" not-found="ignore" />
+		</set-->
+	</class>
+		
+	<class name="de.act.common.types.packageitems.ItemHandlingBKG" table="f_bkg_item"  >
+		<cache usage="transactional"/>
+		<id name="id" column="bkg_item_id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+
+		<!--many-to-one name="metadata" class="de.act.common.types.attachment.CPackageAttachment" column="att_id" cascade="none" not-found="ignore"  /-->
+		<property name="isParent" column="parent" />
+		<property name="rowNo" column="part" access="property" />
+		<property name="corr" column="corr" />
+		<property name="pcs" />
+		<property name="wgt" />
+		<property name="vol" />
+		<property name="requestedDepartureDate" column="req_dep" />
+		<property name="requestedArrivalDate" column="req_arr" />
+		<property name="requestedStat" column="req_stat"  not-null="false"  />
+		<!--many-to-one name="requestedCarrier" class="de.act.common.types.staticobjects.RSCa" column="req_ca_id"  not-null="false" not-found="ignore" /-->
+		<property name = "req_ca_id" column = "req_ca_id" />
+		<property name="hops" column="req_hops" />
+		<property name="prio" column="prio" />
+		<many-to-one name="from" class="de.act.common.types.staticobjects.RSAp" column="req_from"  not-null="false" not-found="ignore" />
+		<many-to-one name="to" class="de.act.common.types.staticobjects.RSAp" column="req_to"  not-null="false" not-found="ignore" />
+		<many-to-one name="commodity" class="de.act.common.types.staticobjects.CCommodityTree" column="com_id"  not-null="false" not-found="ignore" />
+		<many-to-one name="scc" 	class="de.act.common.types.staticobjects.RSScc" column="scc_3lc"  not-null="false" not-found="ignore" />
+		<!--set name="acceptedShipments" lazy="false" table="f_acc_item" cascade="all" inverse="true" access="property" >-->
+		<!--	<cache usage="transactional"/> -->
+		<!--	<key column="bkg_item_id"/>
+			<one-to-many class="de.act.common.types.handling.Shipments"  not-found="ignore" />
+		</set-->
+	</class>
+	
+	<class name = "de.act.common.types.views.BookingItemControlView" table = "f_bkg_item_control_view" >
+		<cache usage="transactional"/>
+		<id name="bkg_item_id" column="bkg_item_id">
+			<generator class="assigned"/>
+		</id>
+		<property name = "ca_3dg" column = "ca_3dg" />
+		<property name = "awb_stock" column = "awb_stock" />
+		<property name = "awb_no" column = "awb_no" />
+		<property name = "f_id" column = "f_id" />
+		<property name = "att_id" column = "att_id" />
+		<property name = "bkg_pcs" column = "bkg_pcs" />
+		<property name = "bkg_wgt" column = "bkg_wgt" />
+		<property name = "vol" column = "vol" />
+		<property name = "scc_3lc" column = "scc_3lc" />
+		<property name = "com_id" column = "com_id" />
+		<property name = "com_name" column = "com_name" />
+		<property name = "ann_id" column = "ann_id" />
+		<property name = "ann_name" column = "ann_name" />
+		<property name = "req_to" column = "req_to" />
+	</class>
+	
+	<class name = "de.act.common.types.views.PackageControlView" table = "f_pkg_control_view" >
+		<cache usage="transactional"/>
+		<id name="pkg_id" column="pkg_id">
+			<generator class="assigned"/>
+		</id>
+		<property name = "ca_3dg" column = "ca_3dg" />
+		<property name = "awb_stock" column = "awb_stock" />
+		<property name = "awb_no" column = "awb_no" />
+		<property name = "f_id" column = "f_id" />
+		<property name = "att_id" column = "att_id" />
+		<property name = "bkg_item_id" column = "bkg_item_id" />
+		<property name = "coo_item_id" column = "coo_item_id" />
+		<property name = "row_no" column = "row_no" />
+		<property name = "pkg_pcs" column = "pkg_pcs" />
+		<property name = "pkg_wgt" column = "pkg_wgt" />
+		<property name = "l" column = "l" />
+		<property name = "w" column = "w" />
+		<property name = "h" column = "h" />
+		<property name = "scc_3lc" column = "scc_3lc" />
+		<property name = "com_id" column = "com_id" />
+		<property name = "com_name" column = "com_name" />
+		<property name = "ann_id" column = "ann_id" />
+		<property name = "ann_name" column = "ann_name" />
+		<property name = "req_to" column = "req_to" />
+		<many-to-one name="cooItem" class="de.act.common.types.formulars.FormularCOOItem" column="coo_item_id"  insert="false" update="false" not-null="false" not-found="ignore" />
+	</class>
+</hibernate-mapping>

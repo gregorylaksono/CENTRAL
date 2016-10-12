@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+	http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-2.0.xsd
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd">
+	<import resource="server-db-connection.xml"  />
+   	
+	<!-- bean id="CdbTransferManager" class="de.act.centralserver.dblayer.core.DBTransferManager" >
+		<property name="sessionFactory">
+			<ref bean="sessionFactory"/>
+		</property>		
+	</bean>
+	
+	<bean id="CdbBookingManager" class="de.act.centralserver.dblayer.core.DBBookingManager" >
+		<property name="sessionFactory">
+			<ref bean="sessionFactory"/>
+		</property>		 
+	</bean>
+	
+	<bean id="CdbStateManager" class="de.act.centralserver.dblayer.core.DBStateManager" >
+		<property name="sessionFactory">
+			<ref bean="sessionFactory"/>
+		</property>		
+	</bean>
+
+	<bean id="CbkgDao" class="de.act.centralserver.dblayer.daos.CBkgDao">
+            <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+	
+	<bean id="CTransferManager" class="de.act.centralserver.applayer.core.TransferManager" >
+			<constructor-arg index="0" ref="CdbTransferManager"/>
+			
+	</bean>
+	
+	<bean id="CBookingManager" class="de.act.centralserver.applayer.core.BookingManager" >
+			<constructor-arg index="0" ref="CdbBookingManager"/>
+			<constructor-arg index="1" ref="CdbTransferManager"/>
+			<constructor-arg index="2" ref="CbkgDao"/>
+	</bean>
+	
+	<bean id="CStateManager" class="de.act.centralserver.applayer.core.StateManager" >
+			<constructor-arg index="0" ref="CdbStateManager"/>
+	</bean-->
+	
+</beans>

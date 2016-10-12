@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:lang="http://www.springframework.org/schema/lang" xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+	http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-2.0.xsd
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd">
+
+	<import resource="property.xml" />
+	
+	<bean id="batchDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url"             value="${jdbcserver.url}" />
+		<property name="username"        value="${jdbc.username}" />
+		<property name="password"        value="${jdbc.password}" />
+    </bean>
+
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="batchDataSource" />
+		</property>
+		<property name="mappingResources">
+			<list>
+				<value>central-mapping/centralAdd.hbm.xml</value> 
+				<value>mapping/cadd.hbm.xml</value>
+				<value>mapping/svad.hbm.xml</value>
+				<value>mapping/sap.hbm.xml</value>
+				<value>mapping/sscc.hbm.xml</value>
+				<!-- central server -->
+				<value>central-mapping/AcceptanceHeader.hbm.xml</value>
+				<value>central-mapping/Acceptance.hbm.xml</value>
+				<value>central-mapping/AcceptanceItem.hbm.xml</value>
+				<value>central-mapping/AcceptancePackage.hbm.xml</value>
+				<value>central-mapping/AccountingInformation.hbm.xml</value>
+				<value>central-mapping/Addresses.hbm.xml</value>
+				<value>central-mapping/Attachment.hbm.xml</value>
+				<value>central-mapping/AwbNo.hbm.xml</value>
+				<value>central-mapping/BookingFlight.hbm.xml</value>
+				<value>central-mapping/CentralBooking.hbm.xml</value>
+				<value>central-mapping/CentralDistribution.hbm.xml</value>
+				<value>central-mapping/CentralFlights.hbm.xml</value>
+				<value>central-mapping/CFlt.hbm.xml</value>
+				<value>central-mapping/CentralSubt.hbm.xml</value>
+				<value>central-mapping/CentralUser.hbm.xml</value>
+				<value>central-mapping/Discrepencies.hbm.xml</value>
+				<value>central-mapping/Distribution.hbm.xml</value>
+				<value>central-mapping/FomularDGR.hbm.xml</value>
+				<value>central-mapping/FormularAVI.hbm.xml</value>
+				<value>central-mapping/FormularAWB.hbm.xml</value>
+				<value>central-mapping/FormularBKG.hbm.xml</value>
+				<value>central-mapping/FormularInformation.hbm.xml</value>
+				<value>central-mapping/FormularSLI.hbm.xml</value>
+				<value>central-mapping/HandlingAirportCarrier.hbm.xml</value>
+				<value>central-mapping/HandlingInformation.hbm.xml</value>
+				<value>central-mapping/Manifest.hbm.xml</value>
+				<value>central-mapping/ManifestItem.hbm.xml</value>
+				<value>central-mapping/OtherCharges.hbm.xml</value>
+				<value>central-mapping/Package.hbm.xml</value>
+				<value>central-mapping/PackageItemSLI.hbm.xml</value>
+				<value>central-mapping/PackageItemAVI.hbm.xml</value>
+				<value>central-mapping/PackageItemAWB.hbm.xml</value>
+				<value>central-mapping/PackageItemBKG.hbm.xml</value>
+				<value>central-mapping/PackageItemDGR.hbm.xml</value>
+				<value>central-mapping/Routing.hbm.xml</value>
+				<value>central-mapping/Sticker.hbm.xml</value>
+				<value>central-mapping/SubtTCom.hbm.xml</value>
+				<value>central-mapping/TransferUld.hbm.xml</value>
+				<value>central-mapping/Uld.hbm.xml</value>
+				<value>central-mapping/PackageState.hbm.xml</value>
+				<value>central-mapping/AwbState.hbm.xml</value>
+				<value>central-mapping/BookingFlightState.hbm.xml</value>
+			</list>
+		</property>
+
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+				<prop key="hibernate.connection.autoReconnect">true</prop>
+				<prop key="hibernate.c3p0.min_size">1</prop>
+				<prop key="hibernate.c3p0.max_size">90</prop>
+				<prop key="hibernate.c3p0.timeout">30</prop>
+				<prop key="hibernate.c3p0.max_statements">100</prop>
+				<prop key="hibernate.cache.use_query_cache">false</prop>
+				<prop key="hibernate.query_cache">false</prop>
+				<prop key="hibernate.bytecode.use_reflection_optimizer">true</prop>
+				<prop key="hibernate.use_sql_commments">false</prop>
+				<prop key="hibernate.format_sql">false</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.transaction.auto_close_session">true</prop>
+				<prop key="hibernate.cache.use_second_level_cache">true</prop>
+				<prop key="hibernate.order_updates">true</prop>
+				<prop key="hibernate.generate_statistics">false</prop>
+				<prop key="hibernate.connection.release_mode">after_transaction</prop>
+				<prop key="hibernate.cache.provider_class">org.hibernate.cache.TreeCacheProvider</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="dbJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="batchDataSource" />
+	</bean>
+
+
+	<bean id="dbhibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	
+	<bean id="dbSessionManager" class="de.act.centralserver.dblayer.core.CDBSessionManager" >
+		<property name="sessionFactory">
+			<ref bean="sessionFactory"/>
+		</property>
+		<property name="hibernateTemplate">
+			<ref bean="dbhibernateTemplate"/>
+		</property>
+		<property name="jdbcTemplate">
+			<ref bean="dbJdbcTemplate"/>
+		</property>
+	</bean>
+	
+	<!--  FROM BLACKBOX -->
+	<bean id="sessionFactoryBlackbox" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="batchDataSource"/>
+		</property>
+		<property name="mappingResources">
+			<list>
+				<value>blackbox-mapping/pre_advise.hbm.xml</value>
+				<value>blackbox-mapping/Preadvise_users.hbm.xml</value>
+				<value>blackbox-mapping/Preadvise_airline.hbm.xml</value>
+			
+				<value>blackbox-mapping/fSCC.hbm.xml</value>
+				<value>blackbox-mapping/bookingInformationView.hbm.xml</value>
+				<value>blackbox-mapping/shipmentInformationView.hbm.xml</value>
+				<value>blackbox-mapping/fDeliveryNotification.hbm.xml</value>
+				<value>blackbox-mapping/fNotificationView.hbm.xml</value>
+				<value>blackbox-mapping/fDeliveryView.hbm.xml</value>
+				<value>blackbox-mapping/fNotification.hbm.xml</value>
+				<value>blackbox-mapping/fDelivery.hbm.xml</value>
+				<value>blackbox-mapping/fBookingListView.hbm.xml</value>
+				<value>blackbox-mapping/view_current_forms.hbm.xml</value>
+				<value>blackbox-mapping/sstat.hbm.xml</value>
+				<value>blackbox-mapping/location.hbm.xml</value>
+				<value>blackbox-mapping/fbkg.hbm.xml</value>
+				<value>blackbox-mapping/fbkgflight.hbm.xml</value>
+				<value>blackbox-mapping/discrepancies.hbm.xml</value>
+				<value>blackbox-mapping/fdiscrepancies.hbm.xml</value>
+				<value>blackbox-mapping/facceptance.hbm.xml</value>
+				<value>blackbox-mapping/facceptanceitem.hbm.xml</value>
+				<value>blackbox-mapping/fharem.hbm.xml</value>
+				<value>blackbox-mapping/storage.hbm.xml</value>
+				<value>blackbox-mapping/sunit.hbm.xml</value>
+				<value>blackbox-mapping/scom.hbm.xml</value>
+				<value>blackbox-mapping/sscc.hbm.xml</value>
+				<value>blackbox-mapping/fawbno.hbm.xml</value>
+				<value>blackbox-mapping/flightdate.hbm.xml</value>
+				<value>blackbox-mapping/auld.hbm.xml</value>
+				<value>blackbox-mapping/sflt.hbm.xml</value>
+				<value>blackbox-mapping/sconx.hbm.xml</value>
+				<value>blackbox-mapping/sca.hbm.xml</value>
+				<value>blackbox-mapping/suldname.hbm.xml</value>
+				<!--value>mapping/auldList.hbm.xml</value-->
+				<value>blackbox-mapping/suldtypes_uldobject.hbm.xml</value>
+
+				<!-- fcontent -->
+				<value>blackbox-mapping/fpkg.hbm.xml</value>
+				<value>blackbox-mapping/allcontent.hbm.xml</value>
+				<value>blackbox-mapping/frt.hbm.xml</value>
+				<value>blackbox-mapping/fawb.hbm.xml</value> 
+				<value>blackbox-mapping/sap.hbm.xml</value> 
+				<value>blackbox-mapping/rule.hbm.xml</value>
+				<!-- adress and defaults -->
+				<value>blackbox-mapping/sadd.hbm.xml</value> 
+				<value>blackbox-mapping/default.hbm.xml</value> 
+	
+				<!-- Folder and Iconfiles -->
+				<value>blackbox-mapping/desktop.hbm.xml</value> 
+				<value>blackbox-mapping/central-server.hbm.xml</value> 
+				<value>blackbox-mapping/formulars.hbm.xml</value> 
+				<value>blackbox-mapping/formulars_attachments.hbm.xml</value> 
+				<value>blackbox-mapping/fadd.hbm.xml</value>
+
+				<!-- READONLY -->
+				<value>blackbox-mapping/sot.hbm.xml</value>
+				<value>blackbox-mapping/srate.hbm.xml</value>
+				<value>blackbox-mapping/svad.hbm.xml</value>
+
+				<!-- READONLY data provider "functions" -->
+				<value>blackbox-mapping/functions.hbm.xml</value>
+				<value>blackbox-mapping/abkg.hbm.xml</value> <!-- cbkg to abkg -->
+				<!--value>blackbox-mapping/cbkg.hbm.xml</value-->
+
+				<!-- security stuff -->
+				<value>blackbox-mapping/security.hbm.xml</value>
+				<value>blackbox-mapping/packagestate.hbm.xml</value> 
+				<value>blackbox-mapping/awbstate.hbm.xml</value> 
+
+				<!-- central server -->
+				<value>central-mapping/AcceptanceHeader.hbm.xml</value>
+				<value>central-mapping/Acceptance.hbm.xml</value>
+				<value>central-mapping/AcceptanceItem.hbm.xml</value>
+				<value>central-mapping/AcceptancePackage.hbm.xml</value>
+				<value>central-mapping/AccountingInformation.hbm.xml</value>
+				<value>central-mapping/Addresses.hbm.xml</value>
+				<value>central-mapping/Attachment.hbm.xml</value>
+				<value>central-mapping/AwbNo.hbm.xml</value>
+				<value>central-mapping/BookingFlight.hbm.xml</value>
+				<value>central-mapping/CentralBooking.hbm.xml</value>
+				<value>central-mapping/CentralDistribution.hbm.xml</value>
+				<value>central-mapping/CentralFlights.hbm.xml</value>
+				<value>central-mapping/CentralSubt.hbm.xml</value>
+				<value>central-mapping/CentralUser.hbm.xml</value>
+				<value>central-mapping/Discrepencies.hbm.xml</value>
+				<value>central-mapping/Distribution.hbm.xml</value>
+				<value>central-mapping/FomularDGR.hbm.xml</value>
+				<value>central-mapping/FormularAVI.hbm.xml</value>
+				<value>central-mapping/FormularAWB.hbm.xml</value>
+				<value>central-mapping/FormularBKG.hbm.xml</value>
+				<value>central-mapping/FormularInformation.hbm.xml</value>
+				<value>central-mapping/FormularSLI.hbm.xml</value>
+				<value>central-mapping/HandlingAirportCarrier.hbm.xml</value>
+				<value>central-mapping/HandlingInformation.hbm.xml</value>
+				<value>central-mapping/Manifest.hbm.xml</value>
+				<value>central-mapping/ManifestItem.hbm.xml</value>
+				<value>central-mapping/OtherCharges.hbm.xml</value>
+				<value>central-mapping/Package.hbm.xml</value>
+				<value>central-mapping/PackageItemSLI.hbm.xml</value>
+				<value>central-mapping/PackageItemAVI.hbm.xml</value>
+				<value>central-mapping/PackageItemAWB.hbm.xml</value>
+				<value>central-mapping/PackageItemBKG.hbm.xml</value>
+				<value>central-mapping/PackageItemDGR.hbm.xml</value>
+				<value>central-mapping/Routing.hbm.xml</value>
+				<value>central-mapping/Sticker.hbm.xml</value>
+				<value>central-mapping/SubtTCom.hbm.xml</value>
+				<value>central-mapping/TransferUld.hbm.xml</value>
+				<value>central-mapping/Uld.hbm.xml</value>
+				<value>central-mapping/PackageState.hbm.xml</value>
+				<value>central-mapping/AwbState.hbm.xml</value>
+				<value>central-mapping/BookingFlightState.hbm.xml</value>
+				<!--value>central-mapping/fSCC.hbm.xml</value-->
+			</list>
+		</property>
+		
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+				<prop key="hibernate.connection.autoReconnect">true</prop>
+				<prop key="hibernate.c3p0.min_size">1</prop>
+				<prop key="hibernate.c3p0.max_size">90</prop>
+				<prop key="hibernate.c3p0.timeout">30</prop>
+				<prop key="hibernate.c3p0.max_statements">30</prop>
+				<prop key="hibernate.cache.use_query_cache">false</prop>
+				<prop key="hibernate.query_cache">false</prop>
+				<prop key="hibernate.bytecode.use_reflection_optimizer">true</prop>
+				<prop key="hibernate.use_sql_commments">false</prop>
+				<prop key="hibernate.format_sql">false</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.transaction.auto_close_session">true</prop>
+				<prop key="hibernate.cache.use_second_level_cache">true</prop>
+				<prop key="hibernate.order_updates">true</prop>
+				<prop key="hibernate.generate_statistics" >false</prop>
+				<prop key="hibernate.connection.release_mode">after_transaction</prop>
+				<prop key="hibernate.cache.provider_class">org.hibernate.cache.TreeCacheProvider</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="dbhibernateTemplateBlackbox" class="org.springframework.orm.hibernate3.HibernateTemplate" >
+		<property name="sessionFactory">
+			<ref bean="sessionFactoryBlackbox"/>
+		</property>
+	</bean>
+	
+	<bean id="dbSessionManagerBlackbox" class="de.act.blackbox.dblayer.core.CDBSessionManager" >
+		<property name="sessionFactory">
+			<ref bean="sessionFactoryBlackbox"/>
+		</property>
+		<property name="hibernateTemplate">
+			<ref bean="dbhibernateTemplateBlackbox"/>
+		</property>
+		<property name="jdbcTemplate">
+			<ref bean="dbJdbcTemplate"/>
+		</property>
+	</bean>
+</beans>

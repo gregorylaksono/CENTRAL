@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="property" >
+
+	<class name="de.act.common.types.nonstaticobjects.RCBkg" table="a_bkg" dynamic-update="true" dynamic-insert="true" >
+		<cache usage="transactional"/>	
+		<id name="id" column="bkg_id_id" unsaved-value="null">
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+		<property name="bkgId" column="bkg_id" />
+		<property name="fltId" column="flt_id" />
+		<property name="addId" column="add_id" />
+		<property name="fid" column="f_id" />
+		<property name="awbNo" column="awb_no" />
+		<property name="part" column="part" />
+		<property name="prio" column="prio" />
+		<property name="corr" column="corr" type="timestamp" insert="false" update="false" />
+		<property name="bkgStatus" column="bkg_status" />
+		<property name="comId" column="com_id" />
+		<property name="annId" column="ann_id" />
+		<property name="dept" column="dept" />
+		<property name="dest" column="dest" />
+		<property name="scc3lc" column="scc_3lc" />
+		<property name="pcs" column="pcs" />
+		<property name="wgt" column="wgt" />
+		<property name="vol" column="vol" />
+		<property name="acComp" column="ac_comp" />
+		<property name="uld3lc" column="uld_3lc" />		
+		<property name="isActive" column="is_active" />
+   	</class>
+
+	<class name="de.act.common.types.nonstaticobjects.RCFlt" table="a_flt" dynamic-update="true" dynamic-insert="true" >
+		<cache usage="transactional"/>
+			<id name="id" column="flt_id" unsaved-value="null">
+		</id>
+		<property name="fltGroup" column="flt_group" />
+		<property name="sFltId" column="s_flt_id" />
+		<property name="dep" column="dep" type="timestamp" />
+		<property name="arr" column="arr" type="timestamp" />
+		<property name="acReg" column="ac_id" />
+		<property name="autoWgt" column="auto_wgt" />
+		<property name="autoVol" column="auto_vol" />
+		<property name="manualWgt" column="manual_wgt" />
+		<property name="manualVol" column="manual_vol" />
+		<property name="maxWgt" column="max_wgt" />
+		<property name="maxVol" column="max_vol" />
+   	</class>
+
+    <class name="de.act.common.types.views.CFltBkg" mutable="false">
+        <subselect>
+            SELECT * FROM a_flt_bkg_sum_view
+        </subselect>
+        <!--cache usage="read-only" /-->
+        <synchronize table="a_flt"/>
+        <synchronize table="a_bkg"/>
+        <id name="fltId" column="flt_id">
+            <generator class="assigned"/>
+        </id>
+        <property name="fltGroup" column="flt_group" />
+        <property name="sFltId" column="s_flt_id" />
+        <property name="fltStops" column="flt_stops" />
+        <property name="deptAp" column="dept" />
+        <property name="destAp" column="dest" />
+        <property name="fltDate" column="flt_date" type="date" />
+        <property name="depDate" column="dep" type="date" />
+        <property name="arrDate" column="arr" type="date" />
+        <property name="sumWgt" column="sum_wgt" />
+        <property name="sumVol" column="sum_vol" />
+        <property name="autoWgt" column="auto_wgt" />
+        <property name="autoVol" column="auto_vol" />
+        <property name="manualWgt" column="manual_wgt" />
+        <property name="manualVol" column="manual_vol" />
+        <property name="maxWgt" column="max_wgt" />
+        <property name="maxVol" column="max_vol" />
+        <!--property name="fID" column="f_id" /-->
+        <property name="available_wgt" column="available_wgt" />
+        <property name="available_vol" column="available_vol" />
+        <property name="open_for_cargo" column="open_for_cargo" />	
+        <property name="depTimestamp" column="dep" insert="false" update="false"/>
+        <property name="arrTimestamp" column="dep" insert="false" update="false"/>
+    </class>
+
+	<class name="de.act.common.types.views.CentralBookingView" mutable="false">
+		<subselect> SELECT * FROM a_flt_bkg_view </subselect>
+		<cache usage="transactional"/>
+    	<synchronize table="a_flt"/>
+        <synchronize table="a_bkg"/>
+		<id name="bkgID" column="bkg_id_id">
+			<generator class="assigned"/>
+		</id>
+		<property name="bookingID" column="bkg_id" />
+		<property name="addID" column="add_id" />
+		<property name="awbNo" column="awb_no" />
+		<property name="part" column="part" />
+		<property name="corr" column="corr" insert="false" update="false"/>
+		<property name="bkgStatus" column="bkg_status" />
+		<property name="comID" column="com_id" />
+		<property name="annID" column="ann_id" />
+		<property name="scc3lc" column="scc_3lc" />
+		<property name="pcs" column="pcs" />
+		<property name="wgt" column="wgt" />
+		<property name="vol" column="vol" />
+		<property name="acComp" column="ac_comp" />
+		<property name="uld3lc" column="uld_3lc" />
+		<property name="sfltID" column="s_flt_id" />
+		<property name="depDate" column="dep" type="date" />
+		<property name="arrDate" column="arr" type="date" />
+		<property name="autoWgt" column="auto_wgt" />
+		<property name="autoVol" column="auto_vol" />
+		<property name="manualWgt" column="manual_wgt" />
+		<property name="manualVol" column="manual_vol" />
+		<property name="maxWgt" column="max_wgt" />
+		<property name="maxVol" column="max_vol" /> 
+        <property name="prio" />
+        <property name="fltDate" column="flt_date" />
+        <property name="fltNo" column="flt_no" />
+        <property name="fltStops" column="flt_stops" />
+        <property name="conxID" column="conx_id" />
+        <property name="caID" column="ca_id" />
+        <property name="dept" column="dept" />
+        <property name="dest" column="dest" />
+  		<many-to-one name="connection" class="de.act.common.types.staticobjects.RSConx" column="conx_id" insert="false" update="false" />
+		<many-to-one name="destAp" class="de.act.common.types.staticobjects.RSAp" column="dest" insert="false" update="false" />
+		<many-to-one name="deptAp" class="de.act.common.types.staticobjects.RSAp" column="dept" insert="false" update="false" />
+    	<property name="fltID" column="flt_id" />
+		<property name="fid" column="f_id" />
+		<property name="acReg" column="ac_id" />
+		<many-to-one name="commodity" class="de.act.common.types.staticobjects.CCommodityTree" column="com_id" insert="false" update="false" />
+		<!--many-to-one name="address" class="de.act.common.types.staticobjects.RSAdd" column="add_id" insert="false" update="false" />
+		<many-to-one name="aircraft" class="de.act.common.types.staticobjects.RSAc" column="ac_id" insert="false" update="false" /-->
+		<property name="add_id" column="add_id" insert="false" update="false"/>
+		<property name="ac_id" column="ac_id" insert="false" update="false"/>
+		<many-to-one name="formularInformation" class="de.act.common.types.nonstaticobjects.RFForm" column="f_id" insert="false" update="false" />
+		<many-to-one name="flight" class="de.act.common.types.staticobjects.RSFlt" column="s_flt_id" insert="false" update="false" />
+	</class>
+ 
+	<class name="de.act.common.types.nonstaticobjects.CentralFlightData" table="c_flt" dynamic-update="true" dynamic-insert="true" >
+		<cache usage="transactional"/>	
+		<id name="id" column="flt_id" unsaved-value="null" />
+		<property name="sFltId" column="s_flt_id" />
+		<property name="dep" column="dep" type="timestamp" />
+		<property name="arr" column="arr" type="timestamp" />
+		<property name="acReg" column="ac_id" />
+		<property name="autoWgt" column="auto_wgt" />
+		<property name="autoVol" column="auto_vol" />
+		<property name="manualWgt" column="manual_wgt" />
+		<property name="manualVol" column="manual_vol" />
+		<property name="maxWgt" column="max_wgt" />
+		<property name="maxVol" column="max_vol" />
+   		<many-to-one name="centralView" class="de.act.common.types.views.CentralFlightView" column="flt_id" update="false" insert="false" />
+    		
+		<!--set name="bookingViews" mutable="false" table="c_flt_bkg_view" cascade="none" batch-size="5" lazy="false">
+			<key column="flt_id" />
+			<one-to-many class="de.act.common.types.views.CentralBookingView" /> 
+		</set-->    		
+   	</class>
+
+	<class name="de.act.common.types.views.CentralFlightView" mutable="false">
+		<subselect> SELECT * FROM a_flt_bkg_sum_view </subselect>
+		<cache usage="transactional"/>
+		<synchronize table="c_flt"/>
+		<synchronize table="c_bkg"/>
+		<id name="fltId" column="flt_id">
+			<generator class="assigned"/>
+		</id>
+		<property name="sfltID" column="s_flt_id" />
+		<property name="fltDate" column="dep" type="date" />
+		<property name="arrDate" column="arr" type="date" />
+		<property name="sumWgt" column="sum_wgt"  />
+		<property name="sumVol" column="sum_vol"  />
+		<property name="autoWgt" column="auto_wgt"  />
+		<property name="autoVol" column="auto_vol"  />
+		<property name="manualWgt" column="manual_wgt"  />
+		<property name="manualVol" column="manual_vol"  />
+		<property name="maxWgt" column="max_wgt"  />
+		<property name="acReg" column="ac_id"  />
+		<property name="availableWgt" column="available_wgt"  />
+		<property name="availableVol" column="available_vol"  />
+		<many-to-one name="aircraft" class="de.act.common.types.staticobjects.RSAc" column="ac_id" insert="false" update="false" />
+		<many-to-one name="flight" class="de.act.common.types.staticobjects.RSFlt" column="s_flt_id" insert="false" update="false" />
+	</class>
+
+	<class name="de.act.central.dblayer.daos.CBkgDao$ConxFlt" mutable="false">
+		<subselect>
+			SELECT a.flt_id, a.s_flt_id, a.dep, b.conx_id
+			FROM a_flt AS a LEFT JOIN s_flt AS b ON (a.s_flt_id = b.flt_id)
+		</subselect>
+		<!--cache usage="read-only" /-->
+		<synchronize table="c_flt"/>
+		<synchronize table="s_flt"/>
+		<id name="fltId" column="flt_id">
+			<generator class="assigned"/>
+		</id>
+		<property name="sFltId"       column="s_flt_id" />
+		<property name="date"         column="dep" type="date" />
+		<property name="conxId"       column="conx_id"  />
+	</class>
+</hibernate-mapping>

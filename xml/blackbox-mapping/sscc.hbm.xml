@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" >
+
+	<class name="de.act.common.types.staticobjects.RSScc" table="s_scc"  mutable="true"  batch-size="5" >
+		<!-- rec <cache usage="read-only"/>--> 
+		<cache usage="transactional"/>
+		<id name="SCC_3LC" column="scc_3lc"   >
+			<generator class="assigned" />
+		</id>
+		<property name="SCC_NAME" column="scc_name" access="field"   />
+		<property name="scc_prio" column="scc_prio" access="field" />
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+	</class>
+	
+	<class name="de.act.common.types.staticobjects.RSCuc" table="s_cuc"  mutable="false"  batch-size="5">
+		<!-- rec <cache usage="read-only"/>--> 
+		<cache usage="transactional"/>
+		<id name="CUC_3LC" column="cuc_3lc">
+			<generator class="assigned" />
+		</id>
+		<property name="CUC_NAME" column="cuc_name" access="field" />
+	</class>
+
+	<class name="de.act.common.types.staticobjects.RSCur" table="s_cur"  mutable="false"  batch-size="5" >
+		<!-- rec <cache usage="read-only"/>--> 
+		<cache usage="transactional"/>
+		<id name="CUR_3LC" column="cur_3lc">
+			<generator class="assigned"/>
+		</id>
+		<property name="CUR_NAME" column="cur_name" access="field" />
+		<property name="CUR_UNIT" column="cur_unit" access="field" />
+		<property name="CUR_UNIT_AMNT" column="cur_unit_amnt" access="field" />
+		<property name="CUR_RD_MIN" column="cur_rd_min" access="field" />
+		<property name="CUR_RD_EXPT" column="cur_rd_expt" access="field" />
+		<property name = "vad_id" column = "vad_id" access = "field" />
+	</class>
+
+	<class name="de.act.common.types.staticobjects.RSPkgCol" table="s_pkg_col"  mutable="false"  batch-size="5">
+		<!-- rec <cache usage="read-only"/>--> 
+		<cache usage="transactional" />
+		<id name="PKG_COL" column="pkg_col"  access="field">
+			<generator class="assigned"/>
+		</id>
+		<property name="PKG_COL_NAME" column="pkg_col_name" access="field" />
+	</class>
+	
+	<class name="de.act.common.types.staticobjects.RSPkgMat" table="s_pkg_mat"  mutable="false"  batch-size="5">
+		<!-- rec <cache usage="read-only"/>--> 
+		<cache usage="transactional"/>
+		<id name="PKG_MAT" column="pkg_mat">
+			<generator class="assigned"/>
+		</id>
+		<property name="PKG_MAT_NAME" column="pkg_mat_name" access="field" />
+	</class>
+
+	<class name="de.act.common.types.staticobjects.RSPkgShp" table="s_pkg_shp"  mutable="false"  batch-size="5">
+		<!-- rec <cache usage="read-only"/>--> 
+		<cache usage="transactional"/>
+		<id name="PKG_SHP" column="pkg_shp">
+			<generator class="assigned"/>
+		</id>
+		<property name="PKG_SHP_NAME" column="pkg_shp_name" access="field" />		
+	</class>
+	
+	<class name="de.act.common.types.staticobjects.RSHai" table="s_hai"  mutable="false"  batch-size="5">
+		<!-- rec <cache usage="read-only"/>--> 
+		<cache usage="transactional"/>
+		<id name="id" column="HAI_ID">
+			<generator class="assigned"/>
+		</id>
+		<property name="name" column="HAI_NAME" access="property" />
+		<property name="usedBy" column="USED_BY" access="property" />
+	</class>
+
+	<class name="de.act.common.types.staticobjects.RSAci" table="s_aci"  mutable="false"  batch-size="5">
+		<!-- rec <cache usage="read-only"/>--> 
+		<cache usage="transactional"/>
+		<id name="id" column="ACI_ID">
+			<generator class="assigned"/>
+		</id>
+		<property name="name" column="ACI_NAME" access="property" />
+		<property name="usedBy" column="USED_BY" access="property" />				
+	</class>
+</hibernate-mapping>
+
+   	<!--class name="de.act.common.types.localobjects.RDOt" table="d_ot"  mutable="false" > -->
+		<!-- rec <cache usage="read-only"/>--> <!-- <cache usage="transactional"/>-->
+	<!--	<composite-id>
+			<key-property name="ot_1lc" access="field" />
+			<key-property name="ot_2lc" access="field" />
+		</composite-id>
+		<property name="ot_rate" column="ot_rate" access="field"   />
+	</class-->

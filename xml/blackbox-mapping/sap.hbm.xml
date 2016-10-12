@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" package="de.act.common.types.staticobjects" >
+
+	<class name="RSAp" table="s_ap"  mutable="false"  batch-size="20">
+		<!--  where="AP_3LC in (select s.DEPT from s_conx s)" -->
+		<subselect>
+			SELECT a.*, cc.cc_id ,cc.ca_id ,cc.cc_acc,cc.cc_fee,cc.cc_min,cc.cur_3lc
+			FROM s_ap AS a LEFT JOIN s_cc as cc ON a.co_2lc = cc.co_2lc where cc.ca_id='000' 
+		</subselect> 
+		
+		<!-- rec <cache usage="read-only"/>--> <cache usage="transactional"/> 
+		<synchronize table="s_ap"/>
+		<synchronize table="s_cc"/>
+		<id name="ap_3lc" column="ap_3lc" >
+			<generator class="assigned"/>
+		</id>
+		<property name="co_2lc" column="co_2lc" insert="false" update="false" />
+		<many-to-one name="co" class="de.act.common.types.staticobjects.RSCo" column="co_2lc"  not-found="ignore" update="false" insert="false"  />
+		<property name="city_name" column="di_2lc"/>
+		<property name="ap_name" column="ap_name"/>
+		<property name="ap_cust" column="ap_cust"/>
+		<many-to-one name="cc" class="de.act.common.types.staticobjects.RSCc" column="cc_id" not-found="ignore" update="false" insert="false" />
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+		<!--
+		 cc_id varchar(5) NOT NULL,
+		  ca_id varchar(3),
+		  co_2lc varchar(2),
+		  cc_acc cn_bool,
+		  cc_fee numeric(5,4),
+		  cc_min numeric(10,3),
+		  cur_3lc varchar(3),
+		  r_id int8,
+  vad_id 
+		<many-to-one name="co" class="de.act.common.types.staticobjects.RSCo" column="co_2lc"  not-found="ignore" update="false" insert="false"  /> 
+		-->
+		
+		<!-- <property name="" column="vad_id"/> -->
+		
+		<!--join table="s_ap_ap" optional="true">
+		        <key column="ap_3lc" unique="true"/>
+		        <property name="AP_CITY" column="ap_city"/>
+		</join-->
+<!--
+		<join table="s_di" optional="true">
+		        <key column="di_2lc" unique="true"/>
+		        <property name="AP_NAME" column="ap_city"/>
+		</join>
+		<subselect>
+		            SELECT a.*, v.vad_from, v.vad_to
+		              FROM s_disburse AS a LEFT JOIN s_vad as v USING (vad_id)
+        	</subselect>
+		
+-->
+<!--		<join table="s_cc" optional="true">
+				 
+			<key column="co_2lc"/>
+
+			<property name="ca_id" column="ca_id"/>
+			<many-to-one name="country" class="de.act.common.types.staticobjects.RSCo" column="co_2lc"  not-found="ignore"  insert="false" update="false"/>
+
+			<property name="cc_acc" column="cc_acc"/>
+			<property name="cc_fee" column="cc_fee"/>
+			<property name="cc_min" column="cc_min"/>
+			<many-to-one name="currency" class="de.act.common.types.staticobjects.RSCur" column="cur_3lc" not-found="ignore"/>
+			<many-to-one name="rate" class="de.act.common.types.staticobjects.SRate" column="r_id" not-found="ignore" />
+   		 </join>
+   -->
+	</class>
+	
+	<class name="RSCc" table="s_cc" batch-size="5">
+		<!-- rec <cache usage="read-only"/>--> <cache usage="transactional"/>
+		<id name="cc_id" column="cc_id" >
+			<generator class="assigned"/>
+		</id>
+		<properties name="name" unique="true" >
+			<property name="ca_id" column="ca_id"/>
+			<!--many-to-one name="carrier" class="de.act.common.types.staticobjects.RSCaConx" column="ca_id"  not-found="ignore"/-->
+			<many-to-one name="country" class="de.act.common.types.staticobjects.RSCo" column="co_2lc"  not-found="ignore"/>
+		</properties>
+		<property name="cc_acc" column="cc_acc"/>
+		<property name="cc_fee" column="cc_fee"/>
+		<property name="cc_min" column="cc_min"/>
+		<many-to-one name="currency" class="de.act.common.types.staticobjects.RSCur" column="cur_3lc" not-found="ignore"/>
+		<!--many-to-one name="rate" class="de.act.common.types.staticobjects.SRate" column="r_id" not-found="ignore" / false r_base table must be mapped-->
+		<property name="r_id" column="r_id" />
+		<many-to-one name="vad" class="de.act.common.types.staticobjects.RSVad" column="vad_id" not-found="ignore" />
+	</class>
+
+	<class name="RSFuelChar" table="s_fuel_char" schema="public">
+		<id name="fuelCharId" type="long">
+			<column name="fuel_char_id" />
+			<generator class="assigned" />
+		</id>
+		<many-to-one name="apFrom" class="de.act.common.types.staticobjects.RSAp" column="ap_from" not-found="ignore" />
+		<many-to-one name="coFrom" class="de.act.common.types.staticobjects.RSCo" column="co_from" not-found="ignore" />
+		<many-to-one name="arFrom" class="de.act.common.types.staticobjects.RSAr" column="ar_from" not-found="ignore" />
+		<many-to-one name="apTo" class="de.act.common.types.staticobjects.RSAp"	column="ap_to" not-found="ignore" />
+		<many-to-one name="coTo" class="de.act.common.types.staticobjects.RSCo"	column="co_to" not-found="ignore" />
+		<many-to-one name="arTo" class="de.act.common.types.staticobjects.RSAr" column="ar_to" not-found="ignore" />
+		<many-to-one name="cur3lc" class="de.act.common.types.staticobjects.RSCur" column="cur_3lc" not-found="ignore" />
+		<many-to-one name="vad" class="de.act.common.types.staticobjects.RSVad" column="vad_id" not-found="ignore" />
+		<property name="caId" column="ca_id" />
+		<property name="value" column="value" />
+	</class>
+</hibernate-mapping>
+
+<!--
+
+ ap_3lc varchar(3) NOT NULL,
+  co_2lc varchar(2),
+  di_2lc varchar(2),
+  ap_name varchar(70),
+  ap_cust cn_bool,
+  vad_id varchar(8),
+  
+    public String AP_NAME;
+  	public String AP_3LC;
+  	public String CO_2LC;
+  	public String AP_CUST;
+  
+      public transient String displayString=AP_3LC;
+      public String CITY_NAME = null;
+    public String AP_CITY = null;
+-->

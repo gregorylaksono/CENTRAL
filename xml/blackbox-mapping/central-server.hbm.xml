@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" >
+
+	<class name="de.act.common.types.nonstaticobjects.RFDistr" table="f_distr">
+		<cache usage="transactional"/>
+		<!-- mapping for table f_distr -->
+		<id name="distr_id" >
+			<generator class="uuid" />
+		</id>
+		<properties name="name" unique="true" >
+			<property name="F_ID" column="f_id" access="field" />
+			<property name="PART" column="part" access="field" />
+			<property name="ADD_ID" column="add_id" access="field" />
+			<property name="ADD_TYPE" column="add_type" access="field" />
+		</properties>
+		<property name="SENT"  column="sent" access="field" />
+		<property name="RCVD"  column="rcvd" access="field" />
+		<property name="WRITER"  column="writer" access="field" />
+		<many-to-one name="address" class="de.act.common.types.staticobjects.RSAdd" column="ADD_ID" not-null="false" not-found="ignore" />
+	</class>
+	
+	<class name="de.act.common.types.staticobjects.ZHandlingAirport" table="c_ha_ap_ca" mutable="true" >
+		<!-- rec <cache usage="read-only"/>--> <cache usage="transactional"/>
+		<!-- Problem with updating vad_id so user id as the primary key -->
+		<!-- <composite-id>
+			<key-property name="ap_3lc"/>
+			<key-property name="ca_id"/>
+			<key-property name="service"/>
+			<key-many-to-one name="validation" class="de.act.common.types.staticobjects.RSVad" column="vad_id" />
+		</composite-id> -->
+		<id name="id">
+			<generator class="native">
+				<param name="sequence">c_ha_ap_ca_id_seq</param>
+			</generator>
+		</id>
+		<property name="add_id"/>
+		<property name="ap_3lc"/>
+		<property name="ca_id"/>
+		<property name="service"/>
+		<property name="ha_type"/>
+		<property name="ca_2lc"><formula>(SELECT ca.ca_2lc FROM s_ca ca WHERE ca.ca_id = ca_id)</formula></property>
+		<property name="ca_3dg"><formula>(SELECT ca.ca_3dg FROM s_ca ca WHERE ca.ca_id = ca_id)</formula></property>
+		<!-- <property name="creatorAddId"><formula>(SELECT ad.creator_add_id FROM s_add ad WHERE ad.add_id = add_id AND (SELECT vad.vad_to FROM s_vad vad WHERE vad.vad_id = ad.vad_id) IS NULL)</formula></property> -->
+		<!-- <property name="vad_id"/> -->
+		<many-to-one name="address" class="de.act.common.types.views.AddressView" column="add_id" not-null="false" not-found="ignore" insert="false" update="false" />
+		<many-to-one name="airport" class="de.act.common.types.staticobjects.RSAp" column="ap_3lc" not-null="false" not-found="ignore" insert="false" update="false" />
+		<!-- <many-to-one name="carrier" class="de.act.common.types.staticobjects.RSCa" column="ca_id" not-null="false" not-found="ignore" insert="false" update="false" /> -->
+		<many-to-one name="validation" class="de.act.common.types.staticobjects.RSVad" column="vad_id" not-null="false" not-found="ignore" />
+	</class>
+
+</hibernate-mapping>
+
+<!--
+ABLE z_ha_ap_ca
+#ap_3lc, ca_id, service
+(
+  ap_3lc varchar(3) NOT NULL,
+  ca_id varchar(3) NOT NULL,
+  service cn_ha_service NOT NULL,
+  add_id varchar(10),
+  vad_id varchar(8),
+   		
+   		f_id varchar(21) NOT NULL,
+	  	part int2 NOT NULL,
+	  	add_seq int2 NOT NULL,
+	  	add_id varchar(10),
+	  	add_type cn_add_type,
+	  	rcvd timestamp,
+	  	sent timestamp,
+  		writer cn_bool,
+   	
+-->
+<!--
+f_id varchar(21) NOT NULL,
+  name varchar(50),
+  read_only cn_bool,
+  is_local cn_bool,
+  status cn_form_stat,
+  set_stamp timestamp DEFAULT now(),
+  created timestamp DEFAULT now(),
+-->

@@ -1,0 +1,2233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+      "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="property" package="de.act.common.types" >
+
+	<class name="de.act.common.types.handling.AManifest" table="a_manifest" dynamic-update="true" dynamic-insert="true"  >
+		<cache usage="transactional"/>
+		<id name="id" column="mani_id" unsaved-value="-1"  >
+		<generator class="native">
+			<param name="sequence">d_db_seq</param>
+		</generator>
+		</id>
+		<property name="flt_date" />
+		<property name="userAddress" column="user_add_id" />
+		<property name="creatorAddress" column="creator_add_id" />
+		<!--many-to-one name="user_add_id" class="de.act.common.types.staticobjects.RSAdd" cascade="none" />
+		<many-to-one name="creator_add_id" class="de.act.common.types.staticobjects.RSAdd"  cascade="none"  /-->
+		<!-- <many-to-one name="add_id" class="de.act.common.types.nonstaticobjects.RFAdd" />-->
+		<property name="corr" insert="false" update="false"/>
+		<property name="v_o" />
+		<property name="close_out" />
+		<property name="stat_id" />
+		<property name="ac_reg"/>
+		<many-to-one name="flt_id" class="de.act.common.types.staticobjects.RSFlt" cascade="none"  />
+
+		<list name="manifestItems" table="a_mani_item" cascade="all" inverse="true" lazy="false" >
+			<cache usage="transactional"/>
+			<key column="mani_id" />
+			<list-index column="mani_row"/>
+			<one-to-many class="de.act.common.types.handling.AManifestItem" />
+		</list>
+	</class>
+	
+	<class name="de.act.common.types.handling.APureManifest" table="a_manifest" dynamic-update="true" dynamic-insert="true"  >
+		<cache usage="transactional"/>
+		<id name="id" column="mani_id" unsaved-value="-1"  >
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+		<property name="flt_date" />
+		<property name="userAddress" column="user_add_id" />
+		<property name="creatorAddress" column="creator_add_id" />
+		<!--many-to-one name="user_add_id" class="de.act.common.types.staticobjects.RSAdd" cascade="none" />
+		<many-to-one name="creator_add_id" class="de.act.common.types.staticobjects.RSAdd"  cascade="none"  /-->
+		<!-- <many-to-one name="add_id" class="de.act.common.types.nonstaticobjects.RFAdd" />
+-->
+		<property name="corr" insert="false" update="false"/>
+		<property name="v_o" />
+		<property name="close_out" />
+		<property name="stat_id" />
+		<many-to-one name="flt_id" class="de.act.common.types.staticobjects.RSFlt" cascade="none"  />
+		<list name="manifestItems" table="a_mani_item" cascade="all" inverse="true" lazy="false">
+			<cache usage="transactional"/>
+			<key column="mani_id" />
+			<list-index column="mani_row"/>
+			<one-to-many class="de.act.common.types.handling.APureManifestItem" />
+		</list>
+	</class>
+	
+	<class name="de.act.common.types.handling.AManifestData" table="a_manifest" dynamic-update="true" dynamic-insert="true"  >
+		<cache usage="transactional"/>
+		<id name="id" column="mani_id" unsaved-value="-1"  >
+		<generator class="native">
+			<param name="sequence">d_db_seq</param>
+		</generator>
+		</id>
+		<property name="flt_date" />
+		<property name="userAddress" column="user_add_id" />
+		<property name="creatorAddress" column="creator_add_id" />
+		<!--many-to-one name="user_add_id" class="de.act.common.types.staticobjects.RSAdd" cascade="none" />
+		<many-to-one name="creator_add_id" class="de.act.common.types.staticobjects.RSAdd"  cascade="none"  /-->
+		<property name="corr" insert="false" update="false"/>
+		<property name="v_o" />
+		<property name="close_out" />
+		<property name="stat_id" />
+		<property name="ac_reg"/>
+		<many-to-one name="flt_id" class="de.act.common.types.staticobjects.RSFlt"  cascade="none"  />
+	</class>
+	
+	<class name="de.act.common.types.staticobjects.RSCustRules" table="s_cust_rules" dynamic-update="true" dynamic-insert="true">
+		<cache usage="transactional"/>
+		<id name="cust_rule_id" column="cust_rule_id" unsaved-value="-1"  >
+		<generator class="assigned" />
+		</id>		
+		<property name="cuc_code" column="cuc_code" />
+		<property name="cuc_use" column="cuc_use" />
+		<property name="r_id" column="r_id" />
+		<property name="vad_id" column="vad_id" />
+		<many-to-one name="co_ar" class="de.act.common.types.staticobjects.RSCoAr" column="co_ar_id" not-found="ignore" update="false" insert="false" /> 
+	</class>
+	
+	<class name="de.act.common.types.staticobjects.RSCoAr" table="s_co_ar" dynamic-update="true" dynamic-insert="true">
+		<cache usage="transactional"/>
+		<id name="co_ar_id" column="co_ar_id" unsaved-value="-1" >
+			<generator class="assigned" />
+		</id>
+		<property name="co_2lc" column="co_2lc" />	
+		<property name="vad_id" column="vad_id" />
+		<many-to-one name="ar" class="de.act.common.types.staticobjects.RSAr" column="ar_code" not-found="ignore" update="false" insert="false" /> 
+	</class>
+
+	<class name="de.act.common.types.handling.AManifestItem" table="a_mani_item">
+		<cache usage="transactional"/>
+		<id name="id" column="mani_item_id" unsaved-value="-1"  >
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+		<!-- mani_id, mani_row -->
+		<properties name="un" unique="true" >
+        	<many-to-one name="mani_id" class="de.act.common.types.handling.AManifest" column="mani_id"/>
+			<property name="mani_row" access="field" />
+		</properties>
+		<property name="uldNo" column="ll_uld_no" access="field" />		
+		<property name="mani_rem" access="field" />		
+		<property name="mani_sort" access="field" />		
+		<property name="pcs" column="ll_pcs" />
+		<property name="advice" column="ll_advice" access="field" />
+		<property name="corr" insert="false" update="false"/>
+		<!--many-to-one name="awbItem" class="de.act.common.types.handling.Shipments" column="awb_acc_item_id" cascade="all" unique="true "/>
+		<many-to-one name="shipmentItem" class="de.act.common.types.handling.Shipments" column="shp_acc_item_id" cascade="all" unique="true "/>		
+		<many-to-one name="uld" class="de.act.common.types.handling.FAcceptanceULD" column="acc_uld_id" cascade="all" unique="true "/-->
+		<many-to-one name="uldObj" class="de.act.common.types.nonstaticobjects.ULDObject" column="uld_id"  not-null="false" not-found="ignore" cascade="none" />
+		<many-to-one name="booking" class="de.act.common.types.packageitems.ItemHandlingBKG" column="bkg_item_id" cascade="none" />
+		<many-to-one name="uldType" class="de.act.common.types.staticobjects.RSUldType" column="ll_uld_type" cascade="none" />
+		
+		<property name="is_active" column="is_active" />
+		<many-to-one name="ll_uld" class="de.act.common.types.nonstaticobjects.ULDObject" column="ll_uld_id" not-null="false" not-found="ignore" cascade="none" />
+	</class>
+	
+	<class name="de.act.common.types.handling.APureManifestItem" table="a_mani_item">
+		<cache usage="transactional"/>
+		<id name="id" column="mani_item_id" unsaved-value="-1"  >
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+		<properties name="un" unique="true" >
+	       	<many-to-one name="mani_id" class="de.act.common.types.handling.APureManifest" column="mani_id"/>
+			<property name="mani_row" access="field" />
+		</properties>
+		<property name="bkgItemId" column="bkg_item_id" />			
+		<property name="uldNo" column="ll_uld_no" access="field" />
+		<property name="mani_rem" access="field" />
+		<property name="mani_sort" access="field" />
+		<property name="pcs" column="ll_pcs" />
+		<property name="advice"  column="ll_advice" access="field" />
+		<property name="corr" insert="false" update="false"/>
+		<!--property name="awb_acc_item_id"  column="awb_acc_item_id" />
+		<property name="shp_acc_item_id"  column="shp_acc_item_id" /-->
+		<!--many-to-one name="uld" class="de.act.common.types.handling.FAcceptanceULD" column="acc_uld_id" cascade="all" unique="true "/-->
+		<many-to-one name="uldObj" class="de.act.common.types.nonstaticobjects.ULDObject" column="uld_id"  not-null="false" not-found="ignore" cascade="none" />
+		<many-to-one name="uldType" class="de.act.common.types.staticobjects.RSUldType" column="ll_uld_type" cascade="none" />
+
+		<property name="is_active" column="is_active" />
+		<many-to-one name="ll_uld" class="de.act.common.types.nonstaticobjects.ULDObject" column="ll_uld_id" not-null="false" not-found="ignore" cascade="none" />
+	</class>
+	
+	<class name="de.act.common.types.BookingListView" table="f_bkg_view"  >
+		<cache usage="transactional"/>
+		<composite-id> 
+			<key-property name="flt_id" />
+			<key-property name="bkg_flt_date" />
+			<key-property name="bkg_item_id" />
+		</composite-id>
+		<property name="ha_add_id" />
+		<property name="ap_dept" />
+		<property name="ap_dest" />
+		<property name="ap_3lc" />
+		<property name="bkg_status" />
+		<property name="f_id" />
+		<property name="f_parent" />
+		<property name="ca_3dg" />
+		<property name="ffw_3lc" />
+		<property name="awb_stock" />
+		<property name="awb_no" />
+		<property name="att_id" />
+		<property name="att_no" />
+		<property name="corr" insert="false" update="false"/>
+		<property name="pcs" column="pcs" />
+		<property name="wgt" column="wgt" />
+		<property name="vol" column="vol" />
+		<property name="com_id" />
+		<property name="scc_3lc" />
+		<property name="uld_id" />
+		<property name="acc_ap_dept" />
+		<property name="acc_ap_3lc" />
+		<property name="acc_ap_dest" />
+		<property name="shp_acc_id" />
+		<property name="shp_stat_id" />
+		<property name="shp_stat_descr" />
+		<property name="awb_acc_id" />
+		<property name="awb_stat_id" />
+		<property name="awb_stat_descr" />
+		<property name="shp_acc_item_id" />
+		<property name="acc_item_row" />
+		<property name="acc_item_uld_id" />
+		<property name="acc_item_pcs" />
+		<property name="acc_item_com_id" />
+		<property name="acc_item_ann_id" />
+		<property name="acc_item_wgt" />
+		<!--property name="acc_item_l" />
+		<property name="acc_item_w" />
+		<property name="acc_item_h" /-->
+		<property name="acc_item_scc_3lc" />
+		<property name="loc_id" />
+		<property name="acc_att_id" />
+		<property name="acc_f_id" />
+		<property name="acc_att_no" />
+		<property name="acc_att_corr" />
+		<property name="acc_sum_wgt" />
+		<property name="acc_sum_pcs" />
+		<many-to-one name="apDest" column="ap_dest" class="de.act.common.types.staticobjects.RSAp" update="false" insert="false" not-found="ignore" />
+		<many-to-one name="apDept" column="ap_dept" class="de.act.common.types.staticobjects.RSAp" update="false" insert="false" not-found="ignore" />
+		<many-to-one name="add" column="ha_add_id" class="de.act.common.types.staticobjects.RSAdd" update="false" insert="false" not-found="ignore" />		
+		<many-to-one name="awbNo" column="f_id" class="de.act.common.types.nonstaticobjects.RFAwbNo" update="false" insert="false" not-found="ignore"  />
+		<many-to-one name="commodity" column="com_id" class="de.act.common.types.staticobjects.CCommodityTree" update="false" insert="false" not-found="ignore" />
+		<many-to-one name="scc" column="scc_3lc" class="de.act.common.types.staticobjects.RSScc" update="false" insert="false" not-found="ignore" />
+		<many-to-one name="flight" column="flt_id" class="de.act.common.types.staticobjects.RSFlt" update="false" insert="false" not-found="ignore" />
+		<many-to-one name="awbState" column="awb_stat_id" class="de.act.common.types.staticobjects.RSState" update="false" insert="false" not-found="ignore"  />
+		<many-to-one name="shipperState" column="shp_stat_id" class="de.act.common.types.staticobjects.RSState" update="false" insert="false" not-found="ignore" />		
+		<many-to-one name="storage" column="loc_id" class="de.act.common.types.localobjects.Storage" update="false" insert="false"  not-found="ignore" />
+<!--
+ ap_3lc
+ ap_dest
+ flt_id
+ bkg_flt_date
+ ll_ha_add_id
+ mani_item_id
+ mani_id
+ mani_row
+ mani_sort
+ ll_pcs
+ ll_uld_type
+ ll_uld_no
+ ll_advice
+ mani_item_corr
+ uld_id
+ f_id
+ f_parent
+ ca_3dg
+ ffw_3lc
+ awb_stock
+ awb_no
+ att_id
+ att_no
+ corr
+ ll_bkg_item_id
+ bkg_pcs
+ wgt
+ vol
+ com_id
+ scc_3lc
+ b.acc_ap_dept
+ b.acc_ap_3lc
+ b.acc_ap_dest
+ b.shp_acc_id
+ b.shp_stat_id
+ b.shp_stat_descr
+ b.awb_acc_id
+ b.awb_stat_id
+ b.awb_stat_descr
+ b.shp_acc_item_id
+ b.acc_item_row
+ b.acc_item_uld_id
+ b.bkg_item_id
+ b.acc_item_pcs
+ b.acc_item_com_id
+ b.acc_item_ann_id
+ b.acc_item_wgt
+ b.acc_item_l
+ b.acc_item_w
+ b.acc_item_h
+ b.acc_item_scc_3lc
+ b.loc_id
+ b.shp_mani_item_id
+ b.acc_att_id
+ b.acc_f_id
+ b.acc_att_no
+ b.acc_att_corr
+ b.ha_add_id
+ b.acc_sum_pcs
+ b.acc_sum_wgt
+ 
+ -->
+	</class>	
+
+	<class name="de.act.common.types.ManifestListView" table="a_ll_view" >
+		<composite-id> 
+			<key-property name="mani_item_id" />
+		</composite-id>
+		<!--property name="awb_acc_item_id" /-->
+		<property name="shp_acc_item_id" />
+		<property name="bkg_flt_date" />
+		<property name="ap_3lc" />
+		<property name="ap_dest" />
+		<property name="flt_id" />
+		<property name="ll_ha_add_id" />
+		<property name="mani_id" />
+		<property name="mani_row" />
+		<property name="mani_sort" access="field" />
+		<property name="ll_pcs" />
+		<property name="ll_uld_type" />
+		<property name="ll_uld_no" />
+		<property name="ll_advice" />
+		<property name="mani_item_corr" />
+		<property name="f_id" />
+		<property name="f_parent" />
+		<property name="ca_3dg" />
+		<property name="ffw_3lc" />
+		<property name="awb_stock" />
+		<property name="awb_no" />
+		<property name="att_id" />
+		<property name="att_no" />
+		<property name="corr" insert="false" update="false"/>
+		<property name="ll_bkg_item_id" />
+		<property name="pcs" column="bkg_pcs" />
+		<property name="wgt" />
+		<property name="vol" />
+		<property name="com_id" />
+		<property name="scc_3lc" />
+		<property name="acc_ap_dept" />
+		<property name="acc_ap_3lc" />
+		<property name="acc_ap_dest" />
+		<property name="ha_add_id" />
+		<property name="shp_acc_id" />
+		<property name="shp_stat_id" />
+		<property name="shp_stat_descr" />
+		<property name="awb_acc_id" />
+		<property name="awb_stat_id" />
+		<property name="awb_stat_descr" />
+		<property name="acc_item_row" />
+		<property name="acc_item_uld_id" />
+		<property name="bkg_item_id" />
+		<property name="acc_item_pcs" />
+		<property name="acc_item_com_id" />
+		<property name="acc_item_ann_id" />
+		<property name="acc_item_wgt" />
+		<!--property name="acc_item_l" />
+		<property name="acc_item_w" />
+		<property name="acc_item_h" /-->
+		<property name="acc_item_scc_3lc" />
+		<property name="loc_id" />
+		<property name="acc_att_id" />
+		<property name="acc_f_id" />
+		<property name="acc_att_no" />
+		<property name="acc_att_corr" />
+ 		<property name="acc_sum_wgt" />
+		<property name="acc_sum_pcs" />
+		<many-to-one name="add" column="ll_ha_add_id" class="de.act.common.types.staticobjects.RSAdd" update="false" insert="false" not-found="ignore" />
+		<many-to-one name="apDest" column="acc_ap_dest" class="de.act.common.types.staticobjects.RSAp" update="false" insert="false" not-found="ignore" />
+		<many-to-one name="apDept" column="acc_ap_dept" class="de.act.common.types.staticobjects.RSAp" update="false" insert="false" not-found="ignore" />
+		<many-to-one name="awbNo" column="f_id" class="de.act.common.types.nonstaticobjects.RFAwbNo" update="false" insert="false" not-found="ignore" />
+		<many-to-one name="commodity" column="com_id" class="de.act.common.types.staticobjects.CCommodityTree" update="false" insert="false" not-found="ignore" />
+		<many-to-one name="scc" column="scc_3lc" class="de.act.common.types.staticobjects.RSScc" update="false" insert="false" not-found="ignore" />
+		<many-to-one name="flight" column="flt_id" class="de.act.common.types.staticobjects.RSFlt" update="false" insert="false" not-found="ignore" />
+		<many-to-one name="awbState" column="awb_stat_id" class="de.act.common.types.staticobjects.RSState" update="false" insert="false" not-found="ignore" />
+		<many-to-one name="shipperState" column="shp_stat_id" class="de.act.common.types.staticobjects.RSState" update="false" insert="false" not-found="ignore" />
+		<many-to-one name="storage" column="loc_id" class="de.act.common.types.localobjects.Storage" update="false" insert="false" not-found="ignore" />
+		<many-to-one name="shpUld" class="de.act.common.types.nonstaticobjects.ULDObject" column="acc_item_uld_id"  update="false" insert="false"  not-found="ignore" cascade="none" />
+		<many-to-one name="uld" class="de.act.common.types.nonstaticobjects.ULDObject" column="uld_id"  update="false" insert="false"  not-found="ignore" cascade="none" />
+		<many-to-one name="uldType" class="de.act.common.types.staticobjects.RSUldType" column="ll_uld_type" update="false" insert="false" not-found="ignore" cascade="none" />
+		<!--many-to-one name="accUld" class="de.act.common.types.handling.FAcceptanceULD" column="acc_uld_id"  update="false" insert="false" not-found="ignore"  cascade="none" /-->
+	</class>
+	
+	<class name="de.act.common.types.LayingListView" table="f_lyl_view"  >
+		<composite-id> 
+			<key-property name="shp_acc_item_id" />
+		</composite-id>
+		<property name="acc_ap_dept" />
+		<property name="acc_ap_3lc" />
+		<property name="acc_ap_dest" />
+		<property name="ha_add_id" />
+		<property name="shp_acc_id" />
+		<property name="shp_stat_id" />
+		<property name="shp_stat_descr" />
+		<property name="awb_acc_id" />
+		<property name="awb_stat_id" />
+		<property name="awb_stat_descr" />
+		<property name="acc_item_row" />
+		<property name="acc_item_uld_id" />
+		<property name="bkg_item_id" />
+		<property name="acc_item_pcs" />
+		<property name="acc_item_com_id" />
+		<property name="acc_item_ann_id" />
+		<property name="acc_item_wgt" />
+		<!--property name="acc_item_l" />
+		<property name="acc_item_w" />
+		<property name="acc_item_h" /-->
+		<property name="acc_item_scc_3lc" />
+		<property name="loc_id" />
+		<property name="acc_att_id" />
+		<property name="acc_f_id" />
+		<property name="acc_att_no" />
+		<property name="acc_att_corr" />
+		<property name="f_id" />
+		<property name="f_parent" />
+		<property name="ca_3dg" />
+		<property name="ffw_3lc" />
+		<property name="awb_stock" />
+		<property name="awb_no" />	
+		<property name="acc_sum_wgt" />
+		<property name="acc_sum_pcs" />
+		<many-to-one name="add" column="ha_add_id" class="de.act.common.types.staticobjects.RSAdd" update="false" insert="false" not-found="ignore" />
+		<many-to-one name="apDest" column="acc_ap_dest" class="de.act.common.types.staticobjects.RSAp" update="false" insert="false" not-found="ignore" />
+		<many-to-one name="apDept" column="acc_ap_dept" class="de.act.common.types.staticobjects.RSAp" update="false" insert="false" not-found="ignore" />
+		<many-to-one name="awbNo" column="f_id" class="de.act.common.types.nonstaticobjects.RFAwbNo" update="false" insert="false" not-found="ignore" />
+		<many-to-one name="commodity" column="acc_item_com_id" class="de.act.common.types.staticobjects.CCommodityTree" update="false" insert="false"  not-found="ignore"  />
+		<many-to-one name="scc" column="acc_item_scc_3lc" class="de.act.common.types.staticobjects.RSScc" update="false" insert="false"  not-found="ignore" />
+		<many-to-one name="awbState" column="awb_stat_id" class="de.act.common.types.staticobjects.RSState" update="false" insert="false"  not-found="ignore" />
+		<many-to-one name="shipperState" column="shp_stat_id" class="de.act.common.types.staticobjects.RSState" update="false" insert="false"  not-found="ignore" />
+		<many-to-one name="storage" column="loc_id" class="de.act.common.types.localobjects.Storage" update="false" insert="false" not-found="ignore" />
+		<many-to-one name="uld" class="de.act.common.types.nonstaticobjects.ULDObject" column="acc_item_uld_id"  update="false" insert="false"  not-found="ignore" cascade="none" />
+	</class>
+	
+	<class name="de.act.common.types.NotocHeaderView" table="a_notoc_hd_view" mutable="false" >
+		<composite-id> 
+			<key-property name="mani_id" />
+		</composite-id>
+		<property name="flt_date" />	
+		<property name="creator_add_id" />
+		<property name="user_add_id" />
+		<property name="flt_id" />
+		<property name="flt_no" />
+		<property name="ac_reg" />
+		<property name="conx_id" />
+		<property name="ca_id" />
+		<property name="ap_3lc" />
+		<property name="ap_to" />
+		<many-to-one name="acReg" column="ac_reg" class="de.act.common.types.staticobjects.RSAc" update="false" insert="false" not-found="ignore" />
+		<many-to-one name="airport" column="ap_3lc" class="de.act.common.types.staticobjects.RSAp" update="false" insert="false" not-found="ignore" />
+		<many-to-one name="airpTo" column="ap_to" class="de.act.common.types.staticobjects.RSAp" update="false" insert="false" not-found="ignore" />
+		<many-to-one name="flight" column="flt_id" class="de.act.common.types.staticobjects.RSFlt" update="false" insert="false" not-found="ignore" />	
+		<!--ac_reg s_ac-->
+	  </class>
+	  
+	<class name="de.act.common.types.staticobjects.RSAcID" table="s_ac_id">
+		<id name="ac_id" column="ac_id">
+			<generator class="assigned" />
+		</id>
+	</class>
+	  
+	<class name="de.act.common.types.staticobjects.RSAc" table="s_ac">
+		<cache usage="transactional"/>
+		<id name="s_id" column="s_id">
+			<generator class="assigned" />
+			<!--generator class="native">
+				<param name="sequence">s_ac_seq</param>
+			</generator>-->
+		</id>
+		<property name="ac_id" column="ac_id" />
+	  	<property name="ac_reg" update="false" />
+	  	<property name="ca_id" update="false" />
+	   	<property name="ac_type_id" update="false" />
+	   	<property name="name" update="false" />
+	    <property name="ac_cargo" update="false" />
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+	</class>
+	  
+	<class name="de.act.common.types.staticobjects.RSAcType" table="s_ac_type" >
+		<id name="ac_type_id" column="ac_type_id" >
+			<generator class="assigned" />
+		</id>
+	  	<property name="iata_type" update="false" />
+	  	<property name="icao_type" update="false" />
+	   	<property name="description" update="false" />
+	   	<property name="ac_size" update="false" />
+	    <many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+	</class>
+	  
+	<class name="de.act.common.types.staticobjects.RSAcComp" table="s_ac_comp" >
+		<id name="ac_comp_id" column="ac_comp_id" >
+			<generator class="assigned" />
+		</id>
+	  	<!-- <composite-id>
+	  		<key-property name="ac_id" />
+			<key-property name="ac_comp" />	
+		</composite-id>-->
+		<property name="ac_id" update="false" />
+		<property name="ac_comp" update="false" />
+		<property name="comp_use" update="false" />
+		<property name="comp_pos" update="false" />
+		<property name="max_door_w" update="false" />
+		<property name="max_door_h" update="false" />
+		<property name="max_door_l" update="false" />
+		<property name="max_comp_wgt" update="false" />
+	   	<property name="max_floor_wgt" update="false" />
+	   	<property name="max_vol" update="false" />
+	   	<property name="avi" update="false" />
+	   	<property name="dgr" update="false" />
+	   	<property name="val" update="false" />
+	   	<property name="big" update="false" />
+	   	<property name="hea" update="false" />
+	   	<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+	  </class>
+	  
+	<class name="de.act.common.types.staticobjects.RSAcTypeComp" table="s_ac_type_comp" >
+		<composite-id>
+	  		<key-property name="ac_type_id" />
+			<key-property name="ac_comp" />	
+		</composite-id>
+		<property name="comp_use" update="false" />
+		<property name="comp_pos" update="false" />
+		<property name="max_door_w" update="false" />
+		<property name="max_door_h" update="false" />
+		<property name="max_door_l" update="false" />
+		<property name="max_comp_wgt" update="false" />
+		<property name="max_floor_wgt" update="false" />
+		<property name="max_vol" update="false" />
+		<property name="avi" update="false" />
+		<property name="dgr" update="false" />
+		<property name="val" update="false" />
+		<property name="big" update="false" />
+		<property name="hea" update="false" />
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+	</class>
+
+	<class name="de.act.common.types.NotocSpecialCargoView" table="a_notoc_bd_view" mutable="false" >
+		<composite-id> 
+			<key-property name="mani_item_id" />
+			<key-property name="pkg_id" />
+			<key-property name="mani_id" />
+		</composite-id>
+		<property name="bkg_item_id" />
+		<property name="scc_3lc" />
+		<property name="com_id" />
+		<property name="ann_id" />
+		<property name="uld_id" />
+		<property name="marks" />
+		<property name="pcs" />
+		<property name="corr" insert="false" update="false"/>
+		<property name="dgr_item_id" />
+		<property name="dgr_id" />
+		<property name="dgr_pkg_type" />
+		<property name="dgr_pkg_inst" />
+		<property name="dgr_qty_unit" />
+		<property name="ap_to"/>
+		<property name="dgr_radio"/>
+		<property name="dgr_ca_only"/>
+		<property name="dgr_un_no"/>
+		<property name="dgr_prop_name"/>
+		<property name="dgr_class"/>
+		<property name="dgr_sub_risk"/>
+		<property name="dgr_lbl"/>
+		<property name="dgr_pkg_grp"/>
+		<property name="avi_scf_name"/>
+		<property name="avi_container"/>
+		<property name="avi_cites"/>
+		<property name="avi_item_id" />
+		<property name="avi_id" />
+		<property name="avi_pks_no" />
+		<property name="qty_anm" />
+		<property name="att_id" />
+		<property name="att_type" />
+		<property name="att_no" />
+		<property name="add_id" />
+		<property name="att_corr" />
+		<property name="f_id" />
+		<property name="ca_3dg" />
+		<property name="awb_stock" />
+		<property name="awb_no" />	
+		<many-to-one name="add" column="add_id" class="de.act.common.types.staticobjects.RSAdd" update="false" insert="false" not-found="ignore" />
+		<many-to-one name="awbNo" column="f_id" class="de.act.common.types.nonstaticobjects.RFAwbNo" update="false" insert="false" not-found="ignore" />
+		<many-to-one name="commodity" column="com_id" class="de.act.common.types.staticobjects.CCommodityTree" update="false" insert="false"  not-found="ignore"  />
+		<many-to-one name="scc" column="scc_3lc" class="de.act.common.types.staticobjects.RSScc" update="false" insert="false"  not-found="ignore" />
+		<many-to-one name="uld" class="de.act.common.types.nonstaticobjects.ULDObject" column="uld_id"  update="false" insert="false"  not-found="ignore" cascade="none" />
+	</class>
+	 
+	<class name="de.act.common.types.DeliveryHeadersView" table="f_deliver_view"  >	
+		<id name="f_id" column="f_id" >
+	 		<generator class="assigned" />
+		</id>
+		<property name="acc_id" />
+		<property name="ap_3lc" />
+		<property name="awb_acc" />
+		<property name="con_add_id" />
+		<property name="con_subt_id" />
+		<property name="add_corr" />
+		<property name="ca_3dg" />
+		<property name="ffw_3lc" />
+		<property name="awb_stock" />
+		<property name="awb_no" />		
+		<property name="acc_sum_pcs" />
+		<property name="acc_sum_wgt" />
+ 		<property name="awb_sum_charge" />
+	</class>
+	
+	<class name="de.act.common.types.views.PackageView" table="f_pkg_view">	
+		<id name="pkg_id" column="pkg_id" >
+	 		<generator class="assigned" />
+		</id>
+		<property name="f_id" column="f_id" />
+		<property name="att_id" column="att_id" />
+		<property name="row_no" column="row_no" />
+		<property name="pkg_no" column="pkg_no" />
+		<property name="bkg_item_id" column="bkg_item_id" />
+		<property name="awb_item_id" column="awb_item_id" />
+		<property name="sli_item_id" column="sli_item_id" />
+		<property name="avi_item_id" column="avi_item_id" />
+		<property name="dgr_item_id" column="dgr_item_id" />
+		<property name="uld_id" column="uld_id" />
+		<property name="marks" column="marks" />
+		<property name="pcs" column="pcs" />
+		<property name="pcs_delivered" column="pcs_delivered" />
+		<property name="pkgs_pltsd" column="pkgs_pltsd" />
+		<property name="pkgs_col" column="pkgs_col" />
+		<property name="pkgs_mat" column="pkgs_mat" />
+		<property name="pkgs_shp" column="pkgs_shp" />
+		<property name="com_id" column="com_id" />
+		<property name="ann_id" column="ann_id" />
+		<property name="wgt" column="wgt" />
+		<property name="vol" column="vol" />
+		<property name="l" column="l" />
+		<property name="w" column="w" />
+		<property name="h" column="h" />
+		<property name="scc_3lc" column="scc_3lc" />
+		<property name="isTotal" column="istotal" />
+		<property name="stick_id" column="stick_id" />
+	</class>
+	
+	<class name="de.act.common.types.views.DefaultCapacityView" table="s_flt_default_capacity_view">
+		<composite-id> 
+			<key-property name="conx_id" />
+			<key-property name="flt_id" />
+		</composite-id>
+		<property name="ca_id" column="ca_id" />
+		<property name="ac_id" column="ac_id" />
+		<property name="dept" column="dept" />
+		<property name="dest" column="dest" />
+		<many-to-one name="conx_vad" class="de.act.common.types.staticobjects.RSVad" column="conx_vad" access="field" not-found="ignore" />
+		<many-to-one name="flt_vad" class="de.act.common.types.staticobjects.RSVad" column="flt_vad" access="field" not-found="ignore" />
+		<!-- <property name="flt_id" column="flt_id" /> -->
+		<property name="flt_group" column="flt_group" />
+		<property name="auto_wgt" column="auto_wgt" />
+		<property name="auto_vol" column="auto_vol" />
+		<property name="manual_wgt" column="manual_wgt" />
+		<property name="manual_vol" column="manual_vol" />
+		<property name="max_wgt" column="max_wgt" />
+		<property name="max_vol" column="max_vol" />
+		<property name="open_for_cargo" column="open_for_cargo" />
+		<property name="ac_reg" column="ac_reg" />
+		<many-to-one name="ac_vad" class="de.act.common.types.staticobjects.RSVad" column="ac_vad" access="field" not-found="ignore" />
+	</class>
+
+	<class name="de.act.common.types.views.ExportAcceptanceView" table="export_acceptance_view">
+		<!--id name="bkg_flt_id" column="bkg_flt_id">
+			<generator class="assigned" />
+		</id-->
+		<composite-id> 
+			<key-property name="bkg_flt_id" />
+			<key-property name="pkg_id" />
+		</composite-id>
+		<property name="ca_3dg" column="ca_3dg" />
+		<property name="awb_stock" column="awb_stock" />
+		<property name="awb_no" column="awb_no" />
+		<property name="f_id" column="f_id" />
+		<property name="dept" column="dept" />
+		<property name="dest" column="dest" />
+		<property name="req_to" column="req_to" />
+		<property name="bkg_flt_date" column="bkg_flt_date" />
+		<property name="bkg_item_id" column="bkg_item_id" />
+		<property name="total_wgt" column="total_wgt" />
+		<!--property name="pkg_id" column="pkg_id" /-->
+		<property name="pcs" column="pcs" />
+		<property name="com_id" column="com_id" />
+		<property name="com_name" column="com_name" />
+		<property name="ann_id" column="ann_id" />
+		<property name="ann_name" column="ann_name" />
+		<property name="wgt" column="wgt" />
+		<property name="l" column="l" />
+		<property name="w" column="w" />
+		<property name="h" column="h" />
+		<property name="vol" column="vol" />
+		<property name="scc_3lc" column="scc_3lc" />
+		<property name="shp_add_id" column="shp_add_id" />
+		<property name="con_add_id" column="con_add_id" />
+		<property name="bkg_status" column="bkg_status" />
+		<property name="acc_id" column="acc_id" />
+		<property name="acc_item_id_shipment" column="acc_item_id_shipment" />
+		<property name="awb_acc_shipment" column="awb_acc_shipment" />
+		<property name="stat_id_shipment" column="stat_id_shipment" />
+		<property name="acc_item_id_awb" column="acc_item_id_awb" />
+		<property name="awb_acc_awb" column="awb_acc_awb" />
+		<property name="stat_id_awb" column="stat_id_awb" />
+	</class>
+	
+	<class name="de.act.common.types.views.LoadingListView" table="loading_list_view">
+		<id name="bkg_flt_id" column="bkg_flt_id">
+			<generator class="assigned" />
+		</id>
+		<property name="ca_3dg" column="ca_3dg" />
+		<property name="awb_stock" column="awb_stock" />
+		<property name="awb_no" column="awb_no" />
+		<property name="non_standard" column="non_standard" />
+		<property name="f_id" column="f_id" />
+		<property name="dept" column="dept" />
+		<property name="dest" column="dest" />
+		<property name="req_to" column="req_to" />
+		<property name="bkg_flt_date" column="bkg_flt_date" />
+		<property name="bkg_item_id" column="bkg_item_id" />
+		<property name="total_wgt" column="total_wgt" />
+		<property name="bkg_pcs" column="bkg_pcs" />
+		<property name="total_vol" column="total_vol" />
+		<property name="com_id" column="com_id" />
+		<property name="com_name" column="com_name" />
+		<property name="ann_id" column="ann_id" />
+		<property name="ann_name" column="ann_name" />
+		<property name="scc_3lc" column="scc_3lc" />
+		<property name="shp_add_id" column="shp_add_id" />
+		<property name="con_add_id" column="con_add_id" />
+		<property name="bkg_status" column="bkg_status" />
+		<property name="acc_id" column="acc_id" />
+		<property name="acc_item_id_shipment" column="acc_item_id_shipment" />
+		<property name="awb_acc_shipment" column="awb_acc_shipment" />
+		<!--property name="stat_id_shipment" column="stat_id_shipment" /-->
+		<property name="acc_item_id_awb" column="acc_item_id_awb" />
+		<property name="awb_acc_awb" column="awb_acc_awb" />
+		<!--property name="stat_id_awb" column="stat_id_awb" /-->
+		<property name="a_flt_id" column="a_flt_id" />
+		<property name="bkg_id_id" column="bkg_id_id" />
+		<property name="flt_id" column="flt_id" />
+		<property name="mani_item_id" column="mani_item_id" />
+		<property name="ll_uld_id" column="ll_uld_id" />
+		<property name="ll_uld_type" column="ll_uld_type" />
+		<property name="ll_uld_no" column="ll_uld_no" />
+		<property name="uld_id" column="uld_id" />
+		<property name="stat_id" column="stat_id" />
+	</class>
+	
+	<!--class name="de.act.common.types.views.ImportAcceptanceAp3lcView" table="import_acceptance_item_ap3lc_view">
+		<composite-id> 
+			<key-property name="f_id" />
+			<key-property name="ap_3lc" />
+		</composite-id>
+		<property name="final_dest" column="final_dest" />
+		<property name="awb_pcs" column="awb_pcs" />
+		<property name="awb_wgt" column="awb_wgt" />
+		<property name="shipment_pcs" column="shipment_pcs" />
+		<property name="shipment_wgt" column="shipment_wgt" />
+	</class-->
+	
+	<class name="de.act.common.types.views.NewExportAcceptanceView" table="export_acceptance_view2">
+		<composite-id> 
+			<key-property name="bkg_flt_id" />
+			<key-property name="pkg_id" />
+		</composite-id>
+		<property name="ca_3dg" column="ca_3dg" />
+		<property name="awb_stock" column="awb_stock" />
+		<property name="awb_no" column="awb_no" />
+		<property name="non_standard" column="non_standard" />
+		<property name="f_id" column="f_id" />
+		<property name="ca_id" column="ca_id" />
+		<property name="dept" column="dept" />
+		<property name="dest" column="dest" />
+		<property name="req_from" column="req_from" />
+		<property name="req_to" column="req_to" />
+		<property name="bkg_flt_date" column="bkg_flt_date" />
+		<property name="bkg_item_id" column="bkg_item_id" />
+		<property name="total_wgt" column="total_wgt" />
+		<property name="total_vol" column="total_vol" />
+		<property name="total_pcs" column="total_pcs" />
+		<property name="com_parent" column="com_parent" />
+		<property name="pcs" column="pcs" />
+		<property name="com_id" column="com_id" />
+		<property name="com_name" column="com_name" />
+		<property name="ann_id" column="ann_id" />
+		<property name="ann_name" column="ann_name" />
+		<property name="wgt" column="wgt" />
+		<property name="l" column="l" />
+		<property name="w" column="w" />
+		<property name="h" column="h" />
+		<property name="vol" column="vol" />
+		<property name="scc_3lc" column="scc_3lc" />
+		<property name="shp_add_id" column="shp_add_id" />
+		<many-to-one name="shpAddress" column="shp_add_id" class="de.act.common.types.views.AddressView" update="false" insert="false" not-found="ignore" />
+		<property name="con_add_id" column="con_add_id" />
+		<many-to-one name="conAddress" column="con_add_id" class="de.act.common.types.views.AddressView" update="false" insert="false" not-found="ignore" />
+		<property name="ffw_add_id" column="ffw_add_id" />
+		<many-to-one name="ffwAddress" column="ffw_add_id" class="de.act.common.types.views.AddressView" update="false" insert="false" not-found="ignore" />
+		<property name="deliver_add_id" column="deliver_add_id" />
+		<many-to-one name="delAddress" column="deliver_add_id" class="de.act.common.types.views.AddressView" update="false" insert="false" not-found="ignore" />
+		<property name="anotify_add_id" column="anotify_add_id" />
+		<many-to-one name="anoAddress" column="anotify_add_id" class="de.act.common.types.views.AddressView" update="false" insert="false" not-found="ignore" />
+		<property name="bkg_status" column="bkg_status" />
+		<property name="acc_header_id" column="acc_header_id" />
+		<property name="awb_acc_header" column="awb_acc_header" />
+		<property name="first_dept" column="first_dept" />
+		<property name="final_dest" column="final_dest" />
+		<property name="acc_awb_item_id" column="acc_awb_item_id" />
+		<property name="awb_pcs" column="awb_pcs" />
+		<property name="awb_wgt" column="awb_wgt" />
+		<property name="awb_vol" column="awb_vol" />
+		<property name="ap_3lc" column="ap_3lc" />
+		<property name="awb_acc_per_airport" column="awb_acc_per_airport" />
+		<property name="acc_shipment_item_id" column="acc_shipment_item_id" />
+		<property name="shipment_pcs" column="shipment_pcs" />
+		<property name="shipment_wgt" column="shipment_wgt" />
+		<property name="shipment_vol" column="shipment_vol" />
+		<property name="shipment_com_id" column="shipment_com_id" />
+		<property name="a_flt_id" column="a_flt_id" />
+		<property name="a_dep" column="a_dep" />
+		<property name="open_for_cargo" column="open_for_cargo" />
+		<property name="bkg_id_id" column="bkg_id_id" />
+		<property name="flt_id" column="flt_id" />
+		<property name="flt_no" column="flt_no" />
+		<property name="mani_item_id" column="mani_item_id" />
+		<property name="ll_uld_id" column="ll_uld_id" />
+		<property name="uld_trans_mode" column="uld_trans_mode" />
+		<property name="holder_add_id" column="holder_add_id" />
+		<property name="ll_uld_type" column="ll_uld_type" />
+		<property name="ll_uld_no" column="ll_uld_no" />
+		<property name="uld_id" column="uld_id" />
+		<property name="stat_id" column="stat_id" />
+		<property name="part" column="part" />
+		<property name="shipment_acc_discr_id" column="shipment_acc_discr_id" />
+		<property name="shipment_discr_id" column="shipment_discr_id" />
+		<property name="shipment_discr_name" column="shipment_discr_name" />
+		<property name="shipment_discr_4lc" column="shipment_discr_4lc" />
+		<property name="shipment_discr_condition_flag" column="shipment_discr_condition_flag" />
+		<property name="shipment_discr_opposite_discr_id" column="shipment_discr_opposite_discr_id" />
+		<property name="awb_acc_discr_id" column="awb_acc_discr_id" />
+		<property name="awb_discr_id" column="awb_discr_id" />
+		<property name="awb_discr_name" column="awb_discr_name" />
+		<property name="awb_discr_4lc" column="awb_discr_4lc" />
+		<property name="awb_discr_condition_flag" column="awb_discr_condition_flag" />
+		<property name="awb_discr_opposite_discr_id" column="awb_discr_opposite_discr_id" />
+		<property name="stor_id" column="stor_id" />
+		<property name="stor_name" column="stor_name" />
+		<property name="is_loaded" column="is_loaded" />
+		<property name="print_id" column="print_id" />
+		<property name="awb_stat_id" column="awb_stat_id" />
+		<property name="stat_descr" column="stat_descr" />
+		<property name="acc_shipment_pkg_id" column="acc_shipment_pkg_id" />
+		<property name="acc_awb_pkg_id" column="acc_awb_pkg_id" />
+		<property name="pkg_row_no" column="pkg_row_no" />
+		<property name="com_parent_name" column="com_parent_name" />
+		<property name="mani_rem" column="mani_rem" />
+		<property name="awb_com_id" column="awb_com_id" />
+		<property name="shipment_pkg_pcs" column="shipment_pkg_pcs" />
+		<property name="shipment_pkg_com_id" column="shipment_pkg_com_id" />
+		<many-to-one name="shpCom" column="shipment_pkg_com_id" class="de.act.common.types.staticobjects.CCommodityTree" update="false" insert="false" not-found="ignore" />
+		<property name="shipment_pkg_ann_id" column="shipment_pkg_ann_id" />
+		<!-- <many-to-one name="shpAnn" column="shipment_pkg_ann_id" class="de.act.common.types.staticobjects.RSAnn" update="false" insert="false" not-found="ignore" /> -->
+		<property name="shipment_pkg_wgt" column="shipment_pkg_wgt" />
+		<property name="shipment_pkg_w" column="shipment_pkg_w" />
+		<property name="shipment_pkg_l" column="shipment_pkg_l" />
+		<property name="shipment_pkg_h" column="shipment_pkg_h" />
+		<property name="shipment_pkg_scc_3lc" column="shipment_pkg_scc_3lc" />
+		<property name="shipment_pkg_pkg_id" column="shipment_pkg_pkg_id" />
+		<property name="awb_pkg_pcs" column="awb_pkg_pcs" />
+		<property name="awb_pkg_com_id" column="awb_pkg_com_id" />
+		<property name="awb_pkg_ann_id" column="awb_pkg_ann_id" />
+		<property name="awb_pkg_wgt" column="awb_pkg_wgt" />
+		<property name="awb_pkg_w" column="awb_pkg_w" />
+		<property name="awb_pkg_l" column="awb_pkg_l" />
+		<property name="awb_pkg_h" column="awb_pkg_h" />
+		<property name="awb_pkg_scc_3lc" column="awb_pkg_scc_3lc" />
+		<property name="awb_pkg_pkg_id" column="awb_pkg_pkg_id" />
+		<property name="parent_ann" column="parent_ann" />
+		<property name="parent_ann_name" column="parent_ann_name" />
+		<property name="parent_scc_3lc" column="parent_scc_3lc" />
+		<property name="creator_add_id" column="creator_add_id" />
+		<property name="mani_id" column="mani_id" />
+		<property name="ca_2lc" column="ca_2lc" />
+		<property name="marks" column="marks" />
+		<property name="pkgs_col" column="pkgs_col" />
+		<property name="pkgs_mat" column="pkgs_mat" />
+		<property name="pkgs_shp" column="pkgs_shp" />
+		<property name="cuc_3lc" column="cuc_3lc" />
+		<property name="prio" column="prio" />
+		<property name="istotal" column="istotal" />
+		<property name="arr" column="arr" />
+		<property name="vo" column="v_o" />
+	</class>
+	
+	<class name="de.act.common.types.views.TroubleListView" table="trouble_list_view" mutable="false">
+		<composite-id> 
+			<key-property name="f_id" column="f_id"/>
+		</composite-id>
+		<property name="ca_3dg" column="ca_3dg" />
+		<property name="awb_stock" column="awb_stock" />
+		<property name="awb_no" column="awb_no" />
+		<property name="non_standard" column="non_standard" />
+		<property name="ca_id" column="ca_id" />
+		<property name="dept" column="dept" />
+		<property name="dest" column="dest" />
+		<property name="bkg_status" column="bkg_status" />
+		<property name="acc_header_id" column="acc_header_id" />
+		<property name="awb_acc_header" column="awb_acc_header" />
+		<property name="first_dept" column="first_dept" />
+		<property name="final_dest" column="final_dest" />
+		<property name="ap_3lc" column="ap_3lc" />
+		<property name="pcs" column="pcs" />
+		<property name="shp_add_id" column="shp_add_id" />
+		<property name="acc_shipment_id" column="acc_shipment_id" />
+		<property name="shipment_pcs" column="shipment_pcs" />
+		<property name="shipment_wgt" column="shipment_wgt" />
+		<property name="shipment_vol" column="shipment_vol" />
+		<property name="com_name" column="com_name" />
+		<property name="flt_id" column="flt_id" />
+		<property name="flt_no" column="flt_no" />
+		<property name="bkg_flt_date" column="bkg_flt_date" />
+		<property name="part" column="part" />
+		<property name="shipment_acc_discr_id" column="shipment_acc_discr_id" />
+		<property name="shipment_discr_id" column="shipment_discr_id" />
+		<property name="shipment_discr_name" column="shipment_discr_name" />
+		<property name="shipment_discr_4lc" column="shipment_discr_4lc" />
+		<property name="shipment_discr_condition_flag" column="shipment_discr_condition_flag" />
+		<property name="shipment_discr_opposite_discr_id" column="shipment_discr_opposite_discr_id" />
+		<property name="awb_acc_discr_id" column="awb_acc_discr_id" />
+		<property name="awb_discr_id" column="awb_discr_id" />
+		<property name="awb_discr_name" column="awb_discr_name" />
+		<property name="awb_discr_4lc" column="awb_discr_4lc" />
+		<property name="awb_discr_condition_flag" column="awb_discr_condition_flag" />
+		<property name="awb_discr_opposite_discr_id" column="awb_discr_opposite_discr_id" />
+		<property name="wgt" column="wgt" />
+		<property name="vol" column="vol" />
+	</class>
+	
+	<class name="de.act.common.types.views.ImportAcceptanceView" table="import_acceptance_view">
+		<composite-id> 
+			<key-property name="bkg_flt_id" />
+			<key-property name="pkg_id" />
+		</composite-id>
+		<property name="ca_3dg" column="ca_3dg" />
+		<property name="awb_stock" column="awb_stock" />
+		<property name="awb_no" column="awb_no" />
+		<property name="non_standard" column="non_standard" />
+		<property name="f_id" column="f_id" />
+		<property name="ca_id" column="ca_id" />
+		<property name="dept" column="dept" />
+		<property name="dest" column="dest" />
+		<property name="req_to" column="req_to" />
+		<property name="bkg_flt_date" column="bkg_flt_date" />
+		<property name="bkg_item_id" column="bkg_item_id" />
+		<property name="total_wgt" column="total_wgt" />
+		<property name="total_vol" column="total_vol" />
+		<property name="total_pcs" column="total_pcs" />
+		<property name="com_parent" column="com_parent" />
+		<property name="pcs" column="pcs" />
+		<property name="com_id" column="com_id" />
+		<property name="com_name" column="com_name" />
+		<property name="ann_id" column="ann_id" />
+		<property name="ann_name" column="ann_name" />
+		<property name="wgt" column="wgt" />
+		<property name="l" column="l" />
+		<property name="w" column="w" />
+		<property name="h" column="h" />
+		<property name="vol" column="vol" />
+		<property name="scc_3lc" column="scc_3lc" />
+		<property name="shp_add_id" column="shp_add_id" />
+		<property name="con_add_id" column="con_add_id" />
+		<property name="bkg_status" column="bkg_status" />
+		<property name="acc_header_id" column="acc_header_id" />
+		<property name="awb_acc_header" column="awb_acc_header" />
+		<property name="first_dept" column="first_dept" />
+		<property name="final_dest" column="final_dest" />
+		<property name="acc_awb_item_id" column="acc_awb_item_id" />
+		<property name="awb_pcs" column="awb_pcs" />
+		<property name="awb_wgt" column="awb_wgt" />
+		<property name="ap_3lc" column="ap_3lc" />
+		<property name="awb_acc_per_airport" column="awb_acc_per_airport" />
+		<property name="acc_shipment_item_id" column="acc_shipment_item_id" />
+		<property name="shipment_pcs" column="shipment_pcs" />
+		<property name="shipment_wgt" column="shipment_wgt" />
+		<property name="shipment_com_id" column="shipment_com_id" />
+		<property name="a_flt_id" column="a_flt_id" />
+		<property name="bkg_id_id" column="bkg_id_id" />
+		<property name="flt_id" column="flt_id" />
+		<property name="mani_item_id" column="mani_item_id" />
+		<property name="ll_uld_id" column="ll_uld_id" />
+		<property name="holder_add_id" column="holder_add_id" />
+		<property name="ll_uld_type" column="ll_uld_type" />
+		<property name="ll_uld_no" column="ll_uld_no" />
+		<property name="uld_id" column="uld_id" />
+		<property name="stat_id" column="stat_id" />
+		<property name="part" column="part" />
+		<property name="shipment_acc_discr_id" column="shipment_acc_discr_id" />
+		<property name="shipment_discr_id" column="shipment_discr_id" />
+		<property name="shipment_discr_name" column="shipment_discr_name" />
+		<property name="shipment_discr_4lc" column="shipment_discr_4lc" />
+		<property name="shipment_discr_condition_flag" column="shipment_discr_condition_flag" />
+		<property name="shipment_discr_opposite_discr_id" column="shipment_discr_opposite_discr_id" />
+		<property name="awb_acc_discr_id" column="awb_acc_discr_id" />
+		<property name="awb_discr_id" column="awb_discr_id" />
+		<property name="awb_discr_name" column="awb_discr_name" />
+		<property name="awb_discr_4lc" column="awb_discr_4lc" />
+		<property name="awb_discr_condition_flag" column="awb_discr_condition_flag" />
+		<property name="awb_discr_opposite_discr_id" column="awb_discr_opposite_discr_id" />
+		<property name="mani_rem" column="mani_rem" />
+		<property name="stor_name" column="stor_name" />
+		<property name="flt_no" column="flt_no" />
+		<property name="cuc_3lc" column="cuc_3lc" />
+		<property name="istotal" column="istotal" />
+	</class>
+	
+	<class name="de.act.common.types.views.CancelBookingView" table="cancel_booking_view">
+		<composite-id>
+			<key-property name="f_id" column="f_id"/>
+			<key-property name="bkg_item_id" column="bkg_item_id"/>
+			<key-property name="flt_id" column="flt_id" />
+		</composite-id>
+		<property name="awb_no" column="awb_no" />
+		<property name="ca_id" column="ca_id" />
+		<property name="att_no" column="att_no" />
+		<property name="flt_no" column="flt_no" />
+		<property name="bkg_flt_date" column="bkg_flt_date" />
+		<property name="flt_row" column="flt_row" />
+		<property name="bkg_status" column="bkg_status" />
+		<property name="dept" column="dept" />
+		<property name="dest" column="dest" />
+		<property name="first_dept" column="first_dept" />
+		<property name="req_to" column="req_to" />
+		<property name="stat_id" column="stat_id" />
+	</class>
+	
+	<class name="de.act.common.types.views.AWBFIdView" table="awb_fid_view">
+		<id name="f_id" column="f_id">
+			<generator class="assigned" />
+		</id>
+		<property name="ca_3dg" column="ca_3dg" />
+		<property name="awb_stock" column="awb_stock" />
+		<property name="awb_no" column="awb_no" />
+	</class>
+	
+	<class name="de.act.common.types.views.SchedulerView" table="scheduler_view">
+		<composite-id> 
+			<key-property name="user_name" />
+			<key-property name="a_flt_id" />
+		</composite-id>
+		<property name="add_id" column="add_id" />
+		<property name="ca_id" column="ca_id" />
+		<property name="ca_2lc" column="ca_2lc" />
+		<property name="alliance_id" column="alliance_id" />
+		<property name="conx_id" column="conx_id" />
+		<property name="dept" column="dept" />
+		<property name="dest" column="dest" />
+		<property name="s_flt_id" column="s_flt_id" />
+		<property name="flt_no" column="flt_no" />
+		<property name="dep" column="dep" />
+		<property name="arr" column="arr" />
+		<property name="arr_dt" column="arr_dt" />
+		<property name="a_dep" column="a_dep" />
+		<property name="a_arr" column="a_arr" />
+		<property name="open_for_cargo" column="open_for_cargo" />
+	</class>
+	
+	<class name="de.act.common.types.views.StatusInformationView" table="status_information_view">
+		<id name="f_id" column="f_id">
+			<generator class="assigned" />
+		</id>
+		<property name="ca_3dg" column="ca_3dg" />
+		<property name="awb_stock" column="awb_stock" />
+		<property name="awb_no" column="awb_no" />
+		<many-to-one name="awb_shipment_stat_id" column="awb_shipment_stat_id" class="de.act.common.types.staticobjects.RSState" update="false" insert="false" not-found="ignore" />
+		<property name="awb_shipment_stat_corr" column="awb_shipment_stat_corr" type="timestamp" insert="false" update="false" />
+		<many-to-one name="ap_3lc" class="de.act.common.types.staticobjects.RSAp" column="ap_3lc" access="field" />
+		<many-to-one name="manifest_stat_id" column="manifest_stat_id" class="de.act.common.types.staticobjects.RSState" update="false" insert="false" not-found="ignore" />
+		<property name="manifest_stat_corr" column="manifest_stat_corr" type="timestamp" insert="false" update="false" />
+		<property name="bkg_status" column="bkg_status" />
+		<property name="flight_corr" column="flight_corr" type="timestamp" insert="false" update="false" />
+		<many-to-one name="awb_print_stat_id" column="awb_print_stat_id" class="de.act.common.types.staticobjects.RSState" update="false" insert="false" not-found="ignore" />
+		<property name="awb_print_stat_corr" column="awb_print_stat_corr" type="timestamp" insert="false" update="false" />
+		<property name="stor_id" column="stor_id"/>
+		<property name="stor_name" column="stor_name"/>
+		<property name="stor_date" column="stor_date"/>
+	</class>
+	
+	<class name="de.act.common.types.views.FirstDepartureView" table="first_departure_view">
+		<id name="fId" column="f_id">
+			<generator class="assigned" />
+		</id>
+		<many-to-one name="firstDept" column="first_dept" class="de.act.common.types.staticobjects.RSAp" update="false" insert="false" />
+   		<property name="ca3dg" column="ca_3dg" />
+   		<property name="awbStock" column="awb_stock" />
+   		<property name="awbNo" column="awb_no" />
+   		<property name="nonStandard" column="non_standard" />
+   	</class>
+   	
+   	<class name="de.act.common.types.staticobjects.CustomArea" table="s_custom_ar" mutable="false"  batch-size="3">
+		<cache usage="transactional"/>
+		<id name="code" column="ar_code"  >
+			<generator class="assigned"/>
+		</id>
+		<property name="name" column="ar_name" />
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+	</class>
+	
+	<class name="de.act.common.types.staticobjects.CustomCountryArea" table="s_custom_co_ar" mutable="false"  batch-size="3">
+		<cache usage="transactional"/>
+		<composite-id> 
+			<key-property name="areaCode" column="ar_code" />
+			<key-property name="co2Lc" column="co_2lc"/>
+		</composite-id>
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+	</class>
+	
+	<class name="de.act.common.types.AAwbStock" table="a_awb_stock" >
+	  	<composite-id> 
+	  		<key-property name ="caid" column="ca_id" />
+	  	</composite-id>
+	  	
+	  	<property name="awbStart" column="awb_start" />
+	   	<property name="awbNext" column="awb_next" />
+	   	<property name="awbEnd" column="awb_end" />
+	</class>
+	
+	<class name="de.act.common.types.views.RtView" table="f_rt_view" mutable="false"  batch-size="3">
+		<cache usage="transactional"/>
+		<composite-id> 
+			<key-property name="rtId" column="rt_id" />
+			<key-property name="arCode" column="ar_code"/>
+		</composite-id>
+		<property name="attId" column="att_id" />
+		<property name="rtSeq" column="rt_seq" />
+		<property name="corr" column="corr" />
+		<property name="ap3Lc" column="ap_3lc" />
+		<property name="co2Lc" column="co_2lc" />
+		<property name="awbStock" column="awb_stock" />
+		<property name="ca3Dg" column="ca_3dg" />
+		<property name="awbNo" column="awb_no" />
+		<property name="awbNumber" column="awbno" />
+		<property name="rtCount" column="rt_count" />
+	</class>	
+	
+	<class name="de.act.common.types.staticobjects.Partnership" table="s_partnership">
+		<id name="partnershipId" column="partnership_id">
+			<generator class="assigned" />
+		</id>
+		<property name="caId" column="ca_id" />
+   		<property name="ffwAddId" column="ffw_add_id" />
+   		<property name="accountNo" column="account_no" />
+   		<property name="status" column="status" />
+   		<property name="paymentType" column="payment_type" />
+   		<property name="amountDeposit" column="amount_deposit" />
+   		<property name="amountDepositActual" column="amount_deposit_actual" />
+   		<property name="warningLimit" column="warning_limit_up" />
+   		<property name="warningLimitDown" column="warning_limit_down" />
+   		<many-to-one name="vad" class="de.act.common.types.staticobjects.RSVad" column="vad_id" access="field" not-found="ignore" />
+   		<many-to-one name="address" column="ffw_add_id" class="de.act.common.types.views.AddressView" update="false" insert="false" not-found="ignore" />
+   	</class>
+   	
+   	<class name="de.act.common.types.staticobjects.GSAPartnership" table="s_gsa_partnership">
+		<id name="partnershipId" column="partnership_id">
+			<generator class="assigned" />
+		</id>
+		<property name="gsaAddId" column="gsa_add_id" />
+		<property name="caId" column="ca_id" />
+		<property name="ipAddress" column="ip_address" />
+   		<property name="status" column="status" />
+   		<many-to-one name="vad" class="de.act.common.types.staticobjects.RSVad" column="vad_id" access="field" not-found="ignore" />
+   		<many-to-one name="address" column="gsa_add_id" class="de.act.common.types.views.AddressView" update="false" insert="false" not-found="ignore" />
+   	</class>
+   	
+   	<class name="de.act.common.types.views.GSAPartnershipView" table="s_gsa_partnership_view">
+		<id name="partnershipId" column="partnership_id">
+			<generator class="assigned" />
+		</id>
+		<property name="gsaAddId" column="gsa_add_id" />
+		<property name="caId" column="ca_id" />
+		<property name="ca_2lc" column="ca_2lc" />
+		<property name="ca_3dg" column="ca_3dg" />
+   		<property name="status" column="status" />
+   		<many-to-one name="vad" class="de.act.common.types.staticobjects.RSVad" column="vad_id" access="field" not-found="ignore" />
+   	</class>
+   	
+   	<class name="de.act.common.types.staticobjects.ModeOfTransport" table="s_mot" mutable="false"  batch-size="3">
+		<cache usage="transactional"/>
+		<id name="motId" column="mot_id">
+			<generator class="assigned" />
+		</id>
+		<property name="motName" column="mot_name" />
+   		<property name="motDesc" column="mot_desc" />
+	</class>
+	
+	<class name="de.act.common.types.views.BookingItemParent" table="booking_item_parent" mutable="false" >
+   		<cache usage="transactional"/>
+		<composite-id> 
+			<key-property name="f_id" column="f_id" />
+			<key-property name="bkg_item_id" column="bkg_item_id" />
+			<key-property name="pkg_id" column="pkg_id" />
+		</composite-id>
+		<property name="add_id" column="add_id" />
+		<property name="ca_3dg" column="ca_3dg" />
+		<property name="awb_stock" column="awb_stock" />
+		<property name="awb_no" column="awb_no" />
+		<property name="req_ca_id" column="req_ca_id" />
+		<property name="non_standard" column="non_standard" />
+		<property name="total_pcs" column="total_pcs" />
+		<property name="total_wgt" column="total_wgt" />
+		<property name="total_vol" column="total_vol" />
+		<property name="parent_com" column="parent_com" />
+		<property name="parent_com_name" column="parent_com_name" />
+		<property name="parent_ann" column="parent_ann" />
+		<property name="parent_ann_name" column="parent_ann_name" />
+		<property name="parent_scc_3lc" column="parent_scc_3lc" />
+		<property name="parent_scc_name" column="parent_scc_name" />
+		<property name="req_from" column="req_from" />
+		<property name="req_to" column="req_to" />
+		<!--property name="pkg_id" column="pkg_id" /-->
+		<property name="pcs" column="pcs" />
+		<property name="com_id" column="com_id" />
+		<property name="awb_name" column="awb_name" />
+		<property name="ann_id" column="ann_id" />
+		<property name="ann_name" column="ann_name" />
+		<property name="scc_3lc" column="scc_3lc" />
+   		<property name="scc_name" column="scc_name" />
+   		<property name="wgt" column="wgt" />
+   		<property name="vol" column="vol" />
+   		<property name="l" column="l" />
+   		<property name="w" column="w" />
+   		<property name="h" column="h" />
+   		<property name="shp_add_id" column="shp_add_id" />
+   		<property name="shp_ap_3lc" column="shp_ap_3lc" />
+   		<property name="shp_add_name" column="shp_add_name" />
+   		<property name="con_add_id" column="con_add_id" />
+   		<property name="con_ap_3lc" column="con_ap_3lc" />
+   		<property name="con_add_name" column="con_add_name" />
+   		<property name="ffw_add_id" column="ffw_add_id" />
+   		<property name="ffw_ap_3lc" column="ffw_ap_3lc" />
+   		<property name="ffw_add_name" column="ffw_add_name" />
+   		<property name="istotal" column="istotal" />
+   		<property name="mark" column="marks" />
+   		<property name="pkgs_col" column="pkgs_col"></property>
+   		<property name="pkgs_mat" column="pkgs_mat"></property>
+   		<property name="pkgs_shp" column="pkgs_shp"></property>
+   		<property name="co_orig" column="co_orig"></property>
+   		<property name="coo_rem" column="coo_rem"></property>
+   		<property name="cuc_3lc" column="cuc_3lc"></property>
+   		<property name="mrn_no" column="mrn_no"></property>
+   	</class>
+   	
+   	<class name="de.act.common.types.nonstaticobjects.RFStat" table="f_stat">
+		<id name="id" column="id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">f_stat_id_seq</param>
+			</generator>
+		</id>
+		<property name="fId" column="f_id" />
+		<property name="part" column="part" />
+   		<property name="statId" column="stat_id" />
+   		<property name="remark" column="remark" />
+   		<property name="addId" column="add_id" />
+   		<property name="userName" column="user_name" />
+   		<property name="corr" column="corr" />
+   		<property name="ap3Lc" column="ap_3lc" />
+   		<many-to-one name="state" column="stat_id" class="de.act.common.types.staticobjects.RSState" not-found="ignore" insert="false" update="false" />
+   	</class>
+   	
+   	<class name="de.act.common.types.staticobjects.SccPreference" table="s_scc_preference">
+		<!-- <id name="id" column="id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">s_scc_preference_id_seq</param>
+			</generator>
+		</id> -->
+		<id name="id" column="id" unsaved-value="-1">
+			<generator class="assigned" />
+		</id>
+		<property name="caId" column="ca_id" />
+   		<property name="scc3Lc" column="scc_3lc" />
+   		<property name="preadvise" column="preadvise" />
+   		<property name="notocDangerous" column="notoc_dangerous" />
+   		<property name="notocOther" column="notoc_other" />
+   		<many-to-one name="vad" class="de.act.common.types.staticobjects.RSVad" column="vad_id" access="field" not-found="ignore" />
+   		<many-to-one name="scc" column="scc_3lc" class="de.act.common.types.staticobjects.RSScc" update="false" insert="false" not-found="ignore" />
+   	</class>
+   	
+   	<class name="de.act.common.types.AScc" table="a_scc" >
+		<id name="id" column="a_scc_id">
+			<generator class="assigned" />
+		</id>
+		<property name="value" column="val" update="false"/>
+		<property name="caId" column="ca_id" update="false"/>
+		<property name="priority" column="scc_prio" update="false"/>
+		<many-to-one name="scc" column="scc_3lc" class="de.act.common.types.staticobjects.RSScc" update="false" not-found="ignore" />
+		<many-to-one name="vad" class="de.act.common.types.staticobjects.RSVad" column="vad_id" not-found="ignore" />
+	</class>
+	
+	<class name="de.act.common.types.ASccValue" table="a_scc_value" >
+		<id name="id" column="a_scc_value_id">
+			<generator class="native">
+				<param name="sequence">a_scc_value_a_scc_value_id_seq</param>
+			</generator>
+		</id>
+		<property name="ascc" column="a_scc_id" />
+		<property name="type" column="scc_type" />
+		<property name="value" column="val" />
+		<property name="corr" column="corr" insert="false" update="false"/>
+	</class>
+	
+	<class name="de.act.common.types.ASccLoadable" table="a_scc_load" >
+		<id name="id" column="a_scc_load_id">
+			<generator class="native">
+				<param name="sequence">a_scc_load_a_scc_load_id_seq</param>
+			</generator>
+		</id>
+		<property name="value" column="val" update="false"/>
+		<property name="rulePid" column="r_p_id" update="false"/>
+		<property name="ruleSid" column="r_s_id" update="false"/>
+		<many-to-one name="sccP" column="scc_p_id" class="de.act.common.types.AScc" update="false" not-found="ignore" />
+		<many-to-one name="sccS" column="scc_s_id" class="de.act.common.types.AScc" update="false" not-found="ignore" />
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+	</class>
+	
+	<class name="de.act.common.types.staticobjects.RsAcScc" table="s_ac_scc" >
+		<id name="id" column="id">
+			<generator class="assigned" />
+		</id>
+		<property name="value" column="val" />
+		<property name="acId" column="ac_id" update="false"/>
+		<property name="corr" column="corr" insert="false" update="false"/>
+		<many-to-one name="scc" column="scc_3lc" class="de.act.common.types.staticobjects.RSScc" update="false" not-found="ignore" />
+	</class>
+   	
+	<class name="de.act.common.types.staticobjects.RsFltScc" table="s_flt_scc" >
+		<id name="id" column="id">
+			<generator class="assigned" />
+		</id>
+		<property name="value" column="val" />
+		<property name="corr" column="corr" insert="false" update="false"/>
+		<many-to-one name="scc" column="scc_3lc" class="de.act.common.types.staticobjects.RSScc" update="false" not-found="ignore" />
+		<many-to-one name="flt" column="flt_id" class="de.act.common.types.staticobjects.RSFlt" update="false" not-found="ignore" />
+	</class>
+   
+   	<class name="de.act.common.types.nonstaticobjects.RFStatView" table="f_stat_view">
+		<id name="id" column="id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">f_stat_id_seq</param>
+			</generator>
+		</id>
+		<property name="fId" column="f_id" insert="false" update="false"/>
+   		<property name="statId" column="stat_id" insert="false" update="false"/>
+   		<property name="corr" column="corr" insert="false" update="false"/>
+   		<property name="remark" column="remark" insert="false" update="false"/>
+   		<property name="addId" column="add_id" insert="false" update="false"/>
+   		<property name="userName" column="user_name" insert="false" update="false"/>
+   		<property name="part" column="part" insert="false" update="false"/>
+   		<property name="maniStatId" column="mani_stat_id" insert="false" update="false"/>
+   		<many-to-one name="state" column="stat_id" class="de.act.common.types.staticobjects.RSState" not-found="ignore" insert="false" update="false" />
+   		<many-to-one name="ap3Lc" column="ap_3lc" class="de.act.common.types.staticobjects.RSAp" not-found="ignore" insert="false" update="false" />
+   		<many-to-one name="shipmentAp3Lc" column="ap_3lc" class="de.act.common.types.staticobjects.RSAp" not-found="ignore" insert="false" update="false" />
+   	</class>
+   	
+   	<class name="de.act.common.types.nonstaticobjects.RFTransfer" table="f_transfer">
+   		<cache usage="transactional"/>
+		<composite-id> 
+			<key-property name="fId" column="f_id"/>
+			<key-property name="transferRow" column="transfer_row"/>
+		</composite-id>
+		<property name="transfered" column="transfered"/>
+   	</class>
+   	
+   	<class name="de.act.common.types.AFltEmailLog" table="a_flt_email_log">
+   		<cache usage="transactional"/>
+		<composite-id> 
+			<key-property name="a_flt_id" column="a_flt_id"/>
+			<key-property name="add_id" column="add_id"/>
+			<key-property name="email" column="email"/>		
+		</composite-id>
+		<property name="sent" column="emaiL_sent" />
+   	</class>
+   	
+   	<class name="de.act.common.types.staticobjects.RSDbmWs" table="s_dbm_ws">
+   		<cache usage="transactional"/>
+		<id name="dbm_id" column="dbm_id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">s_dbm_ws_dbm_id_seq</param>
+			</generator>
+		</id>
+		<property name="smu_no" column="smu_no" />
+		<property name="ca_name" column="ca_name" />
+		<property name="flt_no" column="flt_no" />
+		<property name="ap_3lc_from" column="ap_3lc_from" />
+		<property name="ap_3lc_to" column="ap_3lc_to" />
+		<property name="com_name" column="com_name" />
+		<property name="pcs" column="pcs" />
+		<property name="wgt" column="wgt" />
+		<property name="vol" column="vol" />
+		<property name="dep_date" column="dep_date" />
+		<property name="arr_date" column="arr_date" />
+		<property name="creator_id" column="creator_id" />
+		<property name="creator_name" column="creator_name" />
+		<property name="corr" column="corr" insert="false" update="false" />
+		<property name="vad_id" column="vad_id" />
+	</class>
+   	
+   	<class name="de.act.common.types.staticobjects.RSDbmWsCharges" table="s_dbm_ws_charges">
+   		<cache usage="transactional"/>
+		<id name="ws_charges_id" column="ws_charges_id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">s_dbm_ws_charges_ws_charges_id_seq</param>
+			</generator>
+		</id>
+		<property name="charges_type" column="charges_type" />
+		<property name="charges_value" column="charges_value" />
+		<property name="charges_unit" column="charges_unit" />
+		<property name="vad_id" column="vad_id" />
+	</class>
+	
+   	<class name="de.act.common.types.staticobjects.RSDbmWsView" mutable="false">
+		<subselect>
+			SELECT COUNT(a.dbm_id) AS total_smu, SUM(a.pcs) AS total_pcs, SUM(a.wgt) AS total_wgt, SUM(a.vol) AS total_vol, a.ca_name, a.ap_3lc_from, a.ap_3lc_to, a.dep_date
+  				FROM s_dbm_ws AS a GROUP BY a.ca_name, a.ap_3lc_from, a.ap_3lc_to, a.dep_date
+		</subselect>
+		<synchronize table="s_dbm_ws"/>
+		<composite-id>
+			<key-property name="ca_name" column="ca_name"/>
+			<key-property name="ap_3lc_from" column="ap_3lc_from"/>
+			<key-property name="ap_3lc_to" column="ap_3lc_to"/>
+			<key-property name="dep_date" column="dep_date"/>
+		</composite-id>
+		<property name="total_smu" column="total_smu"/>
+		<property name="total_pcs" column="total_pcs"/>
+		<property name="total_wgt" column="total_wgt"/>
+		<property name="total_vol" column="total_vol"/>
+	</class>
+	
+   	<class name="de.act.common.types.views.NewExportAcceptanceViewShipment" table="export_acceptance_view2">
+		<composite-id> 
+<!-- 			<key-property name="bkg_flt_id" /> -->
+			<key-property name="pkg_id" />
+<!-- 			<key-property name="acc_shipment_pkg_id" column="acc_shipment_pkg_id" /> -->
+		</composite-id>
+		<property name="ca_3dg" column="ca_3dg" />
+		<property name="awb_stock" column="awb_stock" />
+		<property name="awb_no" column="awb_no" />
+		<property name="non_standard" column="non_standard" />
+		<property name="f_id" column="f_id" />
+		<property name="ca_id" column="ca_id" />
+		<property name="dept" column="dept" />
+		<property name="dest" column="dest" />
+		<property name="req_from" column="req_from" />
+		<property name="req_to" column="req_to" />
+		<property name="bkg_flt_date" column="bkg_flt_date" />
+		<property name="bkg_item_id" column="bkg_item_id" />
+		<property name="total_wgt" column="total_wgt" />
+		<property name="total_vol" column="total_vol" />
+		<property name="total_pcs" column="total_pcs" />
+		<property name="com_parent" column="com_parent" />
+		<property name="pcs" column="pcs" />
+		<property name="com_id" column="com_id" />
+		<property name="com_name" column="com_name" />
+		<property name="ann_id" column="ann_id" />
+		<property name="ann_name" column="ann_name" />
+		<property name="wgt" column="wgt" />
+		<property name="l" column="l" />
+		<property name="w" column="w" />
+		<property name="h" column="h" />
+		<property name="vol" column="vol" />
+		<property name="scc_3lc" column="scc_3lc" />
+		<property name="shp_add_id" column="shp_add_id" />
+		<many-to-one name="shpAddress" column="shp_add_id" class="de.act.common.types.views.AddressView" update="false" insert="false" not-found="ignore" />
+		<property name="con_add_id" column="con_add_id" />
+		<many-to-one name="conAddress" column="con_add_id" class="de.act.common.types.views.AddressView" update="false" insert="false" not-found="ignore" />
+		<property name="ffw_add_id" column="ffw_add_id" />
+		<many-to-one name="ffwAddress" column="ffw_add_id" class="de.act.common.types.views.AddressView" update="false" insert="false" not-found="ignore" />
+		<property name="deliver_add_id" column="deliver_add_id" />
+		<many-to-one name="delAddress" column="deliver_add_id" class="de.act.common.types.views.AddressView" update="false" insert="false" not-found="ignore" />
+		<property name="anotify_add_id" column="anotify_add_id" />
+		<many-to-one name="anoAddress" column="anotify_add_id" class="de.act.common.types.views.AddressView" update="false" insert="false" not-found="ignore" />
+		<property name="bkg_status" column="bkg_status" />
+		<property name="acc_header_id" column="acc_header_id" />
+		<property name="awb_acc_header" column="awb_acc_header" />
+		<property name="first_dept" column="first_dept" />
+		<property name="final_dest" column="final_dest" />
+		<property name="acc_awb_item_id" column="acc_awb_item_id" />
+		<property name="awb_pcs" column="awb_pcs" />
+		<property name="awb_wgt" column="awb_wgt" />
+		<property name="awb_vol" column="awb_vol" />
+		<property name="ap_3lc" column="ap_3lc" />
+		<property name="awb_acc_per_airport" column="awb_acc_per_airport" />
+		<property name="acc_shipment_item_id" column="acc_shipment_item_id" />
+		<property name="shipment_pcs" column="shipment_pcs" />
+		<property name="shipment_wgt" column="shipment_wgt" />
+		<property name="shipment_vol" column="shipment_vol" />
+		<property name="shipment_com_id" column="shipment_com_id" />
+		<property name="a_flt_id" column="a_flt_id" />
+		<property name="a_dep" column="a_dep" />
+		<property name="open_for_cargo" column="open_for_cargo" />
+		<property name="bkg_id_id" column="bkg_id_id" />
+		<property name="flt_id" column="flt_id" />
+		<property name="flt_no" column="flt_no" />
+		<property name="mani_item_id" column="mani_item_id" />
+		<property name="ll_uld_id" column="ll_uld_id" />
+		<property name="uld_trans_mode" column="uld_trans_mode" />
+		<property name="holder_add_id" column="holder_add_id" />
+		<property name="ll_uld_type" column="ll_uld_type" />
+		<property name="ll_uld_no" column="ll_uld_no" />
+		<property name="uld_id" column="uld_id" />
+		<property name="stat_id" column="stat_id" />
+		<property name="part" column="part" />
+		<property name="shipment_acc_discr_id" column="shipment_acc_discr_id" />
+		<property name="shipment_discr_id" column="shipment_discr_id" />
+		<property name="shipment_discr_name" column="shipment_discr_name" />
+		<property name="shipment_discr_4lc" column="shipment_discr_4lc" />
+		<property name="shipment_discr_condition_flag" column="shipment_discr_condition_flag" />
+		<property name="shipment_discr_opposite_discr_id" column="shipment_discr_opposite_discr_id" />
+		<property name="awb_acc_discr_id" column="awb_acc_discr_id" />
+		<property name="awb_discr_id" column="awb_discr_id" />
+		<property name="awb_discr_name" column="awb_discr_name" />
+		<property name="awb_discr_4lc" column="awb_discr_4lc" />
+		<property name="awb_discr_condition_flag" column="awb_discr_condition_flag" />
+		<property name="awb_discr_opposite_discr_id" column="awb_discr_opposite_discr_id" />
+		<property name="stor_id" column="stor_id" />
+		<property name="stor_name" column="stor_name" />
+		<property name="is_loaded" column="is_loaded" />
+		<property name="print_id" column="print_id" />
+		<property name="awb_stat_id" column="awb_stat_id" />
+		<property name="stat_descr" column="stat_descr" />
+		<property name="acc_awb_pkg_id" column="acc_awb_pkg_id" />
+		<property name="pkg_row_no" column="pkg_row_no" />
+		<property name="com_parent_name" column="com_parent_name" />
+		<property name="mani_rem" column="mani_rem" />
+		<property name="awb_com_id" column="awb_com_id" />
+		<property name="shipment_pkg_pcs" column="shipment_pkg_pcs" />
+		<property name="shipment_pkg_com_id" column="shipment_pkg_com_id" />
+		<many-to-one name="shpCom" column="shipment_pkg_com_id" class="de.act.common.types.staticobjects.CCommodityTree" update="false" insert="false" not-found="ignore" />
+		<property name="shipment_pkg_ann_id" column="shipment_pkg_ann_id" />
+		<!-- <many-to-one name="shpAnn" column="shipment_pkg_ann_id" class="de.act.common.types.staticobjects.RSAnn" update="false" insert="false" not-found="ignore" /> -->
+		<property name="shipment_pkg_wgt" column="shipment_pkg_wgt" />
+		<property name="shipment_pkg_w" column="shipment_pkg_w" />
+		<property name="shipment_pkg_l" column="shipment_pkg_l" />
+		<property name="shipment_pkg_h" column="shipment_pkg_h" />
+		<property name="shipment_pkg_scc_3lc" column="shipment_pkg_scc_3lc" />
+		<property name="shipment_pkg_pkg_id" column="shipment_pkg_pkg_id" />
+		<property name="awb_pkg_pcs" column="awb_pkg_pcs" />
+		<property name="awb_pkg_com_id" column="awb_pkg_com_id" />
+		<property name="awb_pkg_ann_id" column="awb_pkg_ann_id" />
+		<property name="awb_pkg_wgt" column="awb_pkg_wgt" />
+		<property name="awb_pkg_w" column="awb_pkg_w" />
+		<property name="awb_pkg_l" column="awb_pkg_l" />
+		<property name="awb_pkg_h" column="awb_pkg_h" />
+		<property name="awb_pkg_scc_3lc" column="awb_pkg_scc_3lc" />
+		<property name="awb_pkg_pkg_id" column="awb_pkg_pkg_id" />
+		<property name="parent_ann" column="parent_ann" />
+		<property name="parent_ann_name" column="parent_ann_name" />
+		<property name="parent_scc_3lc" column="parent_scc_3lc" />
+		<property name="creator_add_id" column="creator_add_id" />
+		<property name="mani_id" column="mani_id" />
+		<property name="ca_2lc" column="ca_2lc" />
+		<property name="marks" column="marks" />
+		<property name="pkgs_col" column="pkgs_col" />
+		<property name="pkgs_mat" column="pkgs_mat" />
+		<property name="pkgs_shp" column="pkgs_shp" />
+		<property name="cuc_3lc" column="cuc_3lc" />
+		<property name="prio" column="prio" />
+		<property name="istotal" column="istotal" />
+		<property name="arr" column="arr" />
+		<property name="vo" column="v_o" />
+	</class>
+   	
+   	<!--=================================================================================================================================================-->	
+	<!--  RSCAULD ULD -->
+	<class name = "de.act.common.types.staticobjects.RSCaUld">
+		
+		<id name="ca_uld_id" column="ca_uld_id">
+			<generator class="assigned" />
+		</id>
+		
+		<property name="ca_id" column="ca_id" update="false"/>
+		<property name="uld_usages" column="uld_usages" update="false"/>
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+			
+	</class>
+	
+<!--=================================================================================================================================================-->
+
+	<class name="de.act.common.types.AFltMmt" table="a_flt_mmt">
+   		<cache usage="transactional"/>
+		<id name="a_flt_mmt_id" column="a_flt_mmt_id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">a_flt_mmt_a_flt_mmt_id_seq</param>
+			</generator>
+		</id>
+		<property name="a_flt_id" column="a_flt_id" />
+		<property name="mmt_meaning" column="mmt_meaning" />
+		<property name="mmt" column="mmt" />
+		<property name="mmt_set_by" column="mmt_set_by" />
+		<property name="mmt_set_name" column="mmt_set_name" />
+		<property name="mmt_discr" column="mmt_discr" />
+		<property name="mmt_rem" column="mmt_rem" />
+		<property name="corr" column="corr" insert="false" update="false" />
+	</class>
+	
+	<!-- Added for multiple MRN -->
+	<class name="de.act.common.types.staticobjects.CustomNumber" table="f_cust_number">
+		<cache usage="transactional"/>
+		<id name="id" column="id" unsaved-value="-1"  >
+			<generator class="native">
+				<param name="sequence">f_cust_number_id_seq</param>
+			</generator>
+		</id>
+		<property name="numberRow" column="number_row"/>
+		<property name="fId" column="f_id"/>			
+		<property name="attId" column="att_id"/>
+		<property name="customNumberType" column="custom_number_type"/>
+		<property name="customNumber" column="custom_number"/>
+		<property name="corr" column="corr" insert="false" update="false"/>
+	</class>
+	
+	<class name="de.act.common.types.staticobjects.RSWgtVolPref" table="f_cust_number">
+		<cache usage="transactional"/>
+		<id name="id" column="id" unsaved-value="-1"  >
+			<generator class="assigned" />
+		</id>
+		<property name="co_2lc" column="co_2lc"/>
+		<property name="ca_id" column="ca_id"/>			
+		<property name="is_active" column="is_active"/>
+		<property name="pref_value" column="pref_value"/>
+	</class>
+	
+	<class name="de.act.common.types.nonstaticobjects.RSOpsEmailLog" table="s_ops_email_log" >   		
+   		
+   		<!-- primary key -->
+   		<id name="id" column="id" >
+			<generator class="native">
+				<param name="sequence">s_ops_email_log_id_seq</param>
+			</generator>
+		</id>		
+		<property name="ca_id" column="ca_id" />
+		<property name="flt_date" column="flt_date" />
+		<property name="airport" column="airport" />
+   	</class>
+   	
+	<class name="de.act.common.types.views.DailyBookingListView" table="f_daily_booking_list_view" mutable="false" >
+   		<cache usage="transactional"/>
+   		<composite-id> 
+			<key-property name="bkg_item_id" />
+			<key-property name="flt_no" column="flt_no" />
+		</composite-id>
+		<property name = "creator_id" column = "creator_id" />
+		<property name = "awb_no" column = "awb_no" />
+   		<property name = "non_standard" column = "non_standard" />
+   		<property name = "part" column = "part" />
+   		<property name = "pcs" column = "pcs" />
+   		<property name = "wgt" column = "wgt" />
+   		<property name = "vol" column = "vol" />
+   		<property name = "com_name" column = "com_name" />
+   		<property name = "scc_3lc" column = "scc_3lc" />
+   		<property name = "ca_id" column = "ca_id" />
+   		<property name = "ca_2lc" column = "ca_2lc" />
+   		<!--property name = "flt_no" column = "flt_no" /-->
+   		<property name = "bkg_flt_date" column = "bkg_flt_date" />
+   		<property name = "dept" column = "dept" />
+   		<property name = "dest_hops" column = "dest_hops" />
+   		<property name = "dest" column = "dest" />
+   		<property name = "bkg_status" column = "bkg_status" />
+   		<!--property name = "flt_id" column = "flt_id" /-->
+   		<property name = "ca_3dg" column = "ca_3dg" />
+   		<property name = "awb_stock" column = "awb_stock" />
+   		<property name = "f_id" column = "f_id" />
+   		<property name ="bkg_flt_id" column = "bkg_flt_id" />
+   		<!--property name = "bkg_item_id" column = "bkg_item_id" /-->
+   		<property name = "a_flt_id" column = "a_flt_id" />
+   		<property name = "shp_add_id" column = "shp_add_id" />
+   		<property name = "con_add_id" column = "con_add_id" />
+   		<property name = "ffw_add_id" column = "ffw_add_id" />
+   		<property name = "shp_add_name" column = "shp_add_name" />
+   		<property name = "con_add_name" column = "con_add_name" />
+   		<property name = "ffw_add_name" column = "ffw_add_name" />
+   		<property name="flt_row" column="flt_row" />
+   		<property name="flt_id" column="flt_id" />
+   		<property name="created_date" column="created_date" />
+		<property name="req_from" column="req_from" />
+		<property name="priority" column="prio" />
+		<property name = "com_id" column = "com_id" />
+   		<property name = "ann_id" column = "ann_id" />
+   		<property name = "dep" column = "dep" />
+   	</class>
+   	
+   	<class name="de.act.common.types.staticobjects.RSCoTax" table="s_co_tax" dynamic-update="true" dynamic-insert="true">
+		<cache usage="transactional" />
+		<id name="coTaxId" column="co_tax_id" unsaved-value="null">
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>	
+		<property name="taxType" column="tax_type" />
+		<property name="taxValue" column="tax_value" />
+		<property name="taxPercentage" column="tax_percentage" />
+		<property name="taxArea" column="tax_area" />
+		<property name="rId" column="r_id" />
+		<property name="co_2lc" column="co_2lc" />
+		<!-- <property name="di_2lc" column="di_2lc" /> -->
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+	</class>
+	
+	<class name="de.act.common.types.staticobjects.SccCaRule" table="s_scc_ca_rule">
+		<id name="sccCaRuleId" column="s_scc_ca_rule_id">
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+   		<property name="comId" column="com_id" />
+   		<property name="comName" column="com_name" />
+   		<property name="annId" column="ann_id" />
+   		<property name="value" column="val" />
+   		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+   	</class>
+
+	<class name="de.act.common.types.nonstaticobjects.RFTimesproof" table="f_tp">
+		<id name="id" column="tp_id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+   		<property name="fStatId" column="f_stat_id" />
+		<property name="fId" column="f_id" />
+   		<property name="tpSign" column="tp_sign" />
+   		<property name="tpTimes" column="tp_times" />
+   		<property name="CORR" column="corr" insert="false" update="false"/>
+   	</class>
+   	
+   	<class name="de.act.common.types.staticobjects.RSCostConx" table="s_cost_conx" dynamic-update="true" dynamic-insert="true">
+		<cache usage="transactional" />
+		<id name="conxCostId" column="conx_cost_id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>	
+		<property name="acType" column="ac_type" />
+		<property name="conxCostType" column="conx_cost_type" />
+		<property name="conxCostUnit" column="conx_cost_unit" />
+		<property name="routingType" column="routing_type" />
+		<property name="vatRequired" column="vat_required" />
+		<property name="minimum" column="minimum" />
+		<property name="rate" column="rate" />
+		<property name="unit" column="unit" />
+		<property name="rId" column="r_id" />
+		<property name="isDelete" column="is_delete" />
+		<many-to-one name="connection" column="conx_id" class="de.act.common.types.staticobjects.RSConx" not-found="ignore"/>
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+	</class>
+	
+	<class name="de.act.common.types.staticobjects.RSCostCons" table="s_cost_cons" dynamic-update="true" dynamic-insert="true">
+		<cache usage="transactional" />
+		<id name="consCostId" column="cons_cost_id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>	
+		<property name="caId" column="ca_id" />
+		<property name="consCostType" column="cons_cost_type" />
+		<property name="unit" column="unit" />
+		<property name="consCostUnit" column="cons_cost_unit" />
+		<property name="routingType" column="routing_type" />
+		<property name="vatRequired" column="vat_required" />
+		<property name="rate" column="rate" />
+		<property name="minimum" column="minimum" />
+		<property name="cur3lc" column="cur_3lc" />
+		<property name="rId" column="r_id" />
+		<property name="isDelete" column="is_delete" />
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+	</class>
+	
+	<class name="de.act.common.types.staticobjects.RSCostAp" table="s_cost_ap" dynamic-update="true" dynamic-insert="true">
+		<cache usage="transactional" />
+		<id name="apCostId" column="ap_cost_id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>	
+		<property name="ap3lc" column="ap_3lc" />
+		<property name="caId" column="ca_id" />
+		<property name="apCostType" column="ap_cost_type" />
+		<property name="apRtSegment" column="ap_rt_segment" />
+		<property name="unit" column="unit" />
+		<property name="apCostUnit" column="ap_cost_unit" />
+		<property name="routingType" column="routing_type" />
+		<property name="vatRequired" column="vat_required" />
+		<property name="rate" column="rate" />
+		<property name="minimum" column="minimum" />
+		<property name="cur3lc" column="cur_3lc" />
+		<property name="rId" column="r_id" />
+		<property name="isDelete" column="is_delete" />
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+	</class>
+	
+	<class name="de.act.common.types.packageitems.ItemAWBAccount" table="f_awb_account" dynamic-update="true" dynamic-insert="true" >
+		<cache usage="transactional"/>	
+		<id name="awbAccountId" column="awb_account_id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">f_awb_account_seq</param>
+			</generator>
+		</id>
+		<!-- <properties name="name" unique="true" >
+			<many-to-one name="metadata" class="de.act.common.types.attachment.CPackageAttachment" cascade="all" column="att_id" />
+		</properties>
+		<property name="attId" column="att_id"/> -->
+		<property name="rate" column="rate"/>
+		<property name="ot" column="ot"/>
+		<property name="tax" column="tax"/>
+		<property name="creditCardFee" column="creditcard_fee"/>
+		<property name="total" column="total"/>
+		<property name="cur3lcFrom" column="cur_3lc_from"/>
+		<property name="cur3lcTo" column="cur_3lc_to"/>
+		<property name="conversionRate" column="conversation_rate"/>
+		<many-to-one name="fAwb" column="att_id" class="de.act.central.types.FormularAWB" not-found="ignore" />
+	</class>
+	
+	<class name="de.act.common.types.staticobjects.RSCaPref" table="s_ca_pref" batch-size="3">
+        <cache usage="transactional"/>
+        <id name="ca_pref_id" column="ca_pref_id">
+             <generator class="native">
+                <param name="sequence">s_ca_pref_seq</param>
+            </generator>
+        </id>
+        <property name="ca_id" column="ca_id"/>
+        <property name="mod_rebook" column="mod_rebook"/>
+        <property name="mani_rebook" column="mani_rebook"/>
+        <property name="trouble_rebook" column="trouble_rebook"/>
+        <property name="switch_deposit" column="switch_deposit"/>
+    </class>
+    
+    <class name="de.act.common.types.staticobjects.RSCourierVehicle" table="s_courier_vehicle" batch-size="3">
+        <cache usage="transactional"/>
+        <id name="id" column="courier_vec_id">
+             <generator class="native">
+                <param name="sequence">s_courier_vehicle_db_seq</param>
+            </generator>
+        </id>
+        <property name="acId" column="ac_id"/>
+        <property name="addId" column="add_id"/>
+        <many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" insert="false" update="false"/>
+    </class>
+    
+    <class name="de.act.common.types.staticobjects.DUserVehicle" table="d_user_vehicle" batch-size="3">
+        <cache usage="transactional"/>
+        <id name="id" column="user_vec_id">
+             <generator class="native">
+                <param name="sequence">d_user_vehicle_db_seq</param>
+            </generator>
+        </id>
+        <property name="userId" column="user_id"/>
+        <property name="acId" column="ac_id"/>
+        <property name="status" column="status"/>
+        <many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" insert="false" update="false"/>
+    </class>
+    
+    <class name="de.act.common.types.staticobjects.RSApCaExc" table="s_ap_ca_exc" batch-size="3">
+        <cache usage="transactional"/>
+        <id name="id" column="s_ap_ca_exc_id">
+             <generator class="native">
+                <param name="sequence">s_ap_ca_exc_db_seq</param>
+            </generator>
+        </id>
+        <property name="caId" column="ca_id"/>
+        <property name="ap3lc" column="ap_3lc"/>
+        <many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" insert="false" update="false"/>
+    </class>
+    
+    <class name="de.act.common.types.staticobjects.RFCourierJob" table="f_cj">
+        <cache usage="transactional"/>
+        <id name="cj_id" column="cj_id">
+             <generator class="native">
+                <param name="sequence">f_cj_id_seq</param>
+            </generator>
+        </id>
+        <property name="add_id" column="add_id"/>
+        <property name="f_id" column="f_id"/>
+        <property name="assigned" column="assigned"/>
+        <property name="cj_stat" column="cj_stat"/>
+        <property name="corr" column="corr"/>
+        <property name="type_job" column="type_job"/>
+    </class>
+    
+    <class name="de.act.common.types.views.NewExportAcceptanceViewShipmentCargoImp" table="export_acceptance_view2">
+   		<id name="dept" column="dept"/>
+
+		<property name="bkg_flt_id" column="bkg_flt_id" />
+		<property name="ca_3dg" column="ca_3dg" />
+		<property name="awb_stock" column="awb_stock" />
+		<property name="awb_no" column="awb_no" />
+		<property name="non_standard" column="non_standard" />
+		<property name="f_id" column="f_id" />
+		<property name="ca_id" column="ca_id" />
+<!-- 		<property name="dept" column="dept" /> -->
+		<property name="dest" column="dest" />
+		<property name="req_from" column="req_from" />
+		<property name="req_to" column="req_to" />
+		<property name="bkg_flt_date" column="bkg_flt_date" />
+		<property name="bkg_item_id" column="bkg_item_id" />
+		<property name="total_wgt" column="total_wgt" />
+		<property name="total_vol" column="total_vol" />
+		<property name="total_pcs" column="total_pcs" />
+		<property name="com_parent" column="com_parent" />
+		<property name="pkg_id" column="pkg_id" />
+		<property name="pcs" column="pcs" />
+		<property name="com_id" column="com_id" />
+		<property name="com_name" column="com_name" />
+		<property name="ann_id" column="ann_id" />
+		<property name="ann_name" column="ann_name" />
+		<property name="wgt" column="wgt" />
+		<property name="l" column="l" />
+		<property name="w" column="w" />
+		<property name="h" column="h" />
+		<property name="vol" column="vol" />
+		<property name="scc_3lc" column="scc_3lc" />
+		<property name="shp_add_id" column="shp_add_id" />
+		<many-to-one name="shpAddress" column="shp_add_id" class="de.act.common.types.views.AddressView" update="false" insert="false" not-found="ignore" />
+		<property name="con_add_id" column="con_add_id" />
+		<many-to-one name="conAddress" column="con_add_id" class="de.act.common.types.views.AddressView" update="false" insert="false" not-found="ignore" />
+		<property name="ffw_add_id" column="ffw_add_id" />
+		<many-to-one name="ffwAddress" column="ffw_add_id" class="de.act.common.types.views.AddressView" update="false" insert="false" not-found="ignore" />
+		<property name="deliver_add_id" column="deliver_add_id" />
+		<many-to-one name="delAddress" column="deliver_add_id" class="de.act.common.types.views.AddressView" update="false" insert="false" not-found="ignore" />
+		<property name="anotify_add_id" column="anotify_add_id" />
+		<many-to-one name="anoAddress" column="anotify_add_id" class="de.act.common.types.views.AddressView" update="false" insert="false" not-found="ignore" />
+		<property name="bkg_status" column="bkg_status" />
+		<property name="acc_header_id" column="acc_header_id" />
+		<property name="awb_acc_header" column="awb_acc_header" />
+		<property name="first_dept" column="first_dept" />
+		<property name="final_dest" column="final_dest" />
+		<property name="acc_awb_item_id" column="acc_awb_item_id" />
+		<property name="awb_pcs" column="awb_pcs" />
+		<property name="awb_wgt" column="awb_wgt" />
+		<property name="awb_vol" column="awb_vol" />
+		<property name="ap_3lc" column="ap_3lc" />
+		<property name="awb_acc_per_airport" column="awb_acc_per_airport" />
+		<property name="acc_shipment_item_id" column="acc_shipment_item_id" />
+		<property name="shipment_pcs" column="shipment_pcs" />
+		<property name="shipment_wgt" column="shipment_wgt" />
+		<property name="shipment_vol" column="shipment_vol" />
+		<property name="shipment_com_id" column="shipment_com_id" />
+		<property name="a_flt_id" column="a_flt_id" />
+		<property name="a_dep" column="a_dep" />
+		<property name="open_for_cargo" column="open_for_cargo" />
+		<property name="bkg_id_id" column="bkg_id_id" />
+		<property name="flt_id" column="flt_id" />
+		<property name="flt_no" column="flt_no" />
+		<property name="mani_item_id" column="mani_item_id" />
+		<property name="ll_uld_id" column="ll_uld_id" />
+		<property name="uld_trans_mode" column="uld_trans_mode" />
+		<property name="holder_add_id" column="holder_add_id" />
+		<property name="ll_uld_type" column="ll_uld_type" />
+		<property name="ll_uld_no" column="ll_uld_no" />
+		<property name="uld_id" column="uld_id" />
+		<property name="stat_id" column="stat_id" />
+		<property name="part" column="part" />
+		<property name="shipment_acc_discr_id" column="shipment_acc_discr_id" />
+		<property name="shipment_discr_id" column="shipment_discr_id" />
+		<property name="shipment_discr_name" column="shipment_discr_name" />
+		<property name="shipment_discr_4lc" column="shipment_discr_4lc" />
+		<property name="shipment_discr_condition_flag" column="shipment_discr_condition_flag" />
+		<property name="shipment_discr_opposite_discr_id" column="shipment_discr_opposite_discr_id" />
+		<property name="awb_acc_discr_id" column="awb_acc_discr_id" />
+		<property name="awb_discr_id" column="awb_discr_id" />
+		<property name="awb_discr_name" column="awb_discr_name" />
+		<property name="awb_discr_4lc" column="awb_discr_4lc" />
+		<property name="awb_discr_condition_flag" column="awb_discr_condition_flag" />
+		<property name="awb_discr_opposite_discr_id" column="awb_discr_opposite_discr_id" />
+		<property name="stor_id" column="stor_id" />
+		<property name="stor_name" column="stor_name" />
+		<property name="is_loaded" column="is_loaded" />
+		<property name="print_id" column="print_id" />
+		<property name="awb_stat_id" column="awb_stat_id" />
+		<property name="stat_descr" column="stat_descr" />
+		<property name="acc_shipment_pkg_id" column="acc_shipment_pkg_id" />
+		<property name="acc_awb_pkg_id" column="acc_awb_pkg_id" />
+		<property name="pkg_row_no" column="pkg_row_no" />
+		<property name="com_parent_name" column="com_parent_name" />
+		<property name="mani_rem" column="mani_rem" />
+		<property name="awb_com_id" column="awb_com_id" />
+		<property name="shipment_pkg_pcs" column="shipment_pkg_pcs" />
+		<property name="shipment_pkg_com_id" column="shipment_pkg_com_id" />
+		<many-to-one name="shpCom" column="shipment_pkg_com_id" class="de.act.common.types.staticobjects.CCommodityTree" update="false" insert="false" not-found="ignore" />
+		<property name="shipment_pkg_ann_id" column="shipment_pkg_ann_id" />
+		<!-- <many-to-one name="shpAnn" column="shipment_pkg_ann_id" class="de.act.common.types.staticobjects.RSAnn" update="false" insert="false" not-found="ignore" /> -->
+		<property name="shipment_pkg_wgt" column="shipment_pkg_wgt" />
+		<property name="shipment_pkg_w" column="shipment_pkg_w" />
+		<property name="shipment_pkg_l" column="shipment_pkg_l" />
+		<property name="shipment_pkg_h" column="shipment_pkg_h" />
+		<property name="shipment_pkg_scc_3lc" column="shipment_pkg_scc_3lc" />
+		<property name="shipment_pkg_pkg_id" column="shipment_pkg_pkg_id" />
+		<property name="awb_pkg_pcs" column="awb_pkg_pcs" />
+		<property name="awb_pkg_com_id" column="awb_pkg_com_id" />
+		<property name="awb_pkg_ann_id" column="awb_pkg_ann_id" />
+		<property name="awb_pkg_wgt" column="awb_pkg_wgt" />
+		<property name="awb_pkg_w" column="awb_pkg_w" />
+		<property name="awb_pkg_l" column="awb_pkg_l" />
+		<property name="awb_pkg_h" column="awb_pkg_h" />
+		<property name="awb_pkg_scc_3lc" column="awb_pkg_scc_3lc" />
+		<property name="awb_pkg_pkg_id" column="awb_pkg_pkg_id" />
+		<property name="parent_ann" column="parent_ann" />
+		<property name="parent_ann_name" column="parent_ann_name" />
+		<property name="parent_scc_3lc" column="parent_scc_3lc" />
+		<property name="creator_add_id" column="creator_add_id" />
+		<property name="mani_id" column="mani_id" />
+		<property name="ca_2lc" column="ca_2lc" />
+		<property name="marks" column="marks" />
+		<property name="pkgs_col" column="pkgs_col" />
+		<property name="pkgs_mat" column="pkgs_mat" />
+		<property name="pkgs_shp" column="pkgs_shp" />
+		<property name="cuc_3lc" column="cuc_3lc" />
+		<property name="prio" column="prio" />
+		<property name="istotal" column="istotal" />
+		<property name="arr" column="arr" />
+		<property name="vo" column="v_o" />
+	</class>
+	
+	<class name="de.act.common.types.views.ImportAcceptanceViewCargoImp" table="import_acceptance_view">
+		<id name="dest" column="dest" />
+		<!-- <composite-id> 
+			<key-property name="req_to" />
+			<key-property name="pkg_id" />
+		</composite-id> -->
+		<property name="ca_3dg" column="ca_3dg" />
+		<property name="awb_stock" column="awb_stock" />
+		<property name="awb_no" column="awb_no" />
+		<property name="non_standard" column="non_standard" />
+		<property name="f_id" column="f_id" />
+		<property name="ca_id" column="ca_id" />		
+		<property name="dept" column="dept" />
+<!-- 		<property name="dest" column="dest" />		 -->
+		<property name="req_to" column="req_to" />
+		<property name="pkg_id" column="pkg_id" />
+		
+		<property name="bkg_flt_id" column="bkg_flt_id" />
+		<property name="bkg_flt_date" column="bkg_flt_date" />
+		<property name="bkg_item_id" column="bkg_item_id" />
+		<property name="total_wgt" column="total_wgt" />
+		<property name="total_vol" column="total_vol" />
+		<property name="total_pcs" column="total_pcs" />
+		<property name="com_parent" column="com_parent" />
+		<property name="com_parent_name" column="com_parent_name" />
+		<property name="pcs" column="pcs" />
+		<property name="com_id" column="com_id" />
+		<property name="com_name" column="com_name" />
+		<property name="ann_id" column="ann_id" />
+		<property name="ann_name" column="ann_name" />
+		<property name="wgt" column="wgt" />
+		<property name="l" column="l" />
+		<property name="w" column="w" />
+		<property name="h" column="h" />
+		<property name="vol" column="vol" />
+		<property name="scc_3lc" column="scc_3lc" />
+		<property name="shp_add_id" column="shp_add_id" />
+		<property name="con_add_id" column="con_add_id" />
+		<property name="bkg_status" column="bkg_status" />
+		<property name="acc_header_id" column="acc_header_id" />
+		<property name="awb_acc_header" column="awb_acc_header" />
+		<property name="first_dept" column="first_dept" />
+		<property name="final_dest" column="final_dest" />
+		<property name="acc_awb_item_id" column="acc_awb_item_id" />
+		<property name="awb_pcs" column="awb_pcs" />
+		<property name="awb_wgt" column="awb_wgt" />
+		<property name="ap_3lc" column="ap_3lc" />
+		<property name="awb_acc_per_airport" column="awb_acc_per_airport" />
+		<property name="acc_shipment_item_id" column="acc_shipment_item_id" />
+		<property name="shipment_pcs" column="shipment_pcs" />
+		<property name="shipment_wgt" column="shipment_wgt" />
+		<property name="shipment_com_id" column="shipment_com_id" />
+		<property name="a_flt_id" column="a_flt_id" />
+		<property name="bkg_id_id" column="bkg_id_id" />
+		<property name="flt_id" column="flt_id" />
+		<property name="mani_item_id" column="mani_item_id" />
+		<property name="ll_uld_id" column="ll_uld_id" />
+		<property name="holder_add_id" column="holder_add_id" />
+		<property name="ll_uld_type" column="ll_uld_type" />
+		<property name="ll_uld_no" column="ll_uld_no" />
+		<property name="uld_id" column="uld_id" />
+		<property name="stat_id" column="stat_id" />
+		<property name="part" column="part" />
+		<property name="shipment_acc_discr_id" column="shipment_acc_discr_id" />
+		<property name="shipment_discr_id" column="shipment_discr_id" />
+		<property name="shipment_discr_name" column="shipment_discr_name" />
+		<property name="shipment_discr_4lc" column="shipment_discr_4lc" />
+		<property name="shipment_discr_condition_flag" column="shipment_discr_condition_flag" />
+		<property name="shipment_discr_opposite_discr_id" column="shipment_discr_opposite_discr_id" />
+		<property name="awb_acc_discr_id" column="awb_acc_discr_id" />
+		<property name="awb_discr_id" column="awb_discr_id" />
+		<property name="awb_discr_name" column="awb_discr_name" />
+		<property name="awb_discr_4lc" column="awb_discr_4lc" />
+		<property name="awb_discr_condition_flag" column="awb_discr_condition_flag" />
+		<property name="awb_discr_opposite_discr_id" column="awb_discr_opposite_discr_id" />
+		<property name="mani_rem" column="mani_rem" />
+		<property name="stor_name" column="stor_name" />
+		<property name="ca_2lc" column="ca_2lc" />
+		<property name="next_ca_2lc" column="next_ca_2lc" />
+		<property name="next_ca_name" column="ca_name" />
+		<property name="mani_id" column="mani_id" />
+		<property name="flt_no" column="flt_no" />		
+		<property name="marks" column="marks" />
+		<property name="pkgs_mat" column="pkgs_mat"></property>
+		<property name="pkgs_shp" column="pkgs_shp"></property>
+		<property name="pkgs_col" column="pkgs_col"></property>
+		<property name="trans_flt_date" column="trans_flt_date"></property>
+		<property name="trans_flt_no" column="trans_flt_no"></property>
+		<property name="cuc_3lc" column="cuc_3lc" />
+		<property name="istotal" column="istotal" />
+	</class>
+    
+    <class name="de.act.common.types.staticobjects.RSCourierCode" table="s_courier_code">
+        <cache usage="transactional"/>
+        <id name="courier_route_id" column="courier_route_id"/>
+        <property name="courier_name" column="courier_name"/>
+        <property name="co_2lc" column="co_2lc"/>
+        <property name="district" column="district"/>
+        <property name="sub_district" column="sub_district"/>
+        <property name="postal_code" column="postal_code"/>
+        <many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+    </class>
+    
+    <class name="de.act.common.types.staticobjects.RSCourierRouteService" table="s_courier_route_service">
+        <cache usage="transactional"/>
+        <id name="route_id" column="route_id"/>
+        <property name="courier_name" column="courier_name"/>
+        <property name="origin" column="origin"/>
+        <property name="courier_route_id_origin" column="courier_route_id_origin"/>
+        <property name="destination" column="destination"/>
+        <property name="courier_route_id_destination" column="courier_route_id_destination"/>
+        <property name="rate" column="rate"/>
+        <property name="etd_from" column="etd_from"/>
+        <property name="etd_thru" column="etd_thru"/>
+        <property name="service_name" column="service_name"/>
+        <property name="weight" column="weight"/>        
+        <many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+    </class>
+    
+    <class name="de.act.common.types.staticobjects.RSHouseAirwaybill" table="s_hawb">
+   		<cache usage="transactional"/>
+		<id name="hawbId" column="hawb_id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">s_hawb_seq</param>
+			</generator>
+		</id>
+		<property name="fId" column="f_id" />
+		<property name="awbNo" column="awb_no" />
+		<property name="hawbNo" column="hawb_no" />
+		<property name="dept" column="departure" />
+		<property name="dest" column="destination" />
+		<property name="comId" column="com_id" />
+		<property name="annId" column="ann_id" />
+		<property name="pcs" column="pcs" />
+		<property name="wgt" column="wgt" />
+		<property name="vol" column="vol" />
+		<property name="l" column="l" />
+		<property name="w" column="w" />
+		<property name="h" column="h" />
+		<property name="shipper" column="shipper" />
+		<property name="consignee" column="consignee" />
+		<property name="remark" column="remark" />
+		<property name="corr" column="corr" insert="false" update="false"/>
+   </class>
+   
+   <!-- 
+   <class name="de.act.common.types.staticobjects.RateOrderBatch" table="s_rob">
+   	   <cache usage="transactional"/>
+   	   <id name="orderId" column="orderId"/>
+	   <property name="status" column="status" />
+	   <property name="expiredDate" column="expiredDate" />
+	   <property name="deliverDate" column="deliverDate" />
+   </class>
+   
+   <class name="de.act.common.types.staticobjects.RatesBatch" table="s_rb">
+   	   <cache usage="transactional"/>
+   	   <id name="id" column="id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>	
+   	   <property name="orderId" column="orderId" />
+   	   <property name="rate" column="rate" />
+   	   <property name="pickupDate" column="pickupDate" />
+   	   <many-to-one name="rateOrderBatch" column="s_rob_id" class="de.act.common.types.staticobjects.RateOrderBatch" not-found="ignore" />
+   </class>
+ -->   
+	<class name="de.act.common.types.staticobjects.CommodityInsurance" table="s_com_insurance">
+   	   	<cache usage="transactional"/>
+   	   	<id name="comm_insurance" column="com_insurance">
+   	   		<generator class="native">
+				<param name="sequence">s_com_insurance_com_insurance_seq1</param>
+			</generator>
+		</id>
+   	   	<property name="min" column="min" />
+   	   	<property name="cur3lc" column="cur_3lc" />
+   	  	<property name="rate" column="rate" />
+   	   	<property name="unit" column="unit" />
+   	   
+   	   	<many-to-one name="commodity" class="de.act.common.types.staticobjects.CCommodityTree" column="com_id"/>
+   	   	<many-to-one name="rsAnn" class="de.act.common.types.staticobjects.RSAnn" column="ann_id"/>
+   	   	<many-to-one name="addId" class="de.act.common.types.staticobjects.RSAdd" column="owner_add_id"/>
+   	   	<many-to-one name="vad" class="de.act.common.types.staticobjects.RSVad" column="vad_id"/>
+   	   	<many-to-one name="rBase" class="de.act.common.types.ruleobject.RBase" column="r_id"/>
+   	</class>
+	
+	<class name="de.act.common.types.staticobjects.InsuranceCharge" table="f_ins_charge">
+   	   	<cache usage="transactional"/>
+   	   	<id name="id" column="id">
+   	   		<generator class="native">
+				<param name="sequence">a_ins_chrg_seq</param>
+			</generator>
+   	   	</id>
+   	   	<property name="policyNo" column="policy_no" />
+   	   	<property name="cost" column="cost" />
+   	   	<many-to-one name="attachment" class="de.act.common.types.attachment.CAbstractAttachment" column="att_id"/>
+   	   	<many-to-one name="form" class="de.act.common.types.nonstaticobjects.RFForm" column="f_id"/>
+	</class>
+	
+	<class name="de.act.common.types.staticobjects.InsuranceChargeCommodity" table="f_ins_charge_com">
+   	   	<cache usage="transactional"/>
+   	   	<id name="id" column="id">
+   	   		<generator class="native">
+				<param name="sequence">a_ins_chrg_seq</param>
+			</generator>
+	   	</id>
+   	   	<property name="currencyFrom" column="cur_from" />
+   	   	<property name="currencyTo" column="cur_to" />
+   	   	<property name="sum" column="sum" />
+   	   	<many-to-one name="insurance" class="de.act.common.types.staticobjects.CommodityInsurance" column="insurance_id"/>
+   	   	<many-to-one name="commodity" class="de.act.common.types.staticobjects.CCommodityTree" column="com_id"/>
+   	   	<many-to-one name="annotation" class="de.act.common.types.staticobjects.RSAnn" column="ann_id"/>
+   	   	<many-to-one name="insuranceCharge" class="de.act.common.types.staticobjects.InsuranceCharge" column="ins_charge"/>   	   
+	</class>
+	
+	<class name="de.act.common.types.staticobjects.InsuranceStock" table="f_insurance_stock">
+   	   	 <cache usage="transactional"/>
+   	  	 <id name="id" column="id">
+			<generator class="native">
+				<param name="sequence">f_insurance_stock_seq</param>
+			</generator>
+		</id>
+   	   	<property name="addId" column="add_id" />   	   
+	   	<property name="policyStart" column="policy_no_start" />
+   	   	<property name="policyNext" column="policy_no_next" />
+   	   	<property name="policyWarn" column="policy_no_warn" />
+   	   	<property name="isActive" column="is_active" />
+   	   	<many-to-one name="vadd" class="de.act.common.types.staticobjects.RSVad" column="vad_id"/>
+	</class>
+	
+</hibernate-mapping>

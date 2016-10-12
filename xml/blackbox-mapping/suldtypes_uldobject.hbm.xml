@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" >
+	
+	<class name="de.act.common.types.staticobjects.RSUld" table="s_uld" batch-size="5"> <!-- mutable="false" --> 
+		<!-- rec <cache usage="read-only"/>--> <cache usage="transactional"/>
+		<id name="uld_id" column="uld_id" unsaved-value="-1"  >
+ 			<generator class="assigned"/>
+		</id>
+		<property name="uld_type_id" />
+		<property name="ca_id" />
+		<property name="uld_shape" />	
+		<property name="pallet" />	
+		<property name="forkliftable" />
+		<property name="cooled"/>
+		<property name="uld_icon" />
+		<property name="uld_l" />
+		<property name="uld_w" />
+		<property name="uld_h" />
+		<property name="oversize"/>
+		<property name="load_l"/>
+		<property name="load_w"/>
+		<property name="load_h"/>
+		<property name="door_l" />
+		<property name="door_w" />
+		<property name="door_h" />
+		<property name="max_vol" />
+		<property name="rate_wgt"/>
+		<!--property name="vad_id" /-->
+		<!--property name="len_unit" /-->
+		<!--property name="vol_unit" /-->	
+		<property name="tare_wgt" />	
+		<property name="max_wgt" />
+		<!--property name="wgt_unit" /-->	
+		<property name="uld_rem" />
+		<!--set name="uldNames" lazy="false" inverse="true" cascade="none" mutable="false" batch-size="10"  >
+			<cache usage="transactional"/>
+			<key column="uld_type_id" />
+			<one-to-many class="de.act.common.types.staticobjects.RSUldName" />
+		</set-->
+		<!--set name="ulds" lazy="false" inverse="true" cascade="none" mutable="true" batch-size="10" >
+			<cache usage="transactional"/>
+			<key column="uld_type_id" />
+			<one-to-many class="de.act.common.types.nonstaticobjects.ULDObject" />
+		</set-->
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+	</class>
+</hibernate-mapping>
+
+<!--
+	uld_type_id int8 NOT NULL,
+  ca_id varchar(3),
+  uld_shape cn_uld_shape,
+  pallet cn_bool,
+  uld_l numeric(8,2),
+  uld_w numeric(8,2),
+  uld_h numeric(8,2),
+  door_l numeric(8,2),  depth of the door frame
+  door_w numeric(8,2),
+  door_h numeric(8,2),
+  oversize numeric(8,2),
+  len_unit varchar(2),
+  max_vol numeric(8,2),
+  vol_unit varchar(2),
+  rate_wgt numeric(8,2),
+  tare_wgt numeric(8,2),
+  max_wgt numeric(8,2),
+  wgt_unit varchar(2),
+  uld_rem varchar(150),
+  vad_id varchar(8),
+-->

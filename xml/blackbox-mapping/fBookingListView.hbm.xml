@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+		
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="property" package="de.act.common.types.views" >
+	<class name="de.act.common.types.views.BookingListForScheduleClosedView" table="f_bookinglist_view">	             
+		<cache usage="transactional"/>
+		<id  name="formId" type="java.lang.String" column="f_id" >
+			<generator class="assigned"/>
+		</id>
+		<property name="bookingFlightId" type="java.lang.Long" column="bkg_flt_id" />
+		<property name="bookingStatus" type="java.lang.String" column="bkg_status" />
+		<property name="masterFlightId" type="java.lang.Long" column="s_flt_id" />
+		<property name="departure" type="java.util.Date" column="dep" />
+		<property name="bookingItemId" type="java.lang.Long" column="bkg_item_id" />
+		<property name="bookingId" type="java.lang.Long" column="bkg_id" />
+		<property name="flightId" type="java.lang.Long" column="flt_id" />
+		<property name="flightNumber" type="java.lang.String" column="flt_no" />
+		<property name="manifestStatus" type="java.lang.String" column="stat_id" />
+	</class>	
+</hibernate-mapping>

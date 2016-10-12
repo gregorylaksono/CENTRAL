@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" package="de.act.common.types" >
+	<class name="de.act.blackbox.dblayer.daos.CDisbursementsFeeDao$DisburseWrapper" mutable="false">
+		<subselect>
+			SELECT a.*, v.vad_from, v.vad_to
+			FROM s_disburse AS a LEFT JOIN s_vad AS v ON (v.vad_id= a.vad_id)
+		</subselect>
+		<!--cache usage="read-only" /-->
+		<synchronize table="s_disburse"/>
+		<synchronize table="s_vad"/>
+		<id name="disburseId" column="disburse_id">
+			<generator class="assigned"/>
+		</id>
+		<property name="mainCa" column="main_ca"/>
+		<property name="coFrom" column="co_from"/>
+		<property name="coTo" column="co_to"/>
+		<component name="disburse" class="de.act.blackbox.dblayer.daos.CDisbursementsFeeDao$Disburse">
+			<property name="ca" column="sub_ca"/>
+			<property name="minFee1" column="min_fee1"/>
+			<property name="breakFee1" column="break_fee1"/>
+			<property name="cur3lc1" column="cur_3lc1"/>
+			<property name="minFee2" column="min_fee2"/>
+			<property name="wgtBreak2" column="wgt_break2"/>
+			<property name="breakFee2" column="break_fee2"/>
+			<property name="maxFee2" column="max_fee2" access="property"/>
+			<property name="cur3lc2" column="cur_3lc2"/>
+			<property name="feeFactor" column="fee_factor"/>
+			<property name="vadFrom" column="vad_from" type="timestamp"/>
+			<property name="vadTo" column="vad_to" type="timestamp"/>
+		</component>
+	</class>
+
+	<class name="de.act.blackbox.dblayer.daos.CFuelCharDao$FuelCharWrapper" mutable="false">
+		<subselect>
+			SELECT a.*, v.vad_from, v.vad_to
+			FROM s_fuel_char AS a LEFT JOIN s_vad AS v ON (v.vad_id= a.vad_id)
+		</subselect>
+		<!--cache usage="read-only" /-->
+		<synchronize table="s_fuel_char"/>
+		<synchronize table="s_vad"/>
+		<id name="fuelCharId" column="fuel_char_id" unsaved-value="-1">
+			<generator class="assigned"/>
+		</id>
+		<property name="apFrom" column="ap_from"/>
+		<property name="coFrom" column="co_from"/>
+		<property name="arFrom" column="ar_from"/>
+		<property name="apTo"   column="ap_to"/>
+		<property name="coTo"   column="co_to"/>
+		<property name="arTo"   column="ar_to"/>
+		<property name="caId"   column="ca_id"/>
+		<component name="fuelChar" class="de.act.blackbox.dblayer.daos.CFuelCharDao$FuelChar">
+			<property name="cur"     column="cur_3lc"/>
+			<property name="value"   column="value"/>
+			<property name="vadFrom" column="vad_from" type="timestamp"/>
+			<property name="vadTo"   column="vad_to"   type="timestamp"/>
+		</component>
+	</class>
+
+	<class name="de.act.blackbox.dblayer.daos.CValCharDao$ValCharWrapper" mutable="false">
+		<subselect>
+			SELECT a.*, v.vad_from, v.vad_to
+			FROM s_val_char AS a LEFT JOIN s_vad AS v ON (v.vad_id=a.vad_id)
+		</subselect>
+		<!--cache usage="read-only" /-->
+		<synchronize table="s_val_char"/>
+		<synchronize table="s_vad"/>
+		<id name="valCharId" column="val_char_id" unsaved-value="-1">
+			<generator class="assigned"/>
+		</id>
+		<property name="coFrom" column="co_from"/>
+		<property name="coTo"   column="co_to"/>
+		<property name="caId"   column="ca_id"/>
+		<component name="valChar" class="de.act.blackbox.dblayer.daos.CValCharDao$ValChar">
+			<property name="valMin"    column="val_min"/>
+			<property name="valCur"    column="val_cur"/>
+			<property name="charMin"   column="char_min"/>
+			<property name="charCur"   column="char_cur"/>
+			<property name="valFactor" column="val_factor"/>
+			<property name="rId"       column="r_id"/>
+			<property name="vadFrom"   column="vad_from" type="timestamp"/>
+			<property name="vadTo"     column="vad_to"   type="timestamp"/>
+		</component>
+	</class>
+	
+	
+	
+	
+	<!--
+		map the schedule
+	-->
+	<!-- map the flights including validation dates -->
+	<class name="de.act.blackbox.dblayer.daos.CScheduleDao$FlightWrapper" mutable="false">
+		<subselect>
+			<!--SELECT a.conx_id, a.flt_id, a.flt_no, a.freq, a.dep, a.arr, a.arr_dt,
+			d.icao_type AS ac_type,
+			b.vad_from, b.vad_to, a.vad_id
+			FROM s_flt AS a LEFT JOIN s_vad AS b USING (vad_id)
+			LEFT JOIN s_ac  AS c USING (ac_id)
+			LEFT JOIN s_ac_type as d USING (ac_type_id) -->
+			<!--SELECT a.conx_id, a.flt_id, a.flt_no, a.freq, a.dep, a.arr, a.arr_dt,
+				d.icao_type AS ac_type,
+				b.vad_from, b.vad_to, a.vad_id
+			FROM s_flt AS a 
+			LEFT JOIN s_vad AS b USING (vad_id)
+			LEFT JOIN s_ac AS c USING (ac_id)
+			LEFT JOIN s_ac_type as d USING (ac_type_id)
+			WHERE c.vad_id = b.vad_id-->
+			SELECT a.conx_id, a.flt_id, a.flt_no, a.freq, a.dep, a.arr, a.arr_dt,
+				d.icao_type AS ac_type,
+				b.vad_from, b.vad_to, a.vad_id
+			FROM s_flt AS a 
+			LEFT JOIN s_vad AS b USING (vad_id)
+			LEFT JOIN s_ac AS c USING (ac_id)
+			LEFT JOIN s_ac_type as d USING (ac_type_id)
+			WHERE a.vad_id in (select vad_id from vad_view)
+			AND c.vad_id in (select vad_id from vad_view)
+			AND d.vad_id in (select vad_id from vad_view)
+		</subselect>
+		<!--cache usage="read-only" /-->
+		<synchronize table="s_flt"/>
+		<synchronize table="s_vad"/>		
+		<!--id name="fltId" column="flt_id" unsaved-value="null" access="field">
+			<generator class="assigned"/>
+		</id>
+		<property name="conxId" column="conx_id"/-->
+		<composite-id>
+			<key-property name="fltId" column="flt_id"/>
+			<key-property name="conxId" column="conx_id" />
+		</composite-id>
+		<property name="fltNo" column="flt_no"/>
+		<property name="freq" column="freq"/>
+		<property name="dep" column="dep"/>
+		<property name="arr" column="arr"/>
+		<property name="arrDt" column="arr_dt"/>
+		<property name="acType" column="ac_type" />
+		<property name="vadFrom" column="vad_from" type="timestamp"/>
+		<property name="vadTo" column="vad_to"   type="timestamp"/>
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+	</class>
+
+	<!-- map the direct flights into wrapper objects -->
+	<class name="de.act.blackbox.dblayer.daos.CScheduleDao$Conx0Wrapper" mutable="false">
+		<subselect>
+			SELECT * FROM conx_0_view
+		</subselect>
+		<!--cache usage="read-only" /-->
+		<synchronize table="s_conx"/>
+		<id name="aConxId" column="a_conx_id" unsaved-value="null" access="property">
+			<generator class="assigned"/>
+		</id>
+		<component name="aConx" class="de.act.common.types.nonstaticobjects.ConxFlights" access="property">
+			<property name="conx" column="a_conx_id" insert="false" update="false"/>
+			<property name="caId" column="a_ca"/>
+			<property name="deptAp" column="a_dept"/>
+			<property name="destAp" column="a_dest"/>
+		</component>
+	</class>
+
+	<!-- map the 1 stop flights into wrapper objects -->
+	<class name="de.act.blackbox.dblayer.daos.CScheduleDao$Conx1Wrapper" mutable="false">
+		<subselect>
+			SELECT * FROM conx_1_view
+		</subselect>
+		<!--cache usage="read-only" /-->
+		<synchronize table="s_conx"/>
+		<composite-id access="property">
+			<key-property name="aConxId" column="a_conx_id"/>
+			<key-property name="bConxId" column="b_conx_id"/>
+		</composite-id>
+		<component name="aConx" class="de.act.common.types.nonstaticobjects.ConxFlights" access="property">
+			<property name="conx" column="a_conx_id" insert="false" update="false"/>
+			<property name="caId" column="a_ca"/>
+			<property name="deptAp" column="a_dept"/>
+			<property name="destAp" column="a_dest"/>
+		</component>
+		<component name="bConx" class="de.act.common.types.nonstaticobjects.ConxFlights" access="property">
+			<property name="conx" column="b_conx_id" insert="false" update="false"/>
+			<property name="caId" column="b_ca"/>
+			<property name="deptAp" column="b_dept"/>
+			<property name="destAp" column="b_dest"/>
+		</component>
+	</class>
+	
+	<!-- map the 2 stop flights into wrapper objects -->
+	<class name="de.act.blackbox.dblayer.daos.CScheduleDao$Conx2Wrapper" mutable="false">
+		<subselect>
+			SELECT * FROM conx_2_view
+		</subselect>
+		<!--cache usage="read-only" /-->
+		<synchronize table="s_conx"/>
+		<composite-id access="property">
+			<key-property name="aConxId" column="a_conx_id"/>
+			<key-property name="bConxId" column="b_conx_id"/>
+			<key-property name="cConxId" column="c_conx_id"/>
+		</composite-id>
+		<component name="aConx" class="de.act.common.types.nonstaticobjects.ConxFlights" access="property">
+			<property name="conx" column="a_conx_id" insert="false" update="false"/>
+			<property name="caId" column="a_ca"/>
+			<property name="deptAp" column="a_dept"/>
+			<property name="destAp" column="a_dest"/>
+		</component>
+		<component name="bConx" class="de.act.common.types.nonstaticobjects.ConxFlights" access="property">
+			<property name="conx" column="b_conx_id" insert="false" update="false"/>
+			<property name="caId" column="b_ca"/>
+			<property name="deptAp" column="b_dept"/>
+			<property name="destAp" column="b_dest"/>
+		</component>
+		<component name="cConx" class="de.act.common.types.nonstaticobjects.ConxFlights" access="property">
+			<property name="conx" column="c_conx_id" insert="false" update="false"/>
+			<property name="caId" column="c_ca"/>
+			<property name="deptAp" column="c_dept"/>
+			<property name="destAp" column="c_dest"/>
+		</component>
+	</class>
+
+	<!-- map the 3 stop flights into wrapper objects -->
+	<class name="de.act.blackbox.dblayer.daos.CScheduleDao$Conx3Wrapper" mutable="false">
+		<subselect>
+			SELECT * FROM conx_3_view
+		</subselect>
+		<!--cache usage="read-only" /-->
+		<synchronize table="s_conx"/>
+		<composite-id access="property">
+			<key-property name="aConxId" column="a_conx_id"/>
+			<key-property name="bConxId" column="b_conx_id"/>
+			<key-property name="cConxId" column="c_conx_id"/>
+			<key-property name="dConxId" column="d_conx_id"/>
+		</composite-id>
+		<component name="aConx" class="de.act.common.types.nonstaticobjects.ConxFlights" access="property">
+			<property name="conx" column="a_conx_id" insert="false" update="false"/>
+			<property name="caId" column="a_ca"/>
+			<property name="deptAp" column="a_dept"/>
+			<property name="destAp" column="a_dest"/>
+		</component>
+		<component name="bConx" class="de.act.common.types.nonstaticobjects.ConxFlights" access="property">
+			<property name="conx" column="b_conx_id" insert="false" update="false"/>
+			<property name="caId" column="b_ca"/>
+			<property name="deptAp" column="b_dept"/>
+			<property name="destAp" column="b_dest"/>
+		</component>
+		<component name="cConx" class="de.act.common.types.nonstaticobjects.ConxFlights" access="property">
+			<property name="conx" column="c_conx_id" insert="false" update="false"/>
+			<property name="caId" column="c_ca"/>
+			<property name="deptAp" column="c_dept"/>
+			<property name="destAp" column="c_dest"/>
+		</component>
+		<component name="dConx" class="de.act.common.types.nonstaticobjects.ConxFlights" access="property">
+			<property name="conx" column="d_conx_id" insert="false" update="false"/>
+			<property name="caId" column="d_ca"/>
+			<property name="deptAp" column="d_dept"/>
+			<property name="destAp" column="d_dest"/>
+		</component>
+	</class>
+	
+	<!-- map the 4 stop flights into wrapper objects -->
+	<class name="de.act.blackbox.dblayer.daos.CScheduleDao$Conx4Wrapper" mutable="false">
+		<subselect>
+			SELECT * FROM conx_4_view
+		</subselect>
+		<!--cache usage="read-only" /-->
+		<synchronize table="s_conx"/>
+		<composite-id access="property">
+			<key-property name="aConxId" column="a_conx_id"/>
+			<key-property name="bConxId" column="b_conx_id"/>
+			<key-property name="cConxId" column="c_conx_id"/>
+			<key-property name="dConxId" column="d_conx_id"/>
+			<key-property name="eConxId" column="e_conx_id"/>
+		</composite-id>
+		<component name="aConx" class="de.act.common.types.nonstaticobjects.ConxFlights" access="property">
+			<property name="conx" column="a_conx_id" insert="false" update="false"/>
+			<property name="caId" column="a_ca"/>
+			<property name="deptAp" column="a_dept"/>
+			<property name="destAp" column="a_dest"/>
+		</component>
+		<component name="bConx" class="de.act.common.types.nonstaticobjects.ConxFlights" access="property">
+			<property name="conx" column="b_conx_id" insert="false" update="false"/>
+			<property name="caId" column="b_ca"/>
+			<property name="deptAp" column="b_dept"/>
+			<property name="destAp" column="b_dest"/>
+		</component>
+		<component name="cConx" class="de.act.common.types.nonstaticobjects.ConxFlights" access="property">
+			<property name="conx" column="c_conx_id" insert="false" update="false"/>
+			<property name="caId" column="c_ca"/>
+			<property name="deptAp" column="c_dept"/>
+			<property name="destAp" column="c_dest"/>
+		</component>
+		<component name="dConx" class="de.act.common.types.nonstaticobjects.ConxFlights" access="property">
+			<property name="conx" column="d_conx_id" insert="false" update="false"/>
+			<property name="caId" column="d_ca"/>
+			<property name="deptAp" column="d_dept"/>
+			<property name="destAp" column="d_dest"/>
+		</component>
+		<component name="eConx" class="de.act.common.types.nonstaticobjects.ConxFlights" access="property">
+			<property name="conx" column="e_conx_id" insert="false" update="false"/>
+			<property name="caId" column="e_ca"/>
+			<property name="deptAp" column="e_dept"/>
+			<property name="destAp" column="e_dest"/>
+		</component>
+	</class>
+</hibernate-mapping>

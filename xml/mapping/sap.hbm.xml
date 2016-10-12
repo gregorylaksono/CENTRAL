@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" package="de.act.common.types.staticobjects" >
+
+	<class name="de.act.common.types.staticobjects.RSAp" table="s_ap" mutable="false" batch-size="20">
+		<subselect>
+			SELECT a.*, cc.cc_id ,cc.ca_id ,cc.cc_acc,cc.cc_fee,cc.cc_min,cc.cur_3lc
+			FROM s_ap AS a LEFT JOIN s_cc as cc ON a.co_2lc = cc.co_2lc
+        </subselect>
+
+		<cache usage="transactional" />
+		<synchronize table="s_ap" />
+		<synchronize table="s_cc" />
+		<id name="ap_3lc" column="ap_3lc">
+			<generator class="assigned" />
+		</id>
+		<property name="co_2lc" column="co_2lc" insert="false" update="false" />
+		<many-to-one name="co" class="de.act.common.types.staticobjects.RSCo" column="co_2lc"  not-found="ignore" update="false" insert="false"  />
+		<property name="city_name" column="di_2lc" />
+		<property name="ap_name" column="ap_name" />
+		<property name="ap_cust" column="ap_cust" />
+		<many-to-one name="cc" class="de.act.common.types.staticobjects.RSCc" column="cc_id" not-found="ignore" update="false" insert="false" />
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+	</class>
+	
+	<class name="de.act.common.types.staticobjects.RSCc" table="s_cc" mutable="false" batch-size="5">
+		<cache usage="transactional" />
+		<id name="cc_id" column="cc_id">
+			<generator class="assigned" />
+		</id>
+		<properties name="name" unique="true">
+			<property name="ca_id" column="ca_id" />
+			<many-to-one name="country" class="de.act.common.types.staticobjects.RSCo" column="co_2lc" not-found="ignore" />
+		</properties>
+		<property name="cc_acc" column="cc_acc" />
+		<property name="cc_fee" column="cc_fee" />
+		<property name="cc_min" column="cc_min" />
+		<many-to-one name="currency" class="de.act.common.types.staticobjects.RSCur" column="cur_3lc" not-found="ignore" />
+		<property name="r_id" column="r_id" />
+	</class>
+	
+	
+</hibernate-mapping>

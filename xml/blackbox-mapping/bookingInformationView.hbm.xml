@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="property" package="de.act.common.types.views" >
+	<!-- <class name="de.act.common.types.views.BookingInformationView" table="f_bookinginformation_view">	             
+		<cache usage="transactional"/>
+		<id  name="bookingFlightId" type="java.lang.Integer" column="bkg_flt_id" >
+			<generator class="assigned"/>
+		</id>		
+		<property name="ca_3dg" type="java.lang.String" column="ca_3dg" />
+		<property name="awb_stock" type="java.lang.Integer" column="awb_stock" />
+		<property name="awb_no" type="java.lang.Integer" column="awb_no" />
+		<property name="carrierId" type="java.lang.String" column="ca_id" />
+		<property name="departure" type="java.lang.String" column="dept" />
+		<property name="destination" type="java.lang.String" column="dest" />
+		<property name="bookingFlightDate" type="java.util.Date" column="bkg_flt_date" />
+		<property name="bookingItemId" type="java.lang.Integer" column="bkg_item_id" />
+		<property name="totalWeight" type="java.lang.Double" column="total_wgt" />
+		<property name="totalVolume" type="java.lang.Double" column="total_vol" />
+		<property name="totalPieces" type="java.lang.Double" column="total_pcs" />
+		<property name="commodityParent" type="java.lang.Integer" column="com_parent" />
+		<property name="scc_3lc" type="java.lang.String" column="scc_3lc" />
+		<property name="bookingStatus" type="java.lang.String" column="bkg_status" />
+		<property name="flightNo" type="java.lang.String" column="flt_no" />
+		<property name="shipperId" type="java.lang.Integer" column="shp_add_id" />
+		<property name="ffwId" type="java.lang.Integer" column="ffw_add_id" />
+		<property name="consigneeId" type="java.lang.Integer" column="con_add_id" />		
+		<property name="deliveredToId" type="java.lang.Integer" column="deliver_add_id" />
+		<property name="alsoNotifyId" type="java.lang.Integer" column="anotify_add_id" />
+		<property name="ap_3lc" type="java.lang.String" column="ap_3lc" />
+		<property name="f_id" type="java.lang.String" column="f_id" />				
+		<property name="stat_id" type="java.lang.String" column="stat_id" />	
+		<property name="commodityParentName" type="java.lang.String" column="com_name" />									
+	</class> -->
+	
+	<class name="de.act.common.types.views.BookingInformationView" mutable="false">
+		<subselect>
+			  SELECT i.bkg_flt_id, a.ca_3dg, a.awb_stock, a.awb_no, (a.ca_3dg::text || a.awb_stock::text) || a.awb_no::text AS awbno, a.non_standard, b.f_id, l.ca_id, l.dept, l.dest, s.ap_3lc, i.bkg_flt_date, i.bkg_item_id, zz.req_to, zz.wgt AS total_wgt, zz.vol AS total_vol, zz.pcs AS total_pcs, zz.com_id AS com_parent, zz.scc_3lc, p.shp_add_id, p.ffw_add_id, p.con_add_id, p.deliver_add_id, p.anotify_add_id, j.bkg_status, z.flt_id AS a_flt_id, z.dep AS a_dep, k.flt_id, k.flt_no, w.stat_id, f.com_name, zz.parent, i.flt_row, COALESCE(ca_transfer.ca_2lc, ca_conx.ca_2lc) AS ca_2lc, stat.stat_name, sli.cuc_3lc
+				   FROM f_awb_no a
+				   LEFT JOIN f_form b ON b.f_id::text = a.f_id::text
+				   LEFT JOIN f_att_cur_v h ON h.f_id::text = b.f_id::text AND h.att_type::text = 'bkg_flt'::text
+				   LEFT JOIN f_bkg_flt i ON i.att_id = h.att_id
+				   LEFT JOIN f_att_cur_v att_sli ON att_sli.f_id::text = b.f_id::text AND att_sli.att_type::text = 'sli'::text
+   				   LEFT JOIN f_sli sli ON sli.att_id = att_sli.att_id
+				   LEFT JOIN f_bkg_flt_stat j ON j.att_id = h.att_id AND j.bkg_flt_id = i.bkg_flt_id
+				   LEFT JOIN s_flt k ON k.flt_id::text = i.flt_id::text
+				   LEFT JOIN s_conx l ON l.conx_id::text = k.conx_id::text
+				   LEFT JOIN s_ca AS ca_conx ON (l.ca_id = ca_conx.ca_id)
+				   LEFT JOIN s_ca AS ca_transfer ON (k.transfer_to_ca_id = ca_transfer.ca_id)
+				   LEFT JOIN s_stat AS stat ON (stat.stat_id = j.bkg_status)
+				   LEFT JOIN f_bkg_item zz ON zz.bkg_item_id = i.bkg_item_id
+				   LEFT JOIN s_com f ON f.com_id = zz.com_id
+				   LEFT JOIN s_ann g ON g.ann_id = zz.ann_id
+				   LEFT JOIN f_att_cur_v o ON o.f_id::text = b.f_id::text AND o.att_type::text = 'add'::text
+				   LEFT JOIN f_att_cur_v q ON q.f_id::text = b.f_id::text AND q.att_type::text = 'acc'::text
+				   LEFT JOIN f_acc_header r ON r.att_id = q.att_id AND r.part = zz.part
+				   LEFT JOIN f_acc_shipment s ON s.acc_header_id = r.acc_header_id AND s.ap_3lc::text = l.dept::text
+				   LEFT JOIN f_add p ON p.att_id = o.att_id
+				   LEFT JOIN f_att_cur_v c ON c.f_id::text = b.f_id::text AND c.att_type::text = 'pkg'::text
+				   LEFT JOIN a_manifest w ON w.flt_id::text = i.flt_id::text AND w.flt_date = i.bkg_flt_date
+				   LEFT JOIN a_flt z ON z.s_flt_id::text = i.flt_id::text AND date_part('year'::text, z.dep) = date_part('year'::text, i.bkg_flt_date) AND date_part('month'::text, z.dep) = date_part('month'::text, i.bkg_flt_date) AND date_part('day'::text, z.dep) = date_part('day'::text, i.bkg_flt_date)
+				  ORDER BY a.awb_no, i.flt_id, i.bkg_flt_date, zz.parent
+		</subselect>
+		<cache usage="read-only"/>
+		<id  name="bookingFlightId" type="java.lang.Integer" column="bkg_flt_id" >
+			<generator class="assigned"/>
+		</id>		
+		<property name="ca_3dg" type="java.lang.String" column="ca_3dg" />
+		<property name="awb_stock" type="java.lang.Integer" column="awb_stock" />
+		<property name="awb_no" type="java.lang.Integer" column="awb_no" />
+		<property name="carrierId" type="java.lang.String" column="ca_id" />
+		<property name="departure" type="java.lang.String" column="dept" />
+		<property name="destination" type="java.lang.String" column="dest" />
+		<property name="bookingFlightDate" type="java.util.Date" column="bkg_flt_date" />
+		<property name="bookingItemId" type="java.lang.Integer" column="bkg_item_id" />
+		<property name="totalWeight" type="java.lang.Double" column="total_wgt" />
+		<property name="totalVolume" type="java.lang.Double" column="total_vol" />
+		<property name="totalPieces" type="java.lang.Double" column="total_pcs" />
+		<property name="commodityParent" type="java.lang.Long" column="com_parent" />
+		<property name="scc_3lc" type="java.lang.String" column="scc_3lc" />
+		<property name="bookingStatus" type="java.lang.String" column="bkg_status" />
+		<property name="flightNo" type="java.lang.String" column="flt_no" />
+		<property name="shipperId" type="java.lang.Integer" column="shp_add_id" />
+		<property name="ffwId" type="java.lang.Integer" column="ffw_add_id" />
+		<property name="consigneeId" type="java.lang.Integer" column="con_add_id" />		
+		<property name="deliveredToId" type="java.lang.Integer" column="deliver_add_id" />
+		<property name="alsoNotifyId" type="java.lang.Integer" column="anotify_add_id" />
+		<property name="ap_3lc" type="java.lang.String" column="ap_3lc" />
+		<property name="f_id" type="java.lang.String" column="f_id" />		
+		<property name="stat_id" type="java.lang.String" column="stat_id" />
+		<property name="commodityParentName" type="java.lang.String" column="com_name" />	
+		<property name="flt_row" type="java.lang.Integer" column="flt_row" />
+		<property name="ca_2lc" type="java.lang.String" column="ca_2lc" />
+		<property name="statName" type="java.lang.String" column="stat_name" />
+		<property name="cuc_3lc" type="java.lang.String" column="cuc_3lc" />		
+	</class>
+	
+</hibernate-mapping>

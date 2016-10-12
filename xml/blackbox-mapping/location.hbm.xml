@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" >
+	
+	<class name="de.act.common.types.localobjects.Location" table="d_loc" mutable="true" >
+		<!-- rec <cache usage="read-only"/>--> <cache usage="transactional"/>
+		<id name="locId" column="loc_id" unsaved-value="-1">
+			<generator class="assigned"/>
+		</id>
+		<property name="maxPkgW" column="max_pkg_w"/>
+		<property name="maxPkgH" column="max_pkg_h"/>
+		<property name="maxPkgL" column="max_pkg_l"/>
+		<property name="maxPkgWgt" column="max_pkg_wgt"/>
+		<!--property name="maxWgtUnit" column="max_wgt_unit"/>
+		<property name="maxPkgUnit" column="max_pkg_unit"/>
+		<property name="areaWgtUnit" column="area_wgt_unit"/-->
+		<property name="maxFloorWgt" column="max_floor_wgt"/>
+		<property name="locPlt" column="loc_plt"/>
+		<property name="maxPkgVol" column="max_pkg_vol"/>
+		<property name="availablePkgVol" column="available_pkg_vol"/>
+		<property name="usedPkgVol" column="used_pkg_vol"/>
+		<property name="availablePkgWgt" column="available_pkg_wgt"/>
+		<property name="usedPkgWgt" column="used_pkg_wgt"/>
+		<property name="availableFloorWgt" column="available_floor_wgt"/>
+		<property name="usedFloorWgt" column="used_floor_wgt"/>
+		<property name="ownerAddId" column="owner_add_id"/>
+		<!-- <many-to-one name="stor" class="de.act.common.types.localobjects.Storage" column="stor_id" cascade="none" /> -->
+	</class>
+	
+	<!--<class name="de.act.common.types.localobjects.StorageItem" table="d_storage_bkg_item" mutable="true" >
+		<cache usage="transactional"/>
+		<id name="id" column="id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">d_storage_bkg_item_id_seq</param>
+			</generator>
+		</id>
+		<property name="storId" column="stor_id"/>
+		<property name="bkgItemId" column="bkg_item_id"/>
+		<property name="pkgPcs" column="pkg_pcs"/>
+		<property name="pkgTotalVol" column="pkg_vol"/>
+		<property name="pkgTotalWgt" column="pkg_wgt"/>
+		<many-to-one name="validation" class="de.act.common.types.staticobjects.RSVad" column="vad_id" not-null="false" not-found="ignore" />
+		<many-to-one name="bkgItem" class="de.act.common.types.packageitems.ItemBKG" column="bkg_item_id" not-null="false" not-found="ignore" insert="false" update="false"/>
+		<many-to-one name="stor" class="de.act.common.types.localobjects.Storage" column="stor_id" not-null="false" not-found="ignore" insert="false" update="false"/>
+	</class>-->
+	
+	<!-- <class name="de.act.common.types.localobjects.StorageItem" table="d_storage_item" mutable="true" >
+		<cache usage="transactional"/>
+		<id name="id" column="id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">d_storage_bkg_item_id_seq</param>
+			</generator>
+		</id>
+		<property name="storId" column="stor_id"/>
+		<property name="bkgItemId" column="bkg_item_id"/>
+		<property name="pkgId" column="pkg_id"/>
+		<property name="pkgVol" column="pkg_total_vol"/>
+		<property name="pkgWgt" column="pkg_total_wgt"/>
+		<property name="pkgPcs" column="pkg_pcs"/>
+		<many-to-one name="pkg" class="de.act.central.types.PackageItem2" column="pkg_id" not-null="false" not-found="ignore" />
+		<many-to-one name="validation" class="de.act.common.types.staticobjects.RSVad" column="vad_id" not-null="false" not-found="ignore" />
+	</class> -->
+	
+	<class name="de.act.common.types.localobjects.StorageItem" table="d_storage_com_item" mutable="true" >
+		<cache usage="transactional"/>
+		<id name="id" column="id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">d_storage_com_item_id_seq</param>
+			</generator>
+		</id>
+		<property name="storId" column="stor_id"/>
+		<property name="fId" column="f_id"/>
+		<property name="comId" column="com_id"/>
+		<property name="pkgPcs" column="pkg_pcs"/>
+		<property name="pkgTotalVol" column="pkg_total_vol"/>
+		<property name="pkgTotalWgt" column="pkg_total_wgt"/>
+		<property name="wgt" column="wgt"/>
+		<property name="vol" column="vol"/>
+		<property name="ap3Lc" column="ap_3lc"/>
+		<property name="vadId" column="vad_id"/>
+		<many-to-one name="validation" class="de.act.common.types.staticobjects.RSVad" column="vad_id" not-null="false" not-found="ignore" update="false" insert="false"/>
+		<many-to-one name="com" class="de.act.common.types.staticobjects.CCommodityTree" column="com_id" not-null="false" not-found="ignore" insert="false" update="false"/>
+		<many-to-one name="stor" class="de.act.common.types.localobjects.Storage" column="stor_id" not-null="false" not-found="ignore" insert="false" update="false"/>
+		<many-to-one name="airport" column="ap_3lc" class="de.act.common.types.staticobjects.RSAp" update="false" insert="false" not-found="ignore" />
+	</class>
+</hibernate-mapping>

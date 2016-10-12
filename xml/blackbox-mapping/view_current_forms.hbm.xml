@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="property" >
+
+	<class name="de.act.common.types.views.CurrentFormView" table="v_current_form" mutable="false" >
+		<id name="fid" column="f_id">
+			<generator class="assigned" />
+		</id>
+		<property name="lastDate" column="last_date" />
+	</class>
+</hibernate-mapping>

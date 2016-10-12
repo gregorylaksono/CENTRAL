@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" >
+
+	<class name="de.act.common.types.staticobjects.RSUldType" table="s_uld_type"  mutable="false"  batch-size="5">
+		<!-- rec <cache usage="read-only"/>--> <cache usage="transactional"/>
+		<!--composite-id>
+			<key-property name="uld_type_id" />
+			<key-property name="uld_name" />		
+		</composite-id-->
+		<id name="id" column="id" unsaved-value="-1"  >
+ 			<generator class="assigned"/>
+		</id>
+		<property name="uld_type_id" column="uld_type_id" />
+		<property name="uld_name" column="uld_name" />
+		<property name="uld_type_name" column="uld_type_name" />
+		<property name="iata_standart" column="iata_standart" />
+		<property name="uld_type_designator" column="uld_type_designator" />
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+	</class>
+</hibernate-mapping>
+
+<!--
+public Integer uld_type_id ;
+    public String uld_name ;
+    uld_type_id int8 NOT NULL,
+    uld_name varchar(32) NOT NULL,
+  	vad_id varchar(8),
+    
+    -->

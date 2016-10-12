@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" package="de.act.common.types.staticobjects" >
+
+    <class name="de.act.common.types.staticobjects.RSFltMmt" table="s_flt_mmt">
+   		<cache usage="transactional"/>
+		<id name="flt_id" column="flt_id" unsaved-value="-1">
+			<generator class="assigned" />
+		</id>
+		<property name="mmt" column="mmt" />
+		<property name="mmt_set_by" column="mmt_set_by" />
+		<property name="mmt_set_name" column="mmt_set_name" />
+	</class>
+    
+	<class name="de.act.common.types.staticobjects.RSFlt" table="s_flt" batch-size="10" >
+		<cache usage="transactional"/>
+		<id name="flt_id" column="flt_id" unsaved-value="-1"  >
+			<generator class="assigned"/>
+		</id>
+		<property name="flt_no" column="flt_no" />	
+		<property name="freq" column="freq" />
+		<property name="dep" column="dep" type="time" />
+		<property name="dep_dt" column="dep_dt" />
+		<property name="arr" column="arr" type="time" />
+		<property name="arr_dt" column="arr_dt" />	
+		<property name="ac_id" column="ac_id" />
+		<property name="flt_group" column="flt_group" />
+		<property name="flt_stops" column="flt_stops" />
+		<property name="transfer_to_ca_id" column="transfer_to_ca_id" />
+		<property name="close_out" column="close_out" />
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+		<many-to-one name="connection" column="conx_id" class="de.act.common.types.staticobjects.RSConx" not-found="ignore"/>
+		<many-to-one name="flt_mmt" column="flt_id" class="de.act.common.types.staticobjects.RSFltMmt" not-found="ignore" insert="false" update="false"/>
+		
+		<!--join table="s_vad" fetch="join" optional="true">
+			<key column="vad_id" />
+			<property name="vad_from" />
+			<property name="vad_to" access="property" />
+		</join-->
+	</class>
+	
+	<class name ="de.act.common.types.staticobjects.RSFltCapacity" table="s_flt_capacity">
+		<id name="flt_id" column="flt_id" unsaved-value="-1"  >
+			<generator class="assigned"/>
+		</id>
+		<property name="auto_wgt" column="auto_wgt" access="field"/>
+		<property name="auto_vol" column="auto_vol" access="field"/>
+		<property name="manual_wgt" column="manual_wgt" access="field"/>
+		<property name="manual_vol" column="manual_vol" access="field"/>
+		<property name="max_wgt" column="max_wgt" access="field"/>
+		<property name="max_vol" column="max_vol" access="field"/>
+		<property name="open_for_cargo" column="open_for_cargo" access="field"/>
+	</class>
+</hibernate-mapping>
+
+<!--
+
+	<loader query-ref="s_flts" />
+	<sql-query name="s_flts">
+	    <return alias="s_flts" class="RSFlt" />
+	    SELECT {s_flt.*} 
+	    FROM {s_flt} 
+	    WHERE flt_id=? 
+	    AND {vad_id} =null 
+	    
+	</sql-query>
+
+<sql-query name="person">
+    <return alias="pers" class="Person" lock-mode="upgrade"/>
+    SELECT NAME AS {pers.name}, ID AS {pers.id}
+    FROM PERSON
+    WHERE ID=?
+    FOR UPDATE
+</sql-query>
+
+This is just a named query declaration, as discussed earlier. You may reference this named query in a class mapping:
+
+<class name="Person">
+    <id name="id">
+        <generator class="increment"/>
+    </id>
+    <property name="name" not-null="true"/>
+    <loader query-ref="person"/>
+</class>
+
+This even works with stored procedures.
+
+You may even define a query for collection loading:
+
+<set name="employments" inverse="true">
+    <key/>
+    <one-to-many class="Employment"/>
+    <loader query-ref="employments"/>
+</set>
+
+<sql-query name="employments">
+    <load-collection alias="emp" role="Person.employments"/>
+    SELECT {emp.*}
+    FROM EMPLOYMENT emp
+    WHERE EMPLOYER = :id
+    ORDER BY STARTDATE ASC, EMPLOYEE ASC
+</sql-query>
+
+String flt_id;	
+String conx_id;	
+String flt_no;	
+String freq;
+Time dep;
+Time arr;
+Integer arr_dt;	
+String ac_reg;	
+String vad_id;	
+
+
+-->

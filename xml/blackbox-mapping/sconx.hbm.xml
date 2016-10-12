@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" package="de.act.common.types.staticobjects" >
+
+	<class name="RSConx" table="s_conx" batch-size="20" where="ca_id &lt;&gt; '000'">
+		<!-- 
+		where="vad_id is null OR (vad_from &lt;= now() AND now() &lt;= vad_to )"
+		-->
+		<!-- rec <cache usage="read-only"/>--> <cache usage="transactional"/>
+		<id name="conx_id" column="conx_id" unsaved-value="-1"  >
+			<generator class="assigned"/>
+		</id>
+		<property name="ca_id" 	column="ca_id" update="false" />
+		<many-to-one name="dept" column="dept" class="RSAp"	update="false" />	
+		<many-to-one name="dest" column="dest" class="RSAp"	update="false" />
+		<property name="cur_3lc" column="cur_3lc" />
+		<!-- <property name="VAD_ID" column="vad_id" 		/> -->
+		<many-to-one name="vad" class="RSVad" column="vad_id" not-found="ignore" update="false"/>
+		<many-to-one name="carrier_object" class="Carrier" column="ca_id" not-found="ignore" insert="false" update="false"/>
+		<!--many-to-one name="carrier" class="RSCaConx" column="ca_id" insert="false" update="false" not-found="ignore" /-->
+		<!--join table="s_vad" fetch="join" optional="true" >
+			<key column="vad_id" />
+			<property name="vad_from" access="property"/>
+			<property name="vad_to" access="property" />
+		</join-->
+	</class>
+</hibernate-mapping>

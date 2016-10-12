@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" >
+
+	<class name="de.act.common.types.nonstaticobjects.RFAwbNo" table="f_awb_no" >
+		<cache usage="transactional"/>
+		<id name="id" column="f_id" >
+			<generator class="assigned" />
+		</id>
+		<properties name="name" unique="true" update="true" >
+			<property name="ca_3dg" access="field"  />
+			<property name="ffw_3lc" access="field"  />
+			<property name="awb_stock" access="field"   />
+			<property name="awb_no" access="field"   />
+		</properties>
+		<property name="non_standard" access="field" />
+		<property name="corr" access="field" insert="false" update="false" />
+		<!--many-to-one name="carrier" class="de.act.common.types.staticobjects.RSCa" column="ca_3dg" access="property" 
+			update="false" insert="false" /-->
+		<!--<property name="corr" access="field"   />-->
+   	</class>
+   	
+   	<class name="de.act.common.types.nonstaticobjects.AWBPrint" table="f_awb_print" abstract="true" dynamic-update="true" dynamic-insert="true">
+		<cache usage="transactional"/>
+		<id name="id" column="print_id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+		<property name="f_id" column="f_id" />
+		<property name="creatorId" column="add_id" />
+		<many-to-one name="state_id" class="de.act.common.types.staticobjects.RSState" column="stat_id" access="field" />
+		<property name="stat_descr" column="stat_descr" access="field" />
+		<property name="corr" column="corr" insert="false" update="false"/>
+		<property name="fwb_sent" column="fwb_sent"/>
+	</class>
+</hibernate-mapping>

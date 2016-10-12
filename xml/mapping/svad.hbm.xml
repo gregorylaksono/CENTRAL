@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" package="de.act.common.types.staticobjects" >
+
+	<class name="RSVad" table="s_vad"  mutable="false"  batch-size="5">
+		<!-- rec <cache usage="read-only"/>--> <cache usage="transactional"/>
+		<id name="vad_id" column="vad_id"   >
+ 		 <generator class="assigned"/>
+		</id>
+
+		<property name="vad_from" column="vad_from" />	
+		<property name="vad_to" column="vad_to" />	
+		
+	</class>
+</hibernate-mapping>

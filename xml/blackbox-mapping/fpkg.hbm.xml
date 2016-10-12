@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="property" >
+
+	<class name="de.act.common.types.packageitems.ItemAWB" table="f_awb_item" dynamic-update="true" dynamic-insert="true" >
+		<cache usage="transactional"/>	
+		<id name="id" column="awb_item_id" unsaved-value="-1"  access="property" >
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+		<properties name="name" unique="true" >
+			<many-to-one name="metadata" class="de.act.common.types.attachment.CPackageAttachment" cascade="all" column="att_id" />
+			<property name="rowNo" column="awb_row" access="property" />
+		</properties>
+		<property name="chargableWgt" column="chrgbl_wgt" access="field" />
+		<property name="pcs" column="pcs" access="property" />
+		<property name="wgt" column="wgt" access="property" />
+		<property name="serviceCode" column="service_code" access="property" />
+
+		<!--many-to-one name="commodity" column="com_id" class="de.act.common.types.staticobjects.CCommodityTree" not-found="ignore" /-->
+		<!--many-to-one name="wgtUnit" column="wgt_unit" class="de.act.common.types.staticobjects.RSUnit" />
+		<many-to-one name="lenUnit" column="len_unit" class="de.act.common.types.staticobjects.RSUnit" /-->
+
+		<set name="subItems" lazy="false" table="f_pkg" access="property" cascade="all"  order-by="row_no asc" inverse="true">
+			<cache usage="transactional"/>
+		    <key column="awb_item_id"/>
+		    <one-to-many class="de.act.common.types.packageitems.ItemPKG" not-found="ignore" />
+		</set>
+		<many-to-one name="link_row" column="link_row" class="de.act.common.types.packageitems.ItemAWB" cascade="none" access="property" not-found="ignore" />
+		<many-to-one name="rateObj" class="de.act.common.types.staticobjects.SRate" column="rate_id" cascade="none" not-found="ignore" />
+		<property name="rateType" column="rate_type" access="property" />
+		<property name="rateClass" column="rate_class" access="property" />
+		<property name="classType" column="class_type" access="property" />
+		<property name="rateFactor" column="rate_factor" access="property" />
+		<property name="itemNo" column="item_no" access="property" />
+		<property name="rate" column="rate" access="property" />
+		<property name="total" column="total" access="property" />
+		<property name="cur3lcFrom" column="cur_3lc_from" access="property" />
+		<property name="cur3lcTo" column="cur_3lc_to" access="property" />
+		<property name="conversionRate" column="conversion_rate" access="property" />
+		<property name="salesRate" column="sales_rate" access="property" />
+		<property name="totalSalesRates" column="total_sales_rate" access="property" />
+	</class>
+
+	<class name="de.act.common.types.packageitems.ItemPKG" table="f_pkg" dynamic-update="true" dynamic-insert="true" >
+		<cache usage="transactional"/>	
+		<id name="id" column="pkg_id" unsaved-value="-1"  access="property">
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+		<properties name="name" unique="true" >
+			<many-to-one name="metadata" class="de.act.common.types.attachment.CPackageAttachment" cascade="all" column="att_id" />
+			<property name="rowNo" column="row_no" access="property" />
+		</properties>
+		<property name="corr" column="corr" access="property" />
+		<property name="marks" column="marks" access="property" />
+		<property name="pcs" column="pcs" access="property" />
+		<property name="isTotal" column="isTotal" access="property" />
+		<property name="wgt" column="wgt" access="property" />
+		<property name="pcsDelivered" column="pcs_delivered" access="property" />
+		<component name="volObj" class="de.act.common.types.nonstaticobjects.PackageVol" >
+			<property name="length" column="l" access="property"  />
+			<property name="weight" column="w" access="property"  />
+			<property name="height" column="h" access="property"  />
+			<property name="purVolume" column="vol" access="property"  />
+		</component>
+		<many-to-one name="commodity" column="com_id" class="de.act.common.types.staticobjects.CCommodityTree" not-found="ignore"  access="property" />
+		<!--many-to-one name="wgtUnit" column="wgt_unit" class="de.act.common.types.staticobjects.RSUnit" />
+		<many-to-one name="lenUnit" column="len_unit" class="de.act.common.types.staticobjects.RSUnit" /-->
+		<many-to-one name="scc" column="scc_3lc" class="de.act.common.types.staticobjects.RSScc" not-found="ignore" />
+		<component name="kindPkg" class="de.act.common.types.staticobjects.RSPkg" >
+			<property name="PKGS_COL" column="pkgs_col" />
+			<property name="PKGS_MAT" column="pkgs_mat" />
+			<property name="PKGS_SHP" column="pkgs_shp" />
+			<!--property name="PKGS_PALLET" column="pkgs_shp" /-->
+		</component>
+		<!--set name="fcontent" lazy="false" table="f_content" access="property" inverse="true">
+			<key column="pkg_id" />
+			<one-to-many class="de.act.common.types.FContent" />
+		</set-->
+		<many-to-one name="annotation" class="de.act.common.types.staticobjects.RSAnn" column="ann_id" cascade="none" not-found="ignore" />
+		<many-to-one name="itemAwb" class="de.act.common.types.packageitems.ItemAWB" column="awb_item_id" not-found="ignore" cascade="all" />
+		<many-to-one name="itemBkg" class="de.act.common.types.packageitems.ItemBKG" column="bkg_item_id" not-found="ignore" cascade="all" />
+		<many-to-one name="itemSli" class="de.act.common.types.packageitems.ItemSLI" column="sli_item_id" not-found="ignore" cascade="all" />
+		<many-to-one name="itemAvi" class="de.act.common.types.packageitems.ItemAVI" column="avi_item_id" not-found="ignore" cascade="all" />
+		<many-to-one name="itemDgr" class="de.act.common.types.packageitems.ItemDGR" column="dgr_item_id" not-found="ignore" cascade="all" />
+		<many-to-one name="cooItem" class="de.act.common.types.formulars.FormularCOOItem" column="coo_item_id" not-found="ignore" cascade="all" />
+		<many-to-one name="uld" class="de.act.common.types.nonstaticobjects.ULDObject" column="uld_id" not-found="ignore" cascade="none" />
+		<set name="pkgStates" lazy="false" table="f_pkg_stat" access="property" cascade="all" order-by="corr asc" inverse="true">
+			<cache usage="transactional"/>
+		    <key column="pkg_id"/>
+		    <one-to-many class="de.act.common.types.nonstaticobjects.PackageState" not-found="ignore" />
+		</set>
+	</class>
+
+	<class name="de.act.common.types.packageitems.ItemDGR" table="f_dgr_item" dynamic-update="true" dynamic-insert="true" >
+		<cache usage="transactional"/>	
+		<id name="id" column="dgr_item_id" unsaved-value="-1"  access="property">
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+		<properties name="name" unique="true" >
+			<many-to-one name="metadata" class="de.act.common.types.attachment.CPackageAttachment" cascade="all"  column="att_id" />
+			<property name="rowNo" column="dgr_row_no" access="property"  />
+		</properties>
+		<property name="page" column="page" access="property"  />
+		<!--property name="radio" column="radio" access="property" />
+		<property name="caOnly" column="ca_only" access="property" /-->
+		<component name="qtyType" class="de.act.common.types.nonstaticobjects.PackageDGRQtyType" >
+			<property name="pcs" column="pcs_no" access="property"  />
+			<property name="pkgType" column="pkg_type" access="property"  />
+			<property name="pkg_inst" column="pkg_inst" access="property"  />
+			<property name="qty" column="qty" access="property"  />
+			<!--many-to-one name="unit" column="unit_id" class="de.act.common.types.staticobjects.RSUnit" /-->
+		</component>
+		<many-to-one name="dgrCommodity" column="dgr_id" class="de.act.common.types.staticobjects.CommodityDGR" />  	
+		<!--many-to-one name="parent" class="de.act.common.types.packageitems.ItemPKG" column="pkg_id" not-found="ignore" cascade="all"   /-->
+		<set name="subItems" lazy="false" table="f_pkg" access="property" cascade="all"  order-by="row_no asc" inverse="true"  >
+			<cache usage="transactional"/>
+			<key column="dgr_item_id"/>
+			<one-to-many class="de.act.common.types.packageitems.ItemPKG" not-found="ignore" />
+		</set>
+	</class>
+ 
+	<class name="de.act.common.types.packageitems.ItemAVI" table="f_avi_item" dynamic-update="true" dynamic-insert="true"   >
+		<cache usage="transactional"/>	
+		<id name="id" column="avi_item_id" unsaved-value="-1"  access="property">
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+		<properties name="name" unique="true" >
+			<many-to-one name="metadata" class="de.act.common.types.attachment.CPackageAttachment" cascade="all" column="att_id" />
+			<property name="rowNo" column="avi_row_no" access="property"  />
+		</properties>
+		<!--property name="aviContainer" column="pkgs_no" access="property"  /-->
+		<property name="pcs" column="pkgs_no" access="property"  />
+		<property name="qtyAnm" column="qty_anm" access="property"  />
+		<many-to-one name="aviCommodity" column="avi_id" class="de.act.common.types.staticobjects.CommodityAVI"  not-found="ignore" />
+		<!--many-to-one name="lenUnit" column="len_unit" class="de.act.common.types.staticobjects.RSUnit" /-->
+		<!--many-to-one name="parent" class="de.act.common.types.packageitems.ItemPKG" column="pkg_id" not-found="ignore" cascade="all"  /-->
+		<set name="subItems" lazy="false" table="f_pkg" access="property" cascade="all"  order-by="row_no asc" inverse="true"  >
+			<cache usage="transactional"/>
+			<key column="avi_item_id"/>
+			<one-to-many class="de.act.common.types.packageitems.ItemPKG" not-found="ignore" />
+		</set>
+	</class>
+
+	<class name="de.act.common.types.packageitems.ItemSLI" table="f_sli_item" dynamic-update="true" dynamic-insert="true"   >
+		<cache usage="transactional"/>	
+		<id name="id" column="sli_item_id" unsaved-value="-1"  access="property">
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+		<properties name="name" unique="true" >
+			<many-to-one name="metadata" class="de.act.common.types.attachment.CPackageAttachment" cascade="all" column="att_id" />
+			<property name="rowNo" column="row_no" access="property"  />
+		</properties>
+		<property name="corr" column="corr" access="property"  insert="false" update="false"/>
+		<property name="marks" column="marks" access="property"  />
+		<property name="pcs" column="pcs" access="property"  />
+		<property name="wgt" column="wgt" access="property"  />
+		<component name="volObj" class="de.act.common.types.nonstaticobjects.PackageVol" >
+			<property name="length" column="l" access="property"  />
+			<property name="weight" column="w" access="property"  />
+			<property name="height" column="h" access="property"  />
+		</component>
+		<many-to-one name="commodity" column="com_id" class="de.act.common.types.staticobjects.CCommodityTree" not-found="ignore"  access="property" />
+		<!--many-to-one name="wgtUnit" column="wgt_unit" class="de.act.common.types.staticobjects.RSUnit" />
+		<many-to-one name="lenUnit" column="len_unit" class="de.act.common.types.staticobjects.RSUnit" /-->
+		<many-to-one name="scc" column="scc_3lc" class="de.act.common.types.staticobjects.RSScc" not-found="ignore" />
+		<component name="kindPkg" class="de.act.common.types.staticobjects.RSPkg" >
+			<property name="PKGS_COL" column="pkgs_col" />
+			<property name="PKGS_MAT" column="pkgs_mat" />
+			<property name="PKGS_SHP" column="pkgs_shp" />
+			<!--property name="PKGS_PALLET" column="pkgs_pltsd" /-->
+		</component>
+		<set name="subItems" lazy="false" table="f_pkg" access="property" cascade="all"  order-by="row_no asc" inverse="true"  >
+			<cache usage="transactional"/>
+		    <key column="sli_item_id"/>
+		    <one-to-many class="de.act.common.types.packageitems.ItemPKG" not-found="ignore" />
+		</set>
+	</class>
+	
+	
+	<class name="de.act.common.types.formulars.FormularCOO" table="f_coo" mutable="false"  batch-size="3">
+		<cache usage="transactional"/>
+		<id name="attId" column="att_id">
+			<generator class="assigned" />
+		</id>
+		<property name="cooCoCode" column="coo_co_code" />
+   		<property name="cooNo" column="coo_no" />
+   		<property name="cooRemark" column="coo_rem" />
+   		<property name="cooDate" column="coo_date" />
+   		<property name="cooSignProof" column="coo_sign_proof" />
+   		<property name="card" column="card" />
+   		<property name="corr" column="corr" />
+	</class>
+	
+	<class name="de.act.common.types.formulars.FormularCOOItem" table="f_coo_item" mutable="false"  batch-size="3">
+		<cache usage="transactional"/>
+		<id name="cooItemId" column="coo_item_id">
+			<generator class="native">
+				<param name="sequence">f_coo_item_coo_item_id_seq</param>
+			</generator>
+		</id>
+		<!-- <property name="attId" column="att_id" />
+		<property name="cooRow" column="coo_row"/> -->
+		<property name="linkRow" column="link_row" />
+   		<property name="pcs" column="pcs" />
+   		<property name="itemNo" column="item_no" />
+   		<property name="grossWeight" column="gross_wgt" />
+   		<property name="netWeight" column="net_wgt" />
+   		<property name="tareWeight" column="tare_wgt" />
+   		<property name="uldId" column="uld_id" />
+   		<property name="corr" column="corr" insert="false" update="false"/>
+   		<property name="mot" column="mot" />
+   		<property name="motRemark" column="mot_rem"  />
+   		<property name="cooRemark" column="coo_rem"  />
+   		<property name="coOrig" column="co_orig" />
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false" default-access="field" >
+
+	<class name="de.act.common.types.staticobjects.Discrepancies" table="s_discr"  mutable="false" >
+		<!-- rec <cache usage="read-only"/>--> <cache usage="transactional"/>
+		<id name="discr_id" column="discr_id" unsaved-value="-1">
+			<generator class="assigned" />
+		</id>
+		<property name="discr_4lc" column="discr_4lc"/>
+		<property name="discr_name" column="discr_name"/>
+		<property name="used_by" column="used_by"/>
+		<property name="process_used" column="process_used"/>
+		<property name="condition_flag" column="condition_flag"/>
+		<property name="opposite_discr_id" column="opposite_discr_id"/>
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+    	<property name="vad_id" column="vad_id" update="false" insert="false" />
+	</class>
+</hibernate-mapping>
+<!--
+  - Mapping file for the Hibernate implementation of the Clinic interface.
+  
+    <class name="de.tfhwildau.batch.data.Form" table="f_form">
+          <id name="id" column="f_id" unsaved-value="-1" />
+          <property name="name"/>
+          <property name="readOnly" column="read_only" />
+          <property name="isLocal" column="is_local"/>
+          <property name="status"/>
+          <property name="setStamp" column="set_stamp"/>
+          <property name="created"/>
+    </class>
+-->

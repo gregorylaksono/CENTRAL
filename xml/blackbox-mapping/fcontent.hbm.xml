@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" package="de.act.common.types" >
+
+</hibernate-mapping>
+
+
+<!--class name="de.act.common.types.FContent" table="f_content"  dynamic-update="false" dynamic-insert="false">
+		
+		<id name="content_id" column="content_id" unsaved-value="-1"  >
+ 		<generator class="native">
+		 	<param name="sequence">d_db_seq</param>
+ 		 </generator>
+		</id>
+		
+		<property name="pcs" />
+		<property name="uld_type_no" />
+
+		
+		<many-to-one name="uld_type_id" class="de.act.common.types.staticobjects.ULDTypeObject" column="uld_type_id" />		
+		<many-to-one name="accItem" class="de.act.common.types.handling.FAcceptanceItem" column="acc_item_id" access="field" cascade="none" />
+		<many-to-one name="sliItem" class="de.act.common.types.packageitems.ItemPKG" column="pkg_id" access="field" cascade="none" />
+		<many-to-one name="uld" class="de.act.common.types.nonstaticobjects.ULDObject" column="uld_id" access="field" cascade="none" />
+	
+	</class-->
+	
+	<!-- select c.* from f_content c where c.corr in (select max(s.corr) as corr from f_content s where c.content_id = s.content_id group by s.content_id) and c.uld_id =1-->
+	<!--
+	<sql-query name="getContentByUld"><![CDATA[
+	    <return alias="content" class="de.act.common.types.FContent"/>
+		    SELECT {content}	           
+		    FROM de.act.common.types.FContent {content} WHERE {content}.uld = :uldObject
+	    ]]>
+	</sql-query>
+	-->
+	<!--
+	<query name="getContentByUld"><![CDATA[
+		    SELECT content	           
+		    FROM de.act.common.types.FContent content WHERE content.corr in (select max(cont.corr) from FContent cont where cont.content_id = content.content_id ) AND content.uld = :uldObject
+	    ]]>
+	</query>-->
+	<!--query name="getContentByUld"><![CDATA[
+		    SELECT content	           
+		    FROM de.act.common.types.FContent content WHERE content.uld = :uldObject
+	    ]]>
+	</query>
+	
+	
+	<query name="getContentByAccItem"><![CDATA[
+			    SELECT content	           
+			    FROM de.act.common.types.FContent content WHERE content.accItem = :accItem
+		    ]]>
+		    
+		</query-->
+	
+	
+<!--
+
+ic class FContent implements Serializable {
+
+	@Id
+	public Integer content_id;
+	@ManyToOne
+	public FAcceptanceItem accItem;
+	@ManyToOne
+	public PackageSLI sliItem;
+	@ManyToOne
+	public ULDObject uld;
+	@ManyToOne
+	public BookingRequest bkgRequest;
+	
+		content_id int8 NOT NULL DEFAULT nextval('f_content_content_id_seq'::regclass),
+	  	pkg_id int8,
+	  	acc_item_id int8,
+	  	uld_id int8,
+	  	pcs int4,
+  		bkg_id int8,
+-->

@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false" package="de.act.common.types.attachment" default-access="property">
+
+	<class name="CAbstractAttachment" table="f_att" abstract="true" batch-size="5" dynamic-update="true" dynamic-insert="true">
+		<cache usage="transactional"/>
+		<id name="id" column="att_id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+		<discriminator column="att_type" />
+		<properties name="name" unique="true">
+			<property name="f_id" column="f_id" />
+			<property name="attNo" column="att_no" />
+			<property name="creatorId" column="add_id" />
+			<property name="attType" column="att_type" update="false" insert="false" />
+		</properties>
+		<property name="sign" column="sign" />
+		<property name="auth" column="auth" />
+		<property name="corr" column="corr" insert="false" update="false"/>
+		<!--many-to-one name="creator" class="de.act.common.types.staticobjects.RSAdd" column="add_id" insert="false" update="false" /-->
+		<many-to-one name="awbNo" class="de.act.common.types.nonstaticobjects.RFAwbNo" column="f_id" insert="false" update="false" not-found="ignore" />
+	</class>
+
+	<subclass lazy="false" name="CRoutingAttachment" extends="CAbstractAttachment" discriminator-value="rt">
+		<list name="routing" table="f_rt" access="property" cascade="all" inverse="true" lazy="false">
+			<cache usage="transactional"/>
+			<key column="att_id" />
+			<list-index column="rt_seq" />
+			<one-to-many class="de.act.common.types.nonstaticobjects.RFRt" not-found="ignore" />
+		</list>
+	</subclass>
+
+	<subclass lazy="false" name="CAwbStateAttachment" extends="CAbstractAttachment" discriminator-value="awb_stat">
+		<set name="awbStates" lazy="false" table="f_awb_stat" access="property" cascade="all" inverse="true" batch-size="2">
+			<cache usage="transactional"/>
+			<key column="att_id" />
+			<one-to-many class="de.act.common.types.nonstaticobjects.AwbState" not-found="ignore" />
+		</set>
+	</subclass>
+
+	<subclass lazy="false" name="CPkgStateAttachment" extends="CAbstractAttachment" discriminator-value="pkg_stat">
+		<set name="pkgStates" lazy="false" table="f_pkg_stat" access="property" cascade="all" inverse="true" batch-size="2">
+			<cache usage="transactional"/>
+			<key column="att_id" />
+			<one-to-many class="de.act.common.types.nonstaticobjects.PackageState" not-found="ignore" />
+		</set>
+	</subclass>
+
+	<subclass lazy="false" name="CAcceptanceAttachment" extends="CAbstractAttachment" discriminator-value="acc">
+		<!--set name="acceptance" lazy="false" table="f_acc" access="property" cascade="all" inverse="true" batch-size="2">
+			<cache usage="transactional"/>
+			<key column="att_id" />
+			<one-to-many class="de.act.common.types.handling.FAcceptance" not-found="ignore" />
+		</set-->
+		<set name="acceptanceHeader" lazy="false" table="f_acc_header" access="property" cascade="all" inverse="true" batch-size="2">
+			<cache usage="transactional"/>
+			<key column="att_id" />
+			<one-to-many class="de.act.common.types.handling.FAcceptanceHeader" not-found="ignore" />
+		</set>
+	</subclass>
+
+	<subclass lazy="false" name="CBookingFlightAttachment" extends="CAbstractAttachment" discriminator-value="bkg_flt">
+		<set name="bkgFlightStates" lazy="false" table="f_bkg_flt_stat" access="property" cascade="all" inverse="true" batch-size="2">
+			<cache usage="transactional"/>
+			<key column="att_id" />
+			<one-to-many class="de.act.common.types.nonstaticobjects.BookingFlightState" not-found="ignore" />
+		</set>
+		<list name="bkgFlights" lazy="false" table="f_bkg_flt" access="property" cascade="all" inverse="true" batch-size="2">
+			<cache usage="transactional"/>
+			<key column="att_id" />
+			<list-index column="flt_row" />
+			<one-to-many class="de.act.common.types.nonstaticobjects.BookingRequestFlight" not-found="ignore" />
+		</list>
+		<bag name="listBookingFlight" mutable="true" cascade="all" inverse="true" lazy="false">
+			<key column="att_id" />
+			<one-to-many class="de.act.common.types.nonstaticobjects.BookingRequestFlight" />
+		</bag>
+	</subclass>
+
+	<subclass lazy="false" name="CBookingFlightStateAttachment" extends="CAbstractAttachment" discriminator-value="bkg_flt_state">
+		<!-- list name="bkgFlights" lazy="false" table="f_bkg_flt" access="property" cascade="all" inverse="true" batch-size="2">
+			<key column="att_id" />
+			<list-index column="flt_row" />
+			<one-to-many class="de.act.common.types.nonstaticobjects.BookingRequestFlight" not-found="ignore" />
+		</list-->
+	</subclass>
+
+	<subclass lazy="false" name="CPackageAttachment" extends="CAbstractAttachment" discriminator-value="pkg">
+		<set name="itemAWBs" lazy="false" table="f_awb_item" access="property" cascade="all" inverse="true" batch-size="2" order-by="awb_row asc">
+			<cache usage="transactional"/>
+			<key column="att_id" />
+			<one-to-many class="de.act.common.types.packageitems.ItemAWB" not-found="ignore" />
+		</set>
+		<set name="itemPKG" lazy="false" table="f_pkg" access="property" cascade="all" inverse="true" batch-size="2" order-by="row_no asc">
+			<cache usage="transactional"/>
+			<key column="att_id" />
+			<one-to-many class="de.act.common.types.packageitems.ItemPKG" not-found="ignore" />
+		</set>
+		<bag name="listItemPKG" mutable="true" cascade="all" inverse="true" lazy="false">
+			<key column="att_id" />
+			<one-to-many class="de.act.common.types.packageitems.ItemPKG" />
+		</bag>
+		<bag name="listItemBKG" mutable="true" cascade="all" inverse="true" lazy="false">
+			<key column="att_id" />
+			<one-to-many class="de.act.common.types.packageitems.ItemBKG" />
+		</bag>
+	</subclass>
+
+	<subclass lazy="false" name="CAciAttachment" extends="CAbstractAttachment" discriminator-value="aci" >
+		<list name="accountingInformations" lazy="false" table="f_aci" access="property" cascade="all" inverse="true" batch-size="2">
+			<cache usage="transactional"/>
+			<key column="att_id" />
+			<list-index column="aci_seq" />
+			<one-to-many class="de.act.common.types.nonstaticobjects.RFAci" not-found="ignore" />
+		</list>
+	</subclass>
+
+	<subclass lazy="false" name="CAddressAttachment" extends="CAbstractAttachment" discriminator-value="add" >
+		<one-to-one name="addresses" class="de.act.common.types.nonstaticobjects.RFAdd" cascade="all" />
+	</subclass>
+	
+	<subclass lazy="false" name="CSliAttachment" extends="CAbstractAttachment" discriminator-value="sli" >
+	</subclass>
+	
+	<subclass lazy="false" name="CAwbAttachment" extends="CAbstractAttachment" discriminator-value="awb" >
+		<many-to-one name="deliveryView" class="de.act.common.types.DeliveryHeadersView" column="f_id" update="false" insert="false" not-found="ignore" />
+	</subclass>
+	
+	<subclass lazy="false" name="CSadAttachment" extends="CAbstractAttachment" discriminator-value="sad" >
+	</subclass>
+	
+	<subclass lazy="false" name="CAviAttachment" extends="CAbstractAttachment" discriminator-value="avi" >
+	</subclass>
+	
+	<subclass lazy="false" name="CDgrAttachment" extends="CAbstractAttachment" discriminator-value="dgr" >	
+	</subclass>
+
+	<subclass lazy="false" name="CBookingAttachment" extends="CAbstractAttachment" discriminator-value="bkg" >	
+	</subclass>
+
+	<subclass lazy="false" name="CDeliveryAttachment" extends="CAbstractAttachment" discriminator-value="delivery" >
+		<many-to-one name="deliveryView" class="de.act.common.types.DeliveryHeadersView" column="f_id" update="false" insert="false" not-found="ignore" />
+	</subclass>
+	
+	<subclass lazy="false" name="CNotifyAttachment" extends="CAbstractAttachment" discriminator-value="notify" >
+	</subclass>
+</hibernate-mapping>
+
+<!--
+	
+	<list name="routing" table="f_rt" access="property" cascade="all" inverse="true"  lazy="false" >
+	
+	<key column="att_id" />
+	<list-index column="rt_seq" />
+	<one-to-many class="de.act.common.types.nonstaticobjects.RFRt" not-found="ignore" />
+	</list>
+	
+	<one-to-one name="addresses" class="de.act.common.types.nonstaticobjects.RFAdd" cascade="all" />
+	
+	<set name="awbStates" lazy="false" table="f_awb_stat" access="property" cascade="all" inverse="true" batch-size="2" >
+	
+	<key column="att_id" />
+	<one-to-many class="de.act.common.types.nonstaticobjects.AwbState" not-found="ignore" />
+	</set>
+	
+	<set name="pkgStates" lazy="false" table="f_pkg_stat" access="property" cascade="all" inverse="true" batch-size="2" >
+	
+	<key column="att_id" />
+	<one-to-many class="de.act.common.types.nonstaticobjects.PackageState" not-found="ignore"  />
+	</set>
+	
+	<set name="acceptance" lazy="false" table="f_acc" access="property" cascade="all" inverse="true" batch-size="2" >
+	
+	<key column="att_id" />
+	<one-to-many class="de.act.common.types.handling.FAcceptance" not-found="ignore"  />
+	</set>
+	
+	<set name="bkgFlightStates" lazy="false" table="f_bkg_flt_stat" 
+	access="property" cascade="all" inverse="true" batch-size="2" >
+	
+	<key column="att_id" />
+	<one-to-many class="de.act.common.types.nonstaticobjects.BookingFlightState" not-found="ignore" />
+	</set>
+	<list name="bkgFlights" lazy="false" table="f_bkg_flt" access="property" cascade="all" inverse="true" batch-size="2" >
+	
+	<key column="att_id" />
+	<list-index column="flt_row" />
+	<one-to-many class="de.act.common.types.nonstaticobjects.BookingRequestFlight" not-found="ignore" />
+	</list>
+	
+	<set name="itemAWBs" lazy="false" table="f_awb_item" 
+	access="property" cascade="all" inverse="true" batch-size="2" order-by="awb_row asc"  >
+	
+	<key column="att_id" />
+	<one-to-many class="de.act.common.types.packageitems.ItemAWB" not-found="ignore" />
+	</set>
+	
+	<set name="itemSLI" lazy="false" table="f_pkg" access="property" cascade="all"
+	inverse="true" batch-size="2" order-by="row_no asc" >
+	
+	<key column="att_id" />
+	<one-to-many class="de.act.common.types.packageitems.ItemPKG" not-found="ignore" />
+	</set>
+	
+	<list name="accountingInformations" lazy="false" table="f_aci" access="property" cascade="all" inverse="true" batch-size="2" >
+	
+	<key column="att_id" />
+	<list-index column="aci_seq" />
+	<one-to-many class="de.act.common.types.nonstaticobjects.RFAci" not-found="ignore" />
+	</list>
+	
+	private Set<FAcceptance>           acceptance             = new HashSet<FAcceptance>(0); ok
+	private Set<ItemBKG>               itemBKGs               = null;not yet
+	private Set<ItemDGR>               itemDGRs               = null;not yet
+	private Set<ItemAVI>               itemAVIs               = null;not yet
+	private Set<ItemAWB>               itemAWBs               = null;o
+	private Set<ItemSAD>               itemSADs               = null;not yet
+	private Set<ItemSLI>               itemSLI                = null;o
+	private Set<BookingFlightState>    bkgFlightStates        = null;o
+	private List<BookingRequestFlight> bkgFlights             = null;o
+	private List<RFRt>                 routing                = null;o
+	private Set<AwbState>              awbStates              = null;o
+	private Set<PackageState>          pkgStates              = null;o
+	private List<RFAci>                accountingInformations = null;o
+	
+-->

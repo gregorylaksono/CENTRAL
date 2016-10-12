@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="property" package="de.act.common.types.nonstaticobjects" >
+	<class name="de.act.common.types.nonstaticobjects.RFDelivery" table="f_delivery">	             
+		<cache usage="transactional"/>
+		<id  name="attachmentId" type="java.lang.Integer" column="att_id" >
+			<generator class="assigned"/>
+		</id>		
+		<property name="deliverAddressId" type="java.lang.Integer" column="delivery_add_id" />
+		<property name="pcs" type="java.lang.Integer" column="pcs" />
+		<property name="weight" type="java.lang.Double" column="wgt" />
+		<property name="recipientName" type="java.lang.String" column="recipient_name" />
+		<property name="recipientSignature" type="java.lang.String" column="recipient_sign" />
+		<property name="customRefNo" type="java.lang.String" column="customs_ref_no" />
+		<property name="bankReleaseNo" type="java.lang.String" column="bank_release_no" />
+		<property name="invoiceNo" type="java.lang.String" column="invoice_no" />
+		<property name="userName" type="java.lang.String" column="user_name" />
+		<property name="corr" type="java.util.Date" column="corr" />
+	</class>	
+</hibernate-mapping>

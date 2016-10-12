@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="property" package="de.act.common.types.nonstaticobjects">
+	<class name="de.act.common.types.nonstaticobjects.Preadvise_airline" table="f_pre_advise_view">
+		<cache usage="transactional"/>
+		<id name="user_id" column="user_id">
+			<generator class="native"></generator>
+		</id>
+		<property name="user_name" />
+		<property name="add_id" />
+		<property name="parent_id" />
+		<property name="add_name" />
+		<property name="ap_3lc" />
+		<property name="add_type" />
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+	http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-2.0.xsd
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd">
+  
+ 	<bean id="jmsServerFactory" class="org.apache.activemq.ActiveMQConnectionFactory" >
+			<property name="brokerURL" value="${jmsserver.url}" />			
+			<property name="useRetroactiveConsumer" value="true" />
+			<!-- sending asyncMessage -->
+			<property name="useAsyncSend" value="true" />
+			<property name="useCompression" value="true" />
+			<property name="optimizeAcknowledge" value="false" />
+	</bean>
+
+	  <!-- Spring JMS Template -->
+	 <bean id="serverJmsTemplate" class="org.springframework.jms.core.JmsTemplate"  >
+	   <property name="connectionFactory">
+	     <ref local="jmsServerFactory"/>
+	   </property>
+	   <property name="pubSubNoLocal" value="false" />
+	 </bean>	 
+</beans>
+

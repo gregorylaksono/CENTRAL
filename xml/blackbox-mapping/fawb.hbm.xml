@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" package="de.act.common.types" >
+
+	<class name="de.act.common.types.staticobjects.RSCcd" table="s_ccd" mutable="false"  >
+		<!-- rec <cache usage="read-only"/>--> 
+		<cache usage="transactional"/>
+		<id name="ccd_id" column="ccd_id" unsaved-value="-1">
+			<generator class="assigned"/>
+		</id>
+		<property name="ccd_name" />
+		<property name="vad_id"  />
+	</class>
+
+</hibernate-mapping> 
+
+<!--
+	<class name="de.act.common.types.nonstaticobjects.RFAwb" table="f_awb">
+		
+		<composite-id >
+			<key-property name="F_ID" column="f_id" access="field" />
+			<key-property name="CORR" column="corr" />
+		</composite-id>
+		
+		
+		<many-to-one name="CCD_ID" class="de.act.common.types.staticobjects.RSCcd" column="ccd_id" />	
+		
+		<property name="CUR_RATE" 		column="cur_rate" />
+		<property name="INSU_RATE" 		column="insu_rate" />
+		<property name="WGT_CHRG"	 	column="wgt_chrg" />		
+		<property name="VAL_CHRG"	 	column="val_chrg" />		
+		<property name="TAX"	 		column="tax" />			
+		<property name="CUR_CONV_RATE"	column="cur_conv_rate" />		
+		<property name="AWB_DATE"	 	column="awb_date" />		
+		<property name="AWB_PLACE"	 	column="awb_place" />
+		
+		<list name="fawbItems" lazy="false" table="f_awb_item" access="field" cascade="all" >
+			<key>
+			  <column name="f_id" />
+			  <column name="corr" />
+			</key>
+			<list-index column="awb_row" />
+			<one-to-many class="de.act.common.types.nonstaticobjects.RFAwbItem" />
+		</list>
+		
+   	</class>
+-->   	 

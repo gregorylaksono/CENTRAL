@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" package="de.act.common.types.staticobjects" >
+
+	<class name="de.act.common.types.localobjects.RDOt" table="d_ot"  mutable="false">
+		<!-- rec <cache usage="read-only"/>--> <cache usage="transactional"/>
+		<composite-id>
+			<key-many-to-one name="ot_2lc" class="RSOt2lc" column="ot_2lc" />
+			<key-many-to-one name="ot_1lc" class="RSOt1lc" column="ot_1lc" />
+		</composite-id>	
+		<property name="ot_rate"/>
+	</class>
+
+	<class name="RSOt2lc" table="s_ot_2lc"  mutable="false">
+		<!-- rec <cache usage="read-only"/>--> <cache usage="transactional"/>
+		<id name="ot_2lc" column="ot_2lc" unsaved-value="-1"  >
+			 <generator class="assigned"/>
+		</id>
+		<property name="ot_2lc_name"/>
+		<property name="vad_id"/>
+	</class>
+	
+	<class name="RSOt1lc" table="s_ot_1lc"  mutable="false" >
+		<!-- rec <cache usage="read-only"/>--> <cache usage="transactional"/>
+		<id name="ot_1lc" column="ot_1lc" unsaved-value="-1"  >
+			<generator class="assigned"/>
+		</id>
+		<property name="ot_1lc_name"/>
+		<property name="vad_id"/>
+	</class>
+
+	<class name="RSOt" table="s_ot" schema="public">
+		<id name="otId" type="long">
+			<column name="ot_id" />
+			<generator class="assigned" />
+		</id>
+		<property name="ca2lc" column="ca_2lc" />
+		<many-to-one name="ap3lc" class="de.act.common.types.staticobjects.RSAp" column="ap_3lc" not-found="ignore" />
+		<property name="ownerAddId" column="owner_add_id" />
+		<many-to-one name="ot2lc" class="de.act.common.types.staticobjects.RSOt2lc" column="ot_2lc" not-found="ignore" />
+		<many-to-one name="ot1lc" class="de.act.common.types.staticobjects.RSOt1lc" column="ot_1lc" not-found="ignore" />
+		<property name="otRate" column="ot_rate" />
+		<property name="cur3lc" column="cur_3lc" />
+		<many-to-one name="vad" class="de.act.common.types.staticobjects.RSVad" column="vad_id" not-found="ignore" />
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field"  >
+
+	<class name="de.act.common.types.localobjects.Storage" table="d_storage" mutable="true" batch-size="5" >
+		<!-- rec <cache usage="read-only"/>--> <cache usage="transactional"/>
+		<id name="stor_id" column="stor_id" unsaved-value="-1">
+			<generator class="assigned"/>
+		</id>
+		<property name="stor_name" column="stor_name"/>
+		<property name="stor_type" column="stor_type"/>
+		<property name="stor_parent_id" column="stor_parent"/>
+		<property name="owner_add_id" column="owner_add_id"/>
+		<!-- <many-to-one name="stor_parent" class="de.act.common.types.localobjects.Storage" column="stor_parent" cascade="none" />
+		<many-to-one name="owner_add" class="de.act.common.types.staticobjects.RSAdd" column="owner_add_id" not-null="false" not-found="ignore" /> -->
+		<many-to-one name="loc" class="de.act.common.types.localobjects.Location" column="stor_id" not-null="false" not-found="ignore" insert="false" update="false" /> 
+		<!--set name="childs" table="d_storage" cascade="none" inverse="true" lazy="false" batch-size="7" outer-join="true" >
+				<key column="stor_parent" />
+				<one-to-many class="de.act.common.types.localobjects.Storage" />
+		</set-->
+		<!--set name="accItems" lazy="false" table="f_acc_item" cascade="none" inverse="true" batch-size="3" outer-join="true" order-by="row_no asc" >
+				<key column="loc_id" />
+				<one-to-many class="de.act.common.types.handling.Shipments"   />		
+		</set-->
+		<!--set name="uldItems" lazy="false" table="a_uld" cascade="none" inverse="true" batch-size="3" outer-join="true" >
+				<key column="loc_id" />
+				<one-to-many class="de.act.common.types.nonstaticobjects.ULDObject"/>						
+		</set-->
+	</class>
+	
+	<class name="de.act.common.types.localobjects.StorageLimit" table="d_storage_limit" mutable="true" batch-size="5" >
+		<!-- rec <cache usage="read-only"/>--> <cache usage="transactional"/>
+		<id name="addId" column="add_id" unsaved-value="-1">
+			<generator class="assigned"/>
+		</id>
+		<property name="limitDay" column="limit_day"/>
+		<property name="warningDay" column="warning_day"/>
+		<many-to-one name="add" class="de.act.common.types.staticobjects.RSAdd" column="add_id" not-null="false" not-found="ignore" insert="false" update="false" />
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="property" package="de.act.common.types.nonstaticobjects" >
+	<class name="de.act.common.types.nonstaticobjects.RFNotificationView" table="f_notification_view">	             
+		<cache usage="transactional"/>
+		<composite-id>
+			<key-property name="awbNo" column="awbno" type="java.lang.String" />
+			<key-many-to-one name="notificationData" class="de.act.common.types.nonstaticobjects.RFNotification" column="att_id" />
+		</composite-id>
+	</class>	
+</hibernate-mapping>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false" default-access="field" >
+
+	<class name="de.act.common.types.nonstaticobjects.FDiscrepancies" table="f_discr">
+		<cache usage="transactional"/>
+		<!--id name="acc_shipment_item_id" column="acc_shipment_item_id" unsaved-value="-1">
+			<generator class="assigned" />
+		</id-->
+		<id name="acc_shipment_item_id" type="long">
+			<column name="acc_shipment_item_id" />
+			<generator class="foreign">
+				<param name="property">shipmentItem</param>
+			</generator>
+		</id>
+		<one-to-one name="shipmentItem" class="de.act.common.types.handling.FAcceptanceShipmentItem" />
+		<many-to-one name="discrepancies" class="de.act.common.types.staticobjects.Discrepancies" column="discr_id" />
+		<property name="ap_3lc" column="ap_3lc"/>
+		<property name="discr_form" column="discr_form"/>
+    	<property name="discr_rem" column="discr_rem"/>
+	</class>
+</hibernate-mapping>

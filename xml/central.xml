@@ -1,0 +1,804 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:lang="http://www.springframework.org/schema/lang" xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+	http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-2.0.xsd
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd">
+
+	<import resource="acternityserver.xml" />
+
+	<bean id="centralArea" class="de.act.centralserver.applayer.gateway.CArea">
+		<property name="jmsGateway">
+			<ref bean="acternityGateway" />
+		</property>
+		<property name="userRegistration">
+			<ref bean="UserRegistration" />
+		</property>
+		<property name="flightManager">
+			<ref bean="flightManager" />
+		</property>
+	</bean>
+
+	<bean id="staticArea" class="de.act.centralserver.applayer.gateway.SArea">
+		<property name="jmsGateway">
+			<ref bean="acternityGateway" />
+		</property>
+		<property name="staticDataService">
+			<ref bean="staticDataService" />
+		</property>
+		<property name="aircraftManager">
+			<ref bean="aircraftManager" />
+		</property>
+		<property name="scheduleManager">
+			<ref bean="scheduleManager" />
+		</property>
+		<property name="netRatesManager">
+			<ref bean="netRatesManager" />
+		</property>
+		<property name="preferenceManager">
+			<ref bean="preferenceManager" />
+		</property>
+		<property name="dbManifestService">
+			<ref bean="dbManifestService" />
+		</property>
+		<property name="transferManager">
+			<ref bean="transferManager" />
+		</property>
+		<property name="uldService">
+			<ref bean="uldService" />
+		</property>
+		<property name="airlineManager">
+			<ref bean="airlineManager" />
+		</property>
+		<property name="sccHandlingManager">
+			<ref bean="sccHandlingManager"/>
+		</property>
+		<property name="handlingAgentService">
+			<ref bean="handlingAgentService"/>
+		</property>
+		<property name="commodityManager">
+			<ref bean="commodityManager"/>
+		</property>
+		<property name="preferenceUserManager">
+			<ref bean="preferenceUserManager" />
+		</property>
+		<property name="rateManager">
+			<ref bean="rateManager" />
+		</property>
+		<property name="chargesManager">
+			<ref bean="chargesManager" />
+		</property>
+		<property name="formularManager">
+			<ref bean="formularManager" />
+		</property>
+	</bean>
+
+	<!-- Central Area -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="post.strato.de" />
+		<property name="username" value="support@acternity.com" />
+		<property name="password" value="actsppt#2011" />
+	 	<property name="port" value="25" />
+	 	<property name="javaMailProperties">
+	   <props>
+       	      <prop key="mail.smtp.auth">true</prop>
+       	      <prop key="mail.smtp.starttls.enable">true</prop>
+       	   </props>
+	</property>
+	</bean>
+	
+	<bean id="formularArea" class="de.act.centralserver.applayer.gateway.FArea">
+		<property name="jmsGateway">
+			<ref bean="acternityGateway" />
+		</property>
+		<property name="staticDataService">
+			<ref bean="staticDataService" />
+		</property>
+		<property name="transferManager">
+			<ref bean="transferManager" />
+		</property>
+		<property name="bkgDao">
+			<ref bean="bkgDao" />
+		</property>
+		<property name="uldService">
+			<ref bean="uldService" />
+		</property>
+		<property name="dbManifestService">
+			<ref bean="dbManifestService" />
+		</property>
+		<property name="mailSender">
+			<ref bean="mailSender" />
+		</property>
+	</bean>
+	
+	<!--  USER REGISTRATION -->
+	<bean id="UserRegistration" class="de.act.centralserver.applayer.core.usermodule.CUserRegistrationManager">
+		<property name="dbUserRegistration">
+			<ref bean="dbUserRegistrationManager" />
+		</property>
+	</bean>
+
+	<!--  AIRCRAFT MANAGER -->
+	<bean id="aircraftManager" class="de.act.blackbox.applayer.core.airline.CAircraftManager">
+		<property name="dbAircraftManager">
+			<ref bean="dbAircraftManager" />
+		</property>
+		<property name="dbAircraftTypeManager">
+			<ref bean="dbAircraftTypeManager" />
+		</property>
+		<property name="dbAircraftCompManager">
+			<ref bean="dbAircraftCompManager" />
+		</property>
+		<property name="dbAircraftTypeCompManager">
+			<ref bean="dbAircraftTypeCompManager" />
+		</property>
+		<property name="dbValidationManager">
+			<ref bean="dbValidationManager" />
+		</property>
+		<property name="dbAirlineManager">
+			<ref bean="dbAirlineManager" />
+		</property>
+		<property name="dbStaticDataService">
+			<ref bean="dbStaticDataService" />
+		</property>
+	</bean>
+
+	<!-- SCHEDULE MANAGER -->
+	<bean id="scheduleManager" class="de.act.blackbox.applayer.core.airline.CScheduleManager">
+		<property name="dbScheduleManager">
+			<ref bean="dbScheduleManager" />
+		</property>
+		<property name="dbAreaManager">
+			<ref bean="dbAreaManager" />
+		</property>
+		<property name="dbValidationManager">
+			<ref bean="dbValidationManager" />
+		</property>
+		<property name="dbConnectionManager">
+			<ref bean="dbConnectionManager" />
+		</property>
+		<property name="dbCurrenciesManager">
+			<ref bean="dbCurrenciesManager" />
+		</property>
+		<property name="scheduleDao">
+			<ref bean="scheduleDao" />
+		</property>
+	</bean>
+
+	<!-- NET RATES MANAGER -->
+	<bean id="netRatesManager" class="de.act.blackbox.applayer.core.airline.CNetRatesManager">
+		<property name="dbNetRatesManager">
+			<ref bean="dbNetRatesManager" />
+		</property>
+		<property name="dbValidationManager">
+			<ref bean="dbValidationManager" />
+		</property>
+		<property name="dbConnectionManager">
+			<ref bean="dbConnectionManager" />
+		</property>
+		<property name="dbAreaManager">
+			<ref bean="dbAreaManager" />
+		</property>
+		<property name="dbCurrenciesManager">
+			<ref bean="dbCurrenciesManager" />
+		</property>
+		<property name="ruleManager">
+			<ref bean="ruleManager" />
+		</property>
+	</bean>
+
+	<!-- PREFERENCE MANAGER -->
+	<bean id="preferenceManager" class="de.act.blackbox.applayer.core.airline.CPreferenceManager">
+		<property name="dbPreferenceManager">
+			<ref bean="dbPreferenceManager" />
+		</property>
+		<property name="dbAreaManager">
+			<ref bean="dbAreaManager" />
+		</property>
+		<property name="dbValidationManager">
+			<ref bean="dbValidationManager" />
+		</property>
+		<property name="dbUserManager">
+			<ref bean="dbUserManager" />
+		</property>
+	</bean>
+	
+	<bean id="preferenceUserManager" class="de.act.blackbox.applayer.core.usermodule.CUserPreferenceManager">
+		<property name="dbUserPreference">
+			<ref bean="dbUserPreferenceManager" />
+		</property>
+		<property name="dbUserManager">
+			<ref bean="dbUserManager" />
+		</property>
+		<property name="dbPreferenceManager">
+			<ref bean="dbPreferenceManager" />
+		</property>
+	</bean>
+
+	<!-- FLIGHT MANAGER -->
+	<bean id="flightManager" class = "de.act.centralserver.applayer.core.airline.CFlightManager">
+		<property name="dbFlightManager">
+			<ref bean ="dbFlightManager" />
+		</property>
+	</bean>
+	
+	<!-- STATIC DATA SERVICE -->
+	<bean id="staticDataService" class="de.act.blackbox.applayer.core.CStaticDataService">
+		<property name="dbStaticDataService">
+			<ref bean="dbStaticDataService" />
+		</property>
+	</bean>
+
+	<!-- RULE MANAGER -->
+	<bean id="ruleManager" class="de.act.blackbox.applayer.core.CRuleManager">
+		<constructor-arg index="0">
+			<ref bean="ruleDao" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="utilDao" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<ref bean="apDao" />
+		</constructor-arg>
+		<constructor-arg index="3">
+			<ref bean="dbRuleManager" />
+		</constructor-arg>
+		<constructor-arg index="4">
+			<ref bean="dbValidationManager" />
+		</constructor-arg>
+		<constructor-arg index="5">
+			<ref bean="dbStaticDataService" />
+		</constructor-arg>
+	</bean>
+	
+	<!-- TRANSFER MANAGER -->
+	<bean id="transferManager" class="de.act.blackbox.applayer.core.booking.TransferManager">
+		<constructor-arg index="0" ref="dbTransferManager" />
+	</bean>
+	
+	<!-- ULD SERVICE -->
+	<bean id="uldService" class="de.act.blackbox.applayer.core.CUldService">
+		<property name="uldService">
+			<ref bean="dbUldService" />
+		</property>
+		<property name="dbStaticDataService">
+			<ref bean="dbStaticDataService" />
+		</property>
+		<property name="dbValidationManager">
+			<ref bean="dbValidationManager" />
+		</property>
+	</bean>
+	
+	<!-- AIRLINE MANAGER -->
+	<bean id="airlineManager" class="de.act.blackbox.applayer.core.airline.CAirlineManager">
+		<property name="dbAirlineManager">
+			<ref bean="dbAirlineManager" />
+		</property>
+		<property name="dbStaticDataService">
+			<ref bean="dbStaticDataService" />
+		</property>
+		<property name="transferManager">
+			<ref bean="transferManager" />
+		</property>
+		<property name="bookingManager">
+			<ref bean="bookingManager" />
+		</property>
+		<property name="communicationService">
+			<ref bean="communicationService" />
+		</property>
+		<property name="mailSender" ref="mailSender" />
+		<property name="templateMessage" ref="templateMessageChanged" />
+	</bean>
+	
+	<!-- SCC HANDLING MANAGER -->
+	<bean id="sccHandlingManager" class="de.act.blackbox.applayer.core.CSccHandlingManager">
+		<property name="dbSccHandlingManager">
+			<ref bean="dbSccHandlingManager"/>
+		</property>
+		<property name="dbValidationManager">
+			<ref bean="dbValidationManager" />
+		</property>
+		<property name="ruleManager">
+		    <ref bean="ruleManager"/>
+		</property>
+	</bean>
+	
+	<!-- BOOKING MANAGER -->
+	<bean id="bookingManager" class="de.act.blackbox.applayer.core.booking.BookingManager">
+		<constructor-arg index="0" ref="dbBookingManager" />
+		<constructor-arg index="1" ref="dbTransferManager" />
+		<constructor-arg index="2" ref="bkgDao" />
+	</bean>
+	
+	<!-- HANDLING AGENT MANAGER -->
+	<bean id="handlingAgentService" class="de.act.blackbox.applayer.core.CHandlingAgentService">
+		<property name="handlingAgentService">
+			<ref bean="dbHandlingAgentService" />
+		</property>
+		<property name="dbStaticDataService">
+			<ref bean="dbStaticDataService" />
+		</property>
+		<property name="dbValidationManager">
+			<ref bean="dbValidationManager" />
+		</property>
+	</bean>
+	
+	<!-- <bean id="bookingManager" class="de.act.blackbox.applayer.core.booking.BookingManager">
+		<constructor-arg index="0" ref="dbBookingManager" />
+		<constructor-arg index="1" ref="dbTransferManager" />
+		<constructor-arg index="2" ref="bkgDao" />
+		<constructor-arg index="3" ref="dbScheduleManager" />
+		<constructor-arg index="4" ref="dbCapacityControlManager" />
+		<constructor-arg index="5" ref="dbStaticDataService" />
+	</bean> -->
+	
+	<!-- DB Manager -->
+	
+	<!-- <bean id="dbCapacityControlManager" class="de.act.blackbox.dblayer.core.airline.CDBCapacityControlManager">
+		<property name="dbSessionManager">
+			<ref bean="dbSessionManager"/>
+		</property>
+	</bean> -->
+	
+	<!-- DB USER REGISTRATION -->
+	<bean id="dbUserRegistrationManager" class="de.act.centralserver.dblayer.core.usermodule.CDBUserRegistrationManager">
+		<property name="dbSessionManager">
+			<ref bean="dbSessionManager" />
+		</property>
+	</bean>
+	
+	<!-- DB FLIGHT MANAGER -->
+	<bean id="dbFlightManager" class="de.act.centralserver.dblayer.core.airline.CDBFlightManager">
+		<property name="dbSessionManager">
+			<ref bean="dbSessionManager" />
+		</property>
+	</bean>
+
+	<!-- DB USER MANAGER -->
+	<bean id="dbUserManager" class="de.act.blackbox.dblayer.core.usermodule.CDBUserManager">
+		<property name="dbSessionManager">
+			<ref bean="dbSessionManagerBlackbox" />
+		</property>
+		<property name="idDao">
+			<ref bean="idDao" />
+		</property>
+	</bean>
+
+	<!-- DB AIRCRAFT MANAGER -->
+	<bean id="dbAircraftManager" class="de.act.blackbox.dblayer.core.airline.CDBAircraftManager">
+		<property name="dbSessionManager">
+			<ref bean="dbSessionManagerBlackbox" />
+		</property>
+	</bean>
+
+	<bean id="dbAircraftTypeManager" class="de.act.blackbox.dblayer.core.CDBAircraftTypeManager">
+		<property name="dbSessionManager">
+			<ref bean="dbSessionManagerBlackbox" />
+		</property>
+	</bean>
+
+	<bean id="dbAircraftCompManager" class="de.act.blackbox.dblayer.core.CDBAircraftCompManager">
+		<property name="dbSessionManager">
+			<ref bean="dbSessionManagerBlackbox" />
+		</property>
+	</bean>
+
+	<bean id="dbAircraftTypeCompManager" class="de.act.blackbox.dblayer.core.CDBAircraftTypeCompManager">
+		<property name="dbSessionManager">
+			<ref bean="dbSessionManagerBlackbox" />
+		</property>
+	</bean>
+
+	<bean id="dbAirlineManager" class="de.act.blackbox.dblayer.core.airline.CDBAirlineManager">
+		<property name="dbSessionManager">
+			<ref bean="dbSessionManagerBlackbox" />
+		</property>
+	</bean>
+
+	<!-- DB SCHEDULE MANAGER -->
+	<bean id="dbScheduleManager" class="de.act.blackbox.dblayer.core.airline.CDBScheduleManager">
+		<property name="dbSessionManager">
+			<ref bean="dbSessionManagerBlackbox" />
+		</property>
+	</bean>
+
+	<bean id="dbAreaManager" class="de.act.blackbox.dblayer.core.CDBAreaManager">
+		<property name="dbSessionManager">
+			<ref bean="dbSessionManagerBlackbox" />
+		</property>
+	</bean>
+
+	<bean id="dbCurrenciesManager" class="de.act.blackbox.dblayer.core.CDBCurrenciesManager">
+		<property name="dbSessionManager">
+			<ref bean="dbSessionManagerBlackbox" />
+		</property>
+	</bean>
+	
+	<!-- DB NET RATES MANAGER -->
+	<bean id="dbNetRatesManager" class="de.act.blackbox.dblayer.core.airline.CDBNetRatesManager">
+		<property name="dbSessionManager">
+			<ref bean="dbSessionManagerBlackbox" />
+		</property>
+	</bean>
+
+	<!-- DB PREFERENCE MANAGER -->
+	<bean id="dbPreferenceManager" class="de.act.blackbox.dblayer.core.airline.CDBPreferenceManager">
+		<property name="dbSessionManager">
+			<ref bean="dbSessionManagerBlackbox" />
+		</property>
+	</bean>
+
+	<!-- DB RULE MANAGER -->
+	<bean id="dbRuleManager" class="de.act.blackbox.dblayer.core.CDBRuleManager">
+		<property name="dbSessionManager">
+			<ref bean="dbSessionManagerBlackbox" />
+		</property>
+	</bean>
+	
+	<!-- DB STATIC MANAGER -->
+	<bean id="dbStaticDataService" class="de.act.blackbox.dblayer.core.CDBStaticDataService">
+		<property name="dbSessionManager">
+			<ref bean="dbSessionManagerBlackbox" />
+		</property>
+	</bean>
+
+	<bean id="dbValidationManager" class="de.act.blackbox.dblayer.core.CDBValidationManager">
+		<property name="dbSessionManager">
+			<ref bean="dbSessionManagerBlackbox" />
+		</property>
+	</bean>
+
+	<bean id="dbConnectionManager" class="de.act.blackbox.dblayer.core.airline.CDBConnectionManager">
+		<property name="dbSessionManager">
+			<ref bean="dbSessionManagerBlackbox" />
+		</property>
+	</bean>
+	
+	<!-- DB TRANSFER MANAGER -->
+	<bean id="dbTransferManager" class="de.act.blackbox.dblayer.core.DBTransferManager">
+		<property name="sessionFactory" ref="sessionFactoryBlackbox" />
+	</bean>
+	
+	<!-- DB MANIFEST SERVICE  -->
+	<bean id="dbManifestService" class="de.act.blackbox.dblayer.core.CDBManifestService">
+		<property name="dbSessionManager">
+			<ref bean="dbSessionManagerBlackbox" />
+		</property>
+	</bean>
+	
+	<bean id="dbFormularManager" class="de.act.blackbox.dblayer.core.CDBFormularManager">
+		<property name="dbSessionManager">
+			<ref bean="dbSessionManagerBlackbox" />
+		</property>
+		<property name="uldService">
+			<ref bean="dbUldService" />
+		</property>
+	</bean>
+	
+	<bean id="manifestService" class="de.act.blackbox.applayer.core.CManifestService">
+		<property name="dbManifestService">
+			<ref bean="dbManifestService" />
+		</property>
+		<property name="dbFormularManager">
+			<ref bean="dbFormularManager" />
+		</property>
+	</bean>
+	
+	<!-- DB ULD SERVICE -->
+	<bean id="dbUldService" class="de.act.blackbox.dblayer.core.CDBUldService">
+		<property name="dbSessionManager">
+			<ref bean="dbSessionManagerBlackbox" />
+		</property>
+	</bean>
+	
+	<!-- DB SCC HANDLING MANAGER -->
+	<bean id="dbSccHandlingManager" class="de.act.blackbox.dblayer.core.CDBSccHandlingManager">
+		<property name="dbSessionManager">
+			<ref bean="dbSessionManagerBlackbox" />
+		</property>
+	</bean>
+	
+	<!-- DB HANDLING AGENT MANAGER -->
+	<bean id="dbHandlingAgentService" class="de.act.blackbox.dblayer.core.CDBHandlingAgentService">
+		<property name="dbSessionManager">
+			<ref bean="dbSessionManagerBlackbox" />
+		</property>
+	</bean>
+	
+	<!-- BOOKING MANAGER -->
+	<bean id="dbBookingManager" class="de.act.blackbox.dblayer.core.DBBookingManager">
+		<property name="sessionFactory">
+			<ref bean="sessionFactoryBlackbox" />
+		</property>
+	</bean>
+	
+	<!-- DAO -->
+	<!-- ID DAO -->
+	<bean id="idDao" class="de.act.blackbox.dblayer.daos.CIdDao">
+		<constructor-arg index="0">
+			<ref bean="batchDataSource" />
+		</constructor-arg>
+	</bean>
+	
+	<!-- SCHEDULE DAO -->
+	<bean id="scheduleDao" class="de.act.blackbox.dblayer.daos.CScheduleDao">
+		<constructor-arg index="0">
+			<ref bean="apDao" />
+		</constructor-arg>
+		<property name="sessionFactory" ref="sessionFactoryBlackbox" />
+	</bean>
+
+	<!-- AP DAO -->
+	<bean id="apDao" class="de.act.blackbox.dblayer.daos.CApDao" init-method="init">
+		<constructor-arg index="0">
+			<ref bean="batchDataSource" />
+		</constructor-arg>
+	</bean>
+	
+	<!-- RULE DAO -->
+	<bean id="ruleDao" class="de.act.blackbox.dblayer.daos.CRuleDao">
+		<constructor-arg index="0">
+			<ref bean="batchDataSource" />
+		</constructor-arg>
+	</bean>
+	
+	<!-- UTIL DAO -->
+	<bean id="utilDao" class="de.act.blackbox.dblayer.daos.CUtilDao">
+		<constructor-arg index="0">
+			<ref bean="batchDataSource" />
+		</constructor-arg>
+	</bean>
+	
+	<!-- BOOKING DAO -->
+	<bean id="bkgDao" class="de.act.blackbox.dblayer.daos.CBkgDao">
+		<property name="sessionFactory" ref="sessionFactoryBlackbox" />
+		<property name = "dbStaticDataService">
+			<ref bean="dbStaticDataService" />
+		</property>
+	</bean>
+	
+	<!-- COMMUNICATION SERVICE -->
+	<bean id="communicationService" class="de.act.blackbox.applayer.core.CCommunicationService">
+		<property name="mailSender" ref="mailSender" />
+		<property name="templateMessage" ref="templateMessage" />
+	</bean>
+	
+	<!-- COMMODITY MANAGER -->
+	
+	<bean id="longidDao" class="de.act.blackbox.dblayer.daos.CLongIdDao">
+		<constructor-arg index="0">
+			<ref bean="batchDataSource"/>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="dbCommodityManager" class="de.act.blackbox.dblayer.core.usermodule.CDBCommodityManager">
+		<property name="dbSessionManager">
+			<ref bean="dbSessionManagerBlackbox" />
+		</property>
+		<property name="idDao">
+			<ref bean="longidDao" />
+		</property>
+	</bean>
+	
+	<bean id="commodityManager" class="de.act.blackbox.applayer.core.usermodule.CCommodityManager">
+		<property name="dbCommodityManager">
+			<ref bean="dbCommodityManager" />
+		</property>
+		<property name="dbStaticDataService">
+			<ref bean="dbStaticDataService" />
+		</property>
+		<property name="dbValidationManager">
+			<ref bean="dbValidationManager" />
+		</property>
+	</bean>
+	
+	<bean id="dbUserPreferenceManager" class="de.act.blackbox.dblayer.core.usermodule.CDBUserPreferenceManager">
+		<property name="dbSessionManager">
+			<ref bean="dbSessionManagerBlackbox" />
+		</property>
+	</bean>
+	
+	
+	<bean id="rateManager" class="de.act.blackbox.applayer.core.CRateManager">
+		<constructor-arg index="0">
+			<ref bean="rateDao" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="classRateDao" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<ref bean="uldPivotDao" />
+		</constructor-arg>
+		<constructor-arg index="3">
+			<ref bean="ruleManager" />
+		</constructor-arg>
+		<constructor-arg index="4">
+			<ref bean="fuelCharDao" />
+		</constructor-arg>
+		<constructor-arg index="5">
+			<ref bean="securityCharDao" />
+		</constructor-arg>
+		<constructor-arg index="6">
+			<ref bean="disbursementsFeeDao" />
+		</constructor-arg>
+		<constructor-arg index="7">
+			<ref bean="dbStaticDataService" />
+		</constructor-arg>
+
+		<constructor-arg index="8">
+			<ref bean="valCharDao" />
+		</constructor-arg>
+		
+		<constructor-arg index="9">
+			<ref bean="chargesCollectFeeDao" />
+		</constructor-arg>
+		
+		<constructor-arg index="10">
+			<ref bean="dbChargesManager" />
+		</constructor-arg>
+		
+		<constructor-arg index="11">
+			<ref bean="dbValidationManager" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="rateDao" class="de.act.blackbox.dblayer.daos.CRateDao">
+		<constructor-arg index="0">
+			<ref bean="batchDataSource" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="dbStaticDataService" />
+		</constructor-arg>
+		<property name="apDao" ref="apDao" />
+	</bean>
+	
+	<bean id="classRateDao" class="de.act.blackbox.dblayer.daos.CClassRateDao">
+		<constructor-arg index="0">
+			<ref bean="batchDataSource" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="dbStaticDataService" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="uldPivotDao" class="de.act.blackbox.dblayer.daos.CUldPivotDao" init-method="init">
+		<constructor-arg index="0">
+			<ref bean="batchDataSource" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="utilDao" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="fuelCharDao" class="de.act.blackbox.dblayer.daos.CFuelCharDao" init-method="init">
+		<constructor-arg index="0">
+			<ref bean="utilDao" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="apDao" />
+		</constructor-arg>
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="securityCharDao" class="de.act.blackbox.dblayer.daos.CSecurityChargesDao" init-method="init">
+		<constructor-arg index="0">
+			<ref bean="utilDao" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="apDao" />
+		</constructor-arg>
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="disbursementsFeeDao" class="de.act.blackbox.dblayer.daos.CDisbursementsFeeDao" init-method="init">
+		<constructor-arg index="0">
+			<ref bean="utilDao" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="curConv" />
+		</constructor-arg>
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="curConv" class="de.act.blackbox.dblayer.daos.CurrencyConverter">
+	</bean>
+	
+	<bean id="valCharDao" class="de.act.blackbox.dblayer.daos.CValCharDao" init-method="init">
+		<constructor-arg index="0">
+			<ref bean="utilDao" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="curConv" />
+		</constructor-arg>
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="chargesCollectFeeDao" class="de.act.blackbox.dblayer.daos.CChargesCollectFeeDAO" >
+		<constructor-arg index="0">
+			<ref bean="utilDao" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="apDao" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<ref bean="batchDataSource" />
+		</constructor-arg>
+		<constructor-arg index="3">
+			<ref bean="ruleManager" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id = "dbChargesManager" class="de.act.blackbox.dblayer.core.CDBChargesManager">
+		<property name="dbSessionManager">
+			<ref bean="dbSessionManagerBlackbox" />
+		</property>
+		<property name="ruleManager">
+			<ref bean="ruleManager" />
+		</property>
+	</bean>
+	
+	<bean id = "chargesManager" class = "de.act.blackbox.applayer.core.CChargesManager">
+		<property name = "dbChargesManager">
+			<ref bean = "dbChargesManager" />
+		</property>
+		<property name="dbValidationManager">
+			<ref bean="dbValidationManager" />
+		</property>
+		<property name="ruleManager">
+			<ref bean="ruleManager" />
+		</property>
+	</bean>
+	
+	<bean id="formularManager" class="de.act.blackbox.applayer.core.CFormularManager">
+		<property name="staticDataService">
+			<ref bean="staticDataService" />
+		</property>
+		<property name="dbFormularManager">
+			<ref bean="dbFormularManager" />
+		</property>
+		<property name="rateManager">
+			<ref bean="rateManager" />
+		</property>
+	</bean>
+	
+	<!-- JAVA MAIL SENDER -->
+	<!--<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="post.strato.de" />
+		<property name="username" value="martin.sachs@act-intl.de" />
+		<property name="password" value="umsf202" />
+	</bean>
+	
+	-->
+	
+	<bean id="templateMessage" class="org.springframework.mail.SimpleMailMessage">
+		<property name="subject" value="[ActernityNetwork] Your personal password" />
+		<property name="from" value="support@act-intl.de" />
+		<property name="text" value="" />
+		<property name="replyTo" value="support@act-intl.de" />
+		<property name="bcc" value="support@act-intl.de" />
+	</bean>
+	
+	<bean id="templateMessageChanged" class="org.springframework.mail.SimpleMailMessage">
+		<property name="subject" value="[ActernityNetwork] Your Booking was changed" />
+		<property name="from" value="support@act-intl.de" />
+		<property name="text" value="" />
+		<property name="replyTo" value="support@act-intl.de" />
+		<property name="bcc" value="support@act-intl.de" />
+	</bean>
+	
+	<!-- DATA SOURCE -->
+	<bean id="batchDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="initialSize" value="10" />
+		<property name="maxActive" value="20" />
+		<property name="poolPreparedStatements" value="true" />
+	</bean>
+	
+</beans>

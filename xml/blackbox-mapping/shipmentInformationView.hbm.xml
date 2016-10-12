@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="property" package="de.act.common.types.views" >
+	<class name="de.act.common.types.views.ShipmentInformationView" table="f_shipmentinformation_view">	             
+		<cache usage="transactional"/>
+		<id name="pkg_id" type="java.lang.Long" column="pkg_id" >
+			<generator class="assigned"/>
+		</id>
+		<property name="com_id" type="java.lang.Long" column="com_id" />
+		<property name="f_id" type="java.lang.String" column="f_id" />
+		<property name="ca_3dg" type="java.lang.String" column="ca_3dg" />
+		<property name="awb_stock" type="java.lang.Integer" column="awb_stock" />
+		<property name="awb_no" type="java.lang.Integer" column="awb_no" />
+		<property name="pieces" type="java.lang.Integer" column="pcs" />
+		<property name="commodityName" type="java.lang.String" column="com_name" />
+		<property name="weight" type="java.lang.Double" column="wgt" />
+		<property name="length" type="java.lang.Double" column="l" />
+		<property name="width" type="java.lang.Double" column="w" />
+		<property name="height" type="java.lang.Double" column="h" />
+		<property name="vol" type="java.lang.Double" column="vol" />
+		<property name="scc_3lc" type="java.lang.String" column="scc_3lc" />	
+		<property name="total_pcs" type="java.lang.Double" column="total_pcs" />
+		<property name="total_vol" type="java.lang.Double" column="total_vol" />
+		<property name="total_wgt" type="java.lang.Double" column="total_wgt" />
+	</class>	
+	
+</hibernate-mapping>

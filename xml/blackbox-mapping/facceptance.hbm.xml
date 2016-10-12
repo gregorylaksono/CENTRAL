@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="property" >
+
+	<class name="de.act.common.types.handling.FAcceptanceHeader" table="f_acc_header" dynamic-update="true" dynamic-insert="true">
+		<cache usage="transactional" />
+		<id name="acc_header_id" column="acc_header_id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+		<many-to-one name="metadata" class="de.act.common.types.attachment.CAcceptanceAttachment" cascade="all" column="att_id" />
+		<property name="awb_acc" column="awb_acc" />
+		<property name="part" column="part" />
+		<many-to-one name="final_dest" class="de.act.common.types.staticobjects.RSAp" column="final_dest" not-found="ignore" access="field" />
+		
+		<set name="shipmentAcceptance" lazy="false" table="f_acc_shipment" access="field" cascade="all" inverse="true">
+			<cache usage="transactional"/>
+			<key column="acc_header_id" />
+			<one-to-many class="de.act.common.types.handling.FAcceptanceShipment" />
+		</set>
+		
+		<set name="awbItem" lazy="false" table="f_acc_awb_item" access="field" cascade="all" inverse="true">
+			<cache usage="transactional"/>
+			<key column="acc_header_id" />
+			<one-to-many class="de.act.common.types.handling.FAcceptanceAWBItem" />
+		</set>
+		
+		<set name="acceptanceDisprecancies" lazy="false" table="f_acc_discr" access="field" cascade="all" inverse="true">
+			<cache usage="transactional"/>
+			<key column="acc_header_id" />
+			<one-to-many class="de.act.common.types.nonstaticobjects.FAcceptanceDiscrepancies"/>
+		</set>
+	</class>
+	
+	<!-- ACC SHIPMENT -->
+	<class name="de.act.common.types.handling.FAcceptanceShipment" table="f_acc_shipment" dynamic-update="true" dynamic-insert="true">
+		<cache usage="transactional" />
+		<id name="acc_shipment_id" column="acc_shipment_id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+		<many-to-one name="acc_header_id" class="de.act.common.types.handling.FAcceptanceHeader" column="acc_header_id" access="field" />
+		<many-to-one name="ap_3lc" class="de.act.common.types.staticobjects.RSAp" column="ap_3lc" not-found="ignore" access="field" />
+		<property name="con_add_id" column="con_add_id" />
+		<property name="awb_acc_flag" column="awb_acc" />
+		<many-to-one name="state_id" class="de.act.common.types.staticobjects.RSState" column="stat_id" access="field" />
+		<property name="stat_descr" column="stat_descr" access="field" />
+		<set name="shipmentItem" lazy="false" table="f_acc_shipment_item" access="field" cascade="all" inverse="true" order-by="row_no asc" >
+			<cache usage="transactional"/>
+			<key column="acc_shipment_id" />
+			<one-to-many class="de.act.common.types.handling.FAcceptanceShipmentItem" />
+		</set>
+	</class>
+	
+	<class name="de.act.common.types.handling.FAcceptanceShipmentItem" table="f_acc_shipment_item" dynamic-update="true" dynamic-insert="true">
+		<cache usage="transactional" />
+		<id name="acc_shipment_item_id" column="acc_shipment_item_id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+		<many-to-one name="acc_shipment_id" class="de.act.common.types.handling.FAcceptanceShipment" column="acc_shipment_id" access="field" />
+		<property name="row_no" column="row_no" />
+		<property name="sli_row" column="sli_row" />
+		<property name="marks" column="marks" />
+		<property name="pcs" column="pcs" />
+		<property name="wgt" column="wgt" />
+		<property name="vol" column="vol" />
+		<many-to-one name="commodity" column="com_id" class="de.act.common.types.staticobjects.CCommodityTree" not-found="ignore"  access="property" />
+		<many-to-one name="annotation" class="de.act.common.types.staticobjects.RSAnn" column="ann_id" not-null="false" not-found="ignore" />
+		<property name="pkgs_pltsd" column="pkgs_pltsd" />
+		<component name="kindPkg" class="de.act.common.types.staticobjects.RSPkg" >
+			<property name="PKGS_COL" column="pkgs_col" />
+			<property name="PKGS_MAT" column="pkgs_mat" />
+			<property name="PKGS_SHP" column="pkgs_shp" />
+		</component>
+		<many-to-one name="loc_id" class="de.act.common.types.localobjects.Storage" column="loc_id" cascade="none" />
+		<set name="shipmentPackage" lazy="false" table="f_acc_shipment_pkg" access="field" cascade="all" inverse="true">
+			<cache usage="transactional"/>
+			<key column="acc_shipment_item_id" />
+			<one-to-many class="de.act.common.types.handling.FAcceptanceShipmentPkg" />
+		</set>
+	</class>
+	
+	<class name="de.act.common.types.handling.FAcceptanceShipmentPkg" table="f_acc_shipment_pkg" dynamic-update="true" dynamic-insert="true">
+		<cache usage="transactional" />
+		<id name="acc_shipment_pkg_id" column="acc_shipment_pkg_id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+		<many-to-one name="acc_shipment_item_id" class="de.act.common.types.handling.FAcceptanceShipmentItem" column="acc_shipment_item_id" access="field" />
+		<many-to-one name="pkg_id" column="pkg_id" class="de.act.common.types.packageitems.ItemPKG" not-found="ignore" not-null="false"/>
+		<property name="pcs" column="pcs" />
+		<property name="wgt" column="wgt" />
+		<many-to-one name="commodity" column="com_id" class="de.act.common.types.staticobjects.CCommodityTree" not-found="ignore"  access="property" />
+		<many-to-one name="ann_id" class="de.act.common.types.staticobjects.RSAnn" column="ann_id" not-null="false" not-found="ignore" />
+ 		<many-to-one name="scc" column="scc_3lc" class="de.act.common.types.staticobjects.RSScc" not-found="ignore" />
+ 		<component name="volObj" class="de.act.common.types.nonstaticobjects.PackageVol" >
+			<property name="length" column="l" access="property"  />
+			<property name="weight" column="w" access="property"  />
+			<property name="height" column="h" access="property"  />
+		</component>
+	</class>
+	
+	
+	<!-- ACC AWB -->
+	<class name="de.act.common.types.handling.FAcceptanceAWBItem" table="f_acc_awb_item" dynamic-update="true" dynamic-insert="true">
+		<cache usage="transactional" />
+		<id name="acc_awb_item_id" column="acc_awb_item_id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+		<many-to-one name="acc_header_id" class="de.act.common.types.handling.FAcceptanceHeader" column="acc_header_id" access="field" />
+		<property name="row_no" column="row_no" />
+		<property name="sli_row" column="sli_row" />
+		<property name="marks" column="marks" />
+		<property name="pcs" column="pcs" />
+		<property name="wgt" column="wgt" />
+		<property name="vol" column="vol" />
+		<many-to-one name="commodity" column="com_id" class="de.act.common.types.staticobjects.CCommodityTree" not-found="ignore"  access="property" />
+		<many-to-one name="annotation" class="de.act.common.types.staticobjects.RSAnn" column="ann_id" not-null="false" not-found="ignore" />
+		<many-to-one name="state_id" class="de.act.common.types.staticobjects.RSState" column="stat_id" access="field" />
+		<property name="stat_descr" column="stat_descr" access="field" />
+		<set name="awbPackage" lazy="false" table="f_acc_awb_pkg" access="field" cascade="all" inverse="true">
+			<cache usage="transactional"/>
+			<key column="acc_awb_item_id" />
+			<one-to-many class="de.act.common.types.handling.FAcceptanceAWBPkg" />
+		</set>
+	</class>
+	
+	<class name="de.act.common.types.handling.FAcceptanceAWBPkg" table="f_acc_awb_pkg" dynamic-update="true" dynamic-insert="true">
+		<cache usage="transactional" />
+		<id name="acc_awb_pkg_id" column="acc_awb_pkg_id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+		<many-to-one name="acc_awb_item_id" class="de.act.common.types.handling.FAcceptanceAWBItem" column="acc_awb_item_id" access="field" />
+		<many-to-one name="pkg_id" column="pkg_id" class="de.act.common.types.packageitems.ItemPKG" not-found="ignore" not-null="false"/>
+		<property name="pcs" column="pcs" />
+		<property name="wgt" column="wgt" />
+		<many-to-one name="commodity" column="com_id" class="de.act.common.types.staticobjects.CCommodityTree" not-found="ignore"  access="property" />
+		<many-to-one name="ann_id" class="de.act.common.types.staticobjects.RSAnn" column="ann_id" not-null="false" not-found="ignore" />
+ 		<many-to-one name="scc" column="scc_3lc" class="de.act.common.types.staticobjects.RSScc" not-found="ignore" />
+ 		<component name="volObj" class="de.act.common.types.nonstaticobjects.PackageVol" >
+			<property name="length" column="l" access="property"  />
+			<property name="weight" column="w" access="property"  />
+			<property name="height" column="h" access="property"  />
+		</component>
+	</class>
+	
+	<!-- ACC DISCREPANCY -->
+	<class name="de.act.common.types.nonstaticobjects.FAcceptanceDiscrepancies" table="f_acc_discr">
+		<cache usage="transactional"/>
+		<id name="acc_discr_id" column="acc_discr_id" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+		<many-to-one name="accHeader" class="de.act.common.types.handling.FAcceptanceHeader" column="acc_header_id" access="field"/>
+		<many-to-one name="airport" class="de.act.common.types.staticobjects.RSAp" column="ap_3lc" not-found="ignore" access="field" />
+		<!-- <property name="part" column="part"/> -->
+		<many-to-one name="discrepancies" class="de.act.common.types.staticobjects.Discrepancies" column="discr_id" />
+		<property name="discr_form" column="discr_form"/>
+    	<property name="discr_rem" column="discr_rem"/>
+	</class>
+	
+	<!-- OLD -->
+	<class name="de.act.common.types.handling.FAcceptance" table="f_acc" dynamic-update="true" dynamic-insert="true" >
+		<cache usage="transactional"/>
+		<id name="id" column="acc_id" unsaved-value="-1"  >
+			<generator class="native" >
+				<param name="sequence">d_db_seq</param>
+			</generator> 
+		</id>
+		<properties name="nm" unique="true" >
+			<many-to-one name="metadata" class="de.act.common.types.attachment.CAcceptanceAttachment" cascade="all" column="att_id" />
+			<many-to-one name="ap_dept" class="de.act.common.types.staticobjects.RSAp" column="ap_dept" access="field" />
+			<many-to-one name="ap_dest" class="de.act.common.types.staticobjects.RSAp" column="ap_dest" access="field" />
+		</properties>
+		<property name="awb_acc" column="awb_acc" insert="false" update="false" />
+		<property name="corr" column="corr" insert="false" update="false"/>
+		<many-to-one name="ap_3lc" class="de.act.common.types.staticobjects.RSAp" column="ap_3lc" access="field" />
+		<!--property name="cne" access="field" /
+		<property name="acc" access="field"    />	
+		-->
+		<!--many-to-one name="cne" class="de.act.common.types.staticobjects.RSAdd" column="con_add_id" access="field" update="false" insert="false"/-->
+		<property name="con_add_id" column="con_add_id" />
+		<many-to-one name="consigneeSubt" class="de.act.common.types.nonstaticobjects.RFSubt" column="con_subt_id" access="field" />
+		<many-to-one name="state" class="de.act.common.types.staticobjects.RSState" column="stat_id" access="field" />	
+		<property name="stateDesc" column="stat_descr" access="field" />	
+		<many-to-one name="sticker" class="de.act.common.types.nonstaticobjects.RFStick" column="stick_id" not-found="ignore" cascade="all" />
+		
+		<!--set name="awbNos" lazy="false" table="f_awb_no" access="field"  inverse="true" cascade="all" >
+			<key column="att_id" />
+			<one-to-many class="de.act.common.types.nonstaticobjects.RFAwbNo" />
+		</set-->
+		<!--many-to-one name="awbNumber" class="de.act.common.types.nonstaticobjects.RFAwbNo" access="field" constrained="true" cascade="all" not-found="ignore"  /-->
+
+		<set name="accItems" lazy="false" table="f_acc_item" access="field" cascade="all" inverse="true" batch-size="1" order-by="row_no asc" >
+			<cache usage="transactional"/>
+			<key column="acc_id" />
+			<one-to-many class="de.act.common.types.handling.Shipments" />
+		</set>
+	</class>
+</hibernate-mapping>
+
+<!--
+
+CREATE TABLE f_acc
+(
+acc_id int8 NOT NULL DEFAULT nextval('f_acc_acc_id_seq'::regclass),
+  att_id int8,
+  awb_acc cn_bool,
+  ap_3lc varchar(3),
+  ap_dest varchar(3),
+  con_add_id varchar(10),
+  con_subt_id int8,
+  stat_id varchar(12),
+  stat_descr varchar(100),
+  stick_id int8,
+  corr timestamp DEFAULT now(),
+) 
+-->

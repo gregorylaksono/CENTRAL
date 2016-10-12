@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:lang="http://www.springframework.org/schema/lang" xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+	http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-2.0.xsd
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd">
+	
+	<import resource="property.xml" />
+
+
+	<!--lingo jms support 
+	<bean id="lingoClient" class="org.logicblace.lingo.jms.JmsProxyFactoryBean" > 
+		<property name="serviceInterface" value="org.logicblace.lingo.ex 
+	</bean>
+	-->
+
+	<!--
+		JMS PooledConnectionFactory for create client side connection to the
+		activemq - Broker, which handles the requests
+	-->
+
+	<!--property name="connectionFactory"-->
+	<bean id="jmsFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<property name="brokerURL" value="${jms.url}" />
+		<!--value>tcp://localhost:61616</value-->
+		<!--<value>vm://192.168.1.14:61616</value> illegal character scheme-->
+		<!--/property-->
+
+		<!--
+			Sets whether or not retroactive consumers are enabled. Retroactive
+			consumers allow non-durable topic subscribers to receive old messages
+			that were published before the non-durable subscriber started.
+		-->
+		<property name="useRetroactiveConsumer" value="false" />
+		<!-- sending asyncMessage -->
+		<property name="useAsyncSend" value="true" />
+
+		<property name="useCompression" value="true" />
+		<property name="optimizeAcknowledge" value="false" />
+
+	</bean>
+	
+	<!-- Spring JMS Template -->
+	<bean id="batchJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory">
+			<ref local="jmsFactory" />
+		</property>
+		<property name="defaultDestination">
+			<ref local="centralDestination" />
+		</property>
+		<property name="pubSubNoLocal" value="false" />
+	</bean>
+
+	<bean id="blackboxDestination" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg index="0" value="BLACKBOX" />
+	</bean>
+
+	<bean id="centralDestination" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg index="0" value="CENTRAL" />
+	</bean>
+
+</beans>
+
+	<!-- JMS Message Broker -->
+	<!--
+		<bean id="jmsFactory" class="org.codehaus.activemq.spring.ActiveMQConnectionFactory" >
+			<property name="brokerURL"> 
+				<value>tcp://192.168.1.29:61616</value>
+			</property> 
+			<property name="useEmbeddedBroker"> 
+				<value>true</value>
+			</property> 
+			<property name="brokerContainerFactory"> 
+				<bean class="org.codehaus.activemq.spring.SpringBrokerContainerFactory">
+					<property name="resource"> 
+						<value>activemq.xml</value>
+					</property>
+				</bean> 
+			</property> 
+		</bean>
+	-->

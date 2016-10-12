@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="property" package="de.act.common.types.nonstaticobjects" >
+	<class name="de.act.common.types.nonstaticobjects.RFNotification" table="f_deliver_noti">	             
+		<cache usage="transactional"/>
+		<id  name="attachmentId" type="java.lang.Integer" column="att_id" >
+			<generator class="assigned"/>
+		</id>				
+		<property name="deliverSubtitutionId" type="java.lang.Integer" column="deliver_subt_id" />
+		<property name="companyType" type="java.lang.String" column="company_type" />
+		<property name="contactPerson" type="java.lang.String" column="contact_person" />
+		<property name="contactType" type="java.lang.String" column="contact_type" />
+		<property name="pcs" type="java.lang.Integer" column="pcs" />
+		<property name="pcsDelivered" type="java.lang.Integer" column="pcs_delivered" />
+		<property name="weight" type="java.lang.Double" column="wgt" />
+		<property name="freightCharges" type="java.lang.Double" column="freight_chrgs" />
+		<property name="handlingCharges" type="java.lang.Double" column="handling_chrgs" />
+		<property name="storageCharges" type="java.lang.Double" column="storage_chrgs" />
+		<property name="customsCharges" type="java.lang.Double" column="customs_chrgs" />
+		<property name="v12bCharges" type="java.lang.Double" column="v12b_chrgs" />
+		<property name="customClearReq" type="java.lang.Integer" column="cust_clear_req" />
+		<property name="bankReleaseReq" type="java.lang.Integer" column="bank_relea_req" />
+		<property name="paymentReq" type="java.lang.Integer" column="payment_req" />
+		<property name="remark" type="java.lang.String" column="remark" />
+		<property name="userName" type="java.lang.String" column="user_name" />
+		<property name="corr" type="java.util.Date" column="corr" />		
+	</class>	
+</hibernate-mapping>

@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" >
+
+	<class name="de.act.common.types.staticobjects.CCommodityTree" table="s_com" batch-size="10" mutable="true">
+		<!-- rec <cache usage="read-only"/>--> 
+		<cache usage="transactional"/>
+		<id name="id" column="com_id" unsaved-value="-1" >
+			<generator class="assigned" />
+		</id>
+		<property name="parentId" column="parent_id" access="field" />
+		<properties name="test" unique="true" >
+			<property name="awbName" column="awb_name" access="field" />
+		</properties>		
+		<property name="name" column="com_name" access="field" />
+		<!--property name="level" 	column="com_level" 	access="field"   insert="false" update="false" />
+		<property name="flag" 	column="com_flag" 	access="field"   insert="false" update="false" /-->
+		<!--property name="vadId" column="vad_id" access="field" /-->
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+		<!--many-to-one name="commodityItem" class="de.act.common.types.staticobjects.CommodityItem" column="com_id" not-found="ignore"  insert="false" update="false" /-->
+		<!-- Commodity parent; -->
+		<many-to-one name="parent" class="de.act.common.types.staticobjects.CCommodityTree" column="parent_id" cascade="none" outer-join="false" update="false" insert="false" not-found="ignore" />
+		<property name="creator" column="creator_add_id" />
+		<property name="createDate" column="created_date" />
+		<set name="annotations" inverse="true" mutable="true" table="s_com_ann" cascade="all" order-by="ann_id" batch-size="1" lazy="false">
+			<!-- rec <cache usage="read-only"/>--> <cache usage="transactional"/>
+			<key column="com_id" />
+			<many-to-many class="de.act.common.types.staticobjects.RSAnn" column="ann_id"  /> 
+		</set>
+		<!--many-to-one name="commodityScc" class="de.act.common.types.staticobjects.CommodityScc" column="com_id" outer-join="false" cascade="none" not-found="ignore" insert="false" update="false" /-->
+
+		<!--
+		<set name="links" table="s_com_link" cascade="none">
+			<key column="com_id" />
+			<one-to-many class="de.act.common.types.staticobjects.CCommodityTreeLink" /> 
+		</set>-->
+		<!--
+		<many-to-one name="userObject" class="de.act.common.types.staticobjects.CommoditySLI" column="com_id" outer-join="false"  insert="false" update="false" not-found="ignore" cascade="all" />-->
+		
+	<!--	<component name="userObject" class="de.act.common.types.staticobjects.CommoditySLI" access="property">
+			<property name="id" 	column="com_id" 	access="field"  insert="false" update="false" />
+			<property name="parentId" 	column="parent_id" 	access="field"  insert="false" update="false" />
+			<property name="name" 	column="com_name" 	access="field"   insert="false" update="false" />
+			<property name="awbName" 	column="awb_name" 	access="field"   insert="false" update="false" />
+			<property name="level" 	column="com_level" 	access="field"   insert="false" update="false" />
+			<property name="flag" 	column="com_flag" 	access="field"   insert="false" update="false" />
+			<property name="vadId" 	column="vad_id" 	access="field"   insert="false" update="false" />
+		</component>
+		-->
+		<!--many-to-one name="comDGR" class="de.act.common.types.staticobjects.CommodityDGR" column="com_id" insert="false" update="false" not-found="ignore" /> 
+		<many-to-one name="comAVI" class="de.act.common.types.staticobjects.CommodityAVI" column="com_id" insert="false" update="false" not-found="ignore" /--> 
+		<!-- Set<Commodity> childs; -->
+		<!--set  inverse="true" mutable="true" name="childs" lazy="true" table="s_com" fetch="select" cascade="none" order-by="com_name asc" batch-size="5" access="property"> -->
+			<!-- rec <cache usage="read-only"/>--> 
+			<!--
+			<cache usage="transactional"/>
+			<key column="parent_id" />
+			<one-to-many class="de.act.common.types.staticobjects.CCommodityTree" />
+		</set-->
+		
+		<set inverse="true" mutable="true" name="comDGRs" table="s_dgr" cascade="all" order-by="dgr_prop_name asc" batch-size="30" lazy="false" outer-join="true">
+			<!-- rec <cache usage="read-only"/>--> 
+			<cache usage="transactional"/>
+			<key column="com_id" />
+			<one-to-many class="de.act.common.types.staticobjects.CommodityDGR" /> 
+		</set>
+		<set inverse="true" mutable="true" name="comAVIs" table="s_avi" cascade="all" lazy="false" order-by="avi_scf_name asc" batch-size="10" outer-join="true" >
+			<!-- rec <cache usage="read-only"/>--> 
+			<cache usage="transactional"/>
+			<key column="com_id" />
+			<one-to-many class="de.act.common.types.staticobjects.CommodityAVI" /> 
+		</set>
+		<set inverse="true" mutable="true" name="comClass" table="s_com_class" cascade="all" lazy="false" batch-size="2" outer-join="true" >
+			<!-- rec <cache usage="read-only"/>--> 
+			<cache usage="transactional"/>
+			<key column="com_id" />
+			<one-to-many class="de.act.common.types.staticobjects.CommodityClass" /> 
+		</set>
+		<set inverse="true" mutable="true" name="comItem" table="s_com_item" cascade="all" lazy="false" batch-size="2" outer-join="true" >
+			<!-- rec <cache usage="read-only"/>--> 
+			<cache usage="transactional"/>
+			<key column="com_id" />
+			<one-to-many class="de.act.common.types.staticobjects.CommodityItem" /> 
+		</set>
+	</class>
+
+	<class name="de.act.common.types.staticobjects.CommoditySLI" table="s_com" mutable="true"  batch-size="10" >
+		<!-- rec <cache usage="read-only"/>--> 
+		<cache usage="transactional"/>
+		<id name="id" 	column="com_id" access="field" />
+		<property name="parentId" column="parent_id" access="field" />
+		<properties name="test" unique="true">
+			<property name="awbName" column="awb_name" access="field"  />
+		</properties>
+		<property name="name" column="com_name" access="field" />
+		<!--property name="level" 	column="com_level" 	access="field"   insert="false" update="false" />
+		<property name="flag" 	column="com_flag" 	access="field"   insert="false" update="false" /-->
+		<property name="vadId" column="vad_id" access="field" />
+		<!--many-to-one name="commodityItem" class="de.act.common.types.staticobjects.CommodityItem" column="com_id" not-found="ignore"  insert="false" update="false" /-->
+	</class>
+				
+  	<class name="de.act.common.types.staticobjects.CommodityDGR" table="s_dgr" mutable="true"  batch-size="10">
+		<!-- rec <cache usage="read-only"/>--> 
+		<cache usage="transactional"/>
+		<id name="id" column="dgr_id">
+			<generator class="assigned" />        	  
+		</id>
+		<many-to-one name="commodity" column="com_id" class="de.act.common.types.staticobjects.CCommodityTree" />
+		<many-to-one name="ltdUnit" class="de.act.common.types.staticobjects.RSUnit" column="ltd_unit" not-found="ignore" />
+		<many-to-one name="psaUnit" class="de.act.common.types.staticobjects.RSUnit" column="psa_unit" not-found="ignore" />
+		<many-to-one name="caoUnit" class="de.act.common.types.staticobjects.RSUnit" column="cao_unit" not-found="ignore" />
+		<property name="propName" column="dgr_prop_name" access="field" />
+		<property name="dgrClass" column="dgr_class" access="field" />
+		<property name="unNo" column="dgr_un_no" access="field" />
+		<property name="pkgGrp" column="dgr_pkg_grp" access="field" />
+		<property name="subRisk" column="dgr_sub_risk" access="field" />
+		<property name="dgrAuth" column="dgr_auth" access="field" />
+		<property name="ltdMax" column="ltd_max" access="field" />
+		<property name="ltdInst" column="ltd_inst" access="field" />
+		<property name="psaMax" column="psa_max" access="field" />
+		<property name="psaInst" column="psa_inst" access="field" />
+		<property name="caoMax" column="cao_max" access="field" />		
+		<property name="caoInst" column="cao_inst" access="field" />		
+		<property name="label" column="dgr_lbl" access="field" />
+		<property name="spcProv" column="spc_prov" access="field" />		
+		<property name="ergCode" column="erg_code" access="field" />
+		<property name="vadId" column="vad_id" access="field" />		   	
+	</class>
+
+	<class name="de.act.common.types.staticobjects.CommodityAVI" table="s_avi" mutable="true"  batch-size="10" >
+		<!-- rec <cache usage="read-only"/>--> 
+		<cache usage="transactional"/>
+		<id name="id" column="avi_id">
+			<generator class="assigned" />        	  
+		</id>
+		<many-to-one name="commodity" column="com_id" class="de.act.common.types.staticobjects.CCommodityTree" not-found="ignore" />
+		<property name="scfName" column="avi_scf_name" access="field" />		   	
+		<property name="cites" column="avi_cites" access="field" />		   	
+		<property name="container" column="avi_container" access="field" />		   	
+		<property name="vadId" column="vad_id" access="field" />
+	</class>
+   	
+	<class name="de.act.common.types.staticobjects.CommodityScc" table="s_com_scc" mutable="true"  batch-size="10" >
+		<!-- rec <cache usage="read-only"/>--> 
+		<cache usage="transactional"/>
+		<!--id name="comId" column="com_id">
+			<generator class="assigned" />        	  
+		</id-->
+		<composite-id>
+			<key-property name="comId" column="com_id"/>
+			<key-many-to-one name="annotation" class="de.act.common.types.staticobjects.RSAnn"  column="ann_id" />
+		</composite-id>
+		<many-to-one name="scc" class="de.act.common.types.staticobjects.RSScc" column="scc_3lc" not-found="ignore" />
+		<!--many-to-one name="annotation" class="de.act.common.types.staticobjects.RSAnn"  column="ann_id" not-found="ignore" /-->
+		<!--property name="vadId" column="vad_id" access="field" /-->
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+	</class>
+   	
+   	<class name="de.act.common.types.staticobjects.CommodityAnn" table="s_com_ann" mutable="true"  batch-size="10" >
+		<!-- rec <cache usage="read-only"/>--> 
+		<cache usage="transactional"/>
+		<!--id name="comId" column="com_id">
+			<generator class="assigned" />        	  
+		</id-->
+		<composite-id>
+			<key-property name="comId" column="com_id" />
+			<key-many-to-one name="annotation" class="de.act.common.types.staticobjects.RSAnn"  column="ann_id" />
+		</composite-id>
+		<!--many-to-one name="annotation" class="de.act.common.types.staticobjects.RSAnn"  column="ann_id" not-found="ignore" /-->
+		<!--property name="vadId" column="vad_id" access="field" /-->
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+	</class>
+   	
+	<class name="de.act.common.types.staticobjects.RSAnn" table="s_ann"  mutable="true"  batch-size="20" >
+		<!-- rec <cache usage="read-only"/>--> 
+		<cache usage="transactional"/>
+		<id name="ann_id" column="ann_id">
+			<generator class="assigned" />
+		</id>
+		<property name="ann_group" column="ann_group" access="field" />
+		<property name="ann_name" column="ann_name" access="field" />
+		<property name="ann_dsp" column="ann_dsp" access="field" />
+		<!--property name="vad_id" column="vad_id" access="field" /-->
+		<many-to-one name="vad" class="de.act.common.types.staticobjects.RSVad" column="vad_id" access="field" not-found="ignore" />
+	</class>
+
+	<class name="de.act.common.types.staticobjects.CommodityItem" table="s_com_item"  mutable="true"  batch-size="10" >
+		<!-- rec <cache usage="read-only"/>--> 
+		<cache usage="transactional"/>
+		<id name="id" column="com_id">
+			<generator class="assigned" />
+		</id>
+		<many-to-one name="annotation" class="de.act.common.types.staticobjects.RSAnn"	column="ann_id" access="field" not-found="ignore" />
+		<property name="itemNo"	column="item_no" access="field" />
+		<many-to-one name="validation" class="de.act.common.types.staticobjects.RSVad"	column="vad_id" access="field" not-found="ignore" />
+		<set name="rules" inverse="true" mutable="true" table="r_item" cascade="none" order-by="r_id" batch-size="1" lazy="false">
+			<!-- rec <cache usage="read-only"/>--> 
+			<cache usage="transactional"/>
+			<key column="item_no" />
+			<element type="java.lang.Long" column="r_id" />
+		</set>
+	</class>
+
+	<class name="de.act.common.types.staticobjects.CommodityClass" table="s_com_class"  mutable="true"  batch-size="2" >
+		<!-- rec <cache usage="read-only"/>--> 
+		<cache usage="transactional"/>
+		<!--id name="id" column="com_id">
+			<generator class="assigned" />        	  
+		</id-->
+		<composite-id>
+			<key-property name="id" column="com_id" />
+			<key-many-to-one name="annotation" class="de.act.common.types.staticobjects.RSAnn" column="ann_id" />
+		</composite-id>
+		<!--many-to-one name="annotation" class="de.act.common.types.staticobjects.RSAnn"  column="ann_id" not-found="ignore" /-->
+		<many-to-one name="classes" class="de.act.common.types.staticobjects.Classes" column="class_id" access="field" not-found="ignore" />
+		<many-to-one name="validation" class="de.act.common.types.staticobjects.RSVad" column="vad_id" access="field" not-found="ignore" />
+	</class>
+
+	<class name="de.act.common.types.staticobjects.Classes" table="s_class"  mutable="true"  batch-size="2" >
+		<!-- rec <cache usage="read-only"/>--> 
+		<cache usage="transactional"/>
+		<id name="id" column="class_id">
+			<!--generator class="assigned" /-->
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+		<property name="classType" column="class_type" access="field" />
+		<property name="mixable" column="mixable" access="field" />
+		<property name="class_name"	column="class_name" access="field" />
+		<many-to-one name="validation" class="de.act.common.types.staticobjects.RSVad" column="vad_id" access="field" not-found="ignore" />
+	</class>
+	
+   	<class name="de.act.common.types.views.CommodityView" table="s_com_ann_view" mutable="true" > 
+   		<cache usage="transactional"/>
+		<!--id name="com_id" column="com_id">
+			<generator class="assigned" />
+		</id-->
+		<composite-id>
+			<key-property name="com_id" column="com_id" />
+			<key-property name="ann_id" column="ann_id" />
+		</composite-id>
+		<!--property name="ann_id" column="ann_id" access="field" /-->
+		<property name="creator" column = "creator_add_id" access="field" />
+		<property name="parent_id" column="parent_id" access="field" />
+		<property name="ann_dsp" column="ann_dsp" access="field" />
+		<property name="com_name" column="com_name" access="field" />
+		<property name="awb_name" column="awb_name" access="field" />
+		<property name="ann_name" column="ann_name" access="field" />
+		<many-to-one name="vadCom" class="de.act.common.types.staticobjects.RSVad" column="com_vad" access="field" not-found="ignore" />
+		<many-to-one name="vadAnn" class="de.act.common.types.staticobjects.RSVad" column="ann_vad" access="field" not-found="ignore" />
+		<many-to-one name="vadComAnn" class="de.act.common.types.staticobjects.RSVad" column="com_ann_vad" access="field" not-found="ignore" />
+		<property name="full_description" column="full_description" access="field" />
+   	</class>
+   	
+   	<class name="de.act.common.types.views.ComAnnSccClassView" table="s_com_ann_scc_class_view" mutable="true" > 
+   		<cache usage="transactional"/>
+		<composite-id>
+			<key-property name="com_id" column="com_id" />
+			<key-property name="ann_id" column="ann_id" />
+		</composite-id>
+		<property name="scc_3lc" column="scc_3lc" access="field" />
+		<property name="scc_name" column="scc_name" access="field" />
+		<property name="class_id" column="class_id" access="field" />
+		<property name="class_name" column="class_name" access="field" />
+		<many-to-one name="vadCom" class="de.act.common.types.staticobjects.RSVad" column="com_vad" access="field" not-found="ignore" />
+		<many-to-one name="vadAnn" class="de.act.common.types.staticobjects.RSVad" column="ann_vad" access="field" not-found="ignore" />
+   	</class>
+   	
+   	<class name="de.act.common.types.staticobjects.RDDefCom" table="d_def_com" mutable="true">
+   		<cache usage="transactional"/>
+		<id name="def_com_id" column="def_com_id">
+			<generator class="assigned" />        	  
+		</id>
+		<property name="add_id" column="add_id" access="field" />
+		<property name="com_id" column="com_id" access="field" />
+		<property name="ann_id" column="ann_id" access="field" />
+   	</class>
+   	
+</hibernate-mapping>
+
+	<!--class name="de.act.common.types.staticobjects.Commodity" table="s_com"  mutable="true" batch-size="1000"
+		>
+		
+		<id name="COM_ID" column="com_id" unsaved-value="-1"  >
+ 		 	<generator class="assigned" />        	  
+		</id>
+		<property name="PARENT_ID" 	column="parent_id" 	access="field"   />
+		<property name="COM_NAME" 	column="com_name" 	access="field"   />
+		<property name="AWB_NAME" 	column="awb_name" 	access="field"   />
+		<property name="COM_LEVEL" 	column="com_level" 	access="field"   />
+		<property name="COM_FLAG" 	column="com_flag" 	access="field"   />
+		<property name="VAD_ID" 	column="vad_id" 	access="field"   />
+   	</class-->
+   	<!--class name="de.act.common.types.staticobjects.CommodityTree" table="s_com"  mutable="true"  batch-size="100" >
+   	-->
+		<!-- rec <cache usage="read-only"/>--> 
+	<!--
+	<cache usage="transactional"/>
+		<id name="COM_ID" column="com_id" unsaved-value="-1"  >
+			<generator class="assigned" />        	  
+		</id>
+		<property name="PARENT_ID" 	column="parent_id" 	access="field"   />
+		<property name="COM_NAME" 	column="com_name" 	access="field"   />
+		<property name="AWB_NAME" 	column="awb_name" 	access="field"   />
+		<property name="COM_LEVEL" 	column="com_level" 	access="field"   />
+		<property name="COM_FLAG" 	column="com_flag" 	access="field"   />
+		<property name="VAD_ID" 	column="vad_id" 	access="field"   />
+
+	
+		<many-to-one name="parent" class="de.act.common.types.staticobjects.CommodityTree" column="parent_id" cascade="none" insert="false" update="false"/> 
+
+		<set 	inverse="true"
+			name="childs" 
+			table="s_com"
+			cascade="none"
+			batch-size="30"
+			mutable="true"
+			>
+			-->
+			<!-- rec <cache usage="read-only"/>-->
+			<!-- <cache usage="transactional"/>
+			<key column="parent_id" />
+			<one-to-many class="de.act.common.types.staticobjects.CommodityTree" />
+		</set>
+	
+   	</class-->

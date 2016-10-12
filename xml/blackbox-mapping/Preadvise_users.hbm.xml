@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="property" package="de.act.common.types.nonstaticobjects">
+	<class name="de.act.common.types.nonstaticobjects.Preadvise_users" table="a_preadvise_users">
+		<cache usage="transactional"/>
+		<id name="a_preadvise_users_id" column="a_preadvise_users_id">
+			<generator class="native">
+				<param name="sequence">a_preadvise_users_seq</param>
+			</generator>
+		</id>
+		<many-to-one name="a_preadvise_id" class="de.act.common.types.nonstaticobjects.PreadviseDB" column="a_preadvise_id" />
+		<many-to-one name="ap_3lc" class="de.act.common.types.staticobjects.RSAp" column="ap_3lc" />
+		<many-to-one name="add_id" class="de.act.common.types.staticobjects.RSAddID" column="add_id" />
+		<many-to-one name="user_id" class="de.act.common.types.UserObject" column="user_id" />
+		<property name="respond" />
+	</class>
+</hibernate-mapping>

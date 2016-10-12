@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="property" >
+
+	<class name="de.act.common.types.handling.Shipments" table="f_acc_item" dynamic-update="true" dynamic-insert="true">
+		<cache usage="transactional"/>
+		<id name="id" column="acc_item_id" unsaved-value="-1"  >
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+		<!-- <property name="acc_id" /> -->
+		<property name="rowNo" column="row_no" insert="false" update="false"/> 
+		<property name="awb_acc" column="awb_acc" />
+		<!--property name="sli_row"/-->
+		<property name="marks"/>
+		<property name="pcs"/>
+		<property name="wgt" />
+		<!--property name="pkgs_pltsd" /-->
+		<component name="volObj" class="de.act.common.types.nonstaticobjects.PackageVol" >
+			<property name="L" column="l" access="property"  />
+			<property name="W" column="w" access="property"  />
+			<property name="H" column="h" access="property"  />
+		</component>
+		<component name="kindPkg" class="de.act.common.types.staticobjects.RSPkg" >
+			<property name="PKGS_COL" column="pkgs_col" />
+			<property name="PKGS_MAT" column="pkgs_mat" />
+			<property name="PKGS_SHP" column="pkgs_shp" />
+		</component>
+		<many-to-one name="maniItem" class="de.act.common.types.handling.APureManifestItem" column="mani_item_id" not-found="ignore"  cascade="none" />
+		<many-to-one name="commodity" class="de.act.common.types.staticobjects.CCommodityTree" column="com_id"  not-null="false" not-found="ignore" />
+		<many-to-one name="ann" class="de.act.common.types.staticobjects.RSAnn" column="ann_id" not-null="false" not-found="ignore" />
+		<many-to-one name="scc" class="de.act.common.types.staticobjects.RSScc" column="scc_3lc"  not-null="false" not-found="ignore" />
+		<many-to-one name="storage" class="de.act.common.types.localobjects.Storage" column="loc_id" cascade="none" />
+		<many-to-one name="acceptance" class="de.act.common.types.handling.FAcceptance" column="acc_id" cascade="all" />	
+		<many-to-one name="uld_id" class="de.act.common.types.nonstaticobjects.ULDObject" column="uld_id"  not-null="false" not-found="ignore" cascade="none" />
+		<set name="sliItems" table="f_acc_pkg" lazy="false">
+			<cache usage="transactional"/>
+			<key column="acc_item_id"/>
+			<many-to-many column="pkg_id" class="de.act.common.types.packageitems.ItemPKG" />
+		</set>
+		
+		<set name="f_acc_pkg" table="f_acc_pkg" lazy="false" mutable="false">
+			<cache usage="transactional" />
+			<key column="acc_item_id"/>
+			<one-to-many class="de.act.common.types.handling.AcceptancePackageData" />
+		</set>
+		<many-to-one name="booking" class="de.act.common.types.packageitems.ItemHandlingBKG" column="bkg_item_id" not-found="ignore" cascade="none" />
+ 	</class>
+ 	
+ 	<class name="de.act.common.types.handling.AcceptancePackageData" table="f_acc_pkg" dynamic-update="true" dynamic-insert="true">
+ 		<cache usage="transactional" />
+ 		<id name="acc_pkg_id" column="acc_pkg_id" unsaved-value="-1">
+ 			<generator class="native">
+ 				<param name="sequence">d_db_seq</param>
+ 			</generator>
+ 		</id>
+ 		<many-to-one name="acc_item" column="acc_item_id" class="de.act.common.types.handling.Shipments" not-found="ignore" not-null="false" />
+ 		<many-to-one name="pkg_id" column="pkg_id" class="de.act.common.types.packageitems.ItemPKG" not-found="ignore" not-null="false"/>
+ 		<property name="pkg_pcs" column="pcs" />
+ 		
+ 		<property name="wgt" />
+ 		<many-to-one name="com" class="de.act.common.types.staticobjects.CCommodityTree" column="com_id"  not-null="false" not-found="ignore" />
+		<many-to-one name="ann" class="de.act.common.types.staticobjects.RSAnn" column="ann_id" not-null="false" not-found="ignore" />
+ 		<many-to-one name="scc" class="de.act.common.types.staticobjects.RSScc" column="scc_3lc"  not-null="false" not-found="ignore" />
+ 		<component name="pkgVol" class="de.act.common.types.nonstaticobjects.PackageVol" >
+			<property name="L" column="l" access="property"  />
+			<property name="W" column="w" access="property"  />
+			<property name="H" column="h" access="property"  />
+		</component>
+ 	</class>
+</hibernate-mapping>

@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false" package="de.act.common.types.formulars" default-access="property" >
+
+	<class name="CFormularSLI" table="f_sli"  dynamic-update="true" dynamic-insert="true" >
+		<cache usage="transactional"/>
+		<id name="id" column="att_id" >
+			<generator class="foreign" >
+				<param name="property" >metadata</param> 
+			</generator> 
+		</id>
+		<property name="corr" column="corr" access="property" insert="false" update="false"/>
+		<one-to-one name="metadata" class="de.act.common.types.attachment.CSliAttachment" cascade="all"  />
+		<property name="freightCCState" column="af_chrgs" access="property" />
+		<property name="otherCCState" column="ot_chrgs" access="property"  />
+		<property name="carValueCarrier" access="property" column="VAL_CARR" />
+		<property name="carValueCustomer" access="property" column="VAL_CUST" />
+		<property name="valueInsurance" access="property" column="VAL_INSU" />
+		<property name="date" access="property" column="sli_date" />
+		<!--many-to-one name="volWgtUnit" class="de.act.common.types.staticobjects.RSUnit" column="VOL_WGT_UNIT" access="property" /-->
+		<!--property name="volWgt" column="VOL_WGT" access="property" /-->
+		<!--property name="wgt" 	column="WGT" access="property" /-->
+		<!--many-to-one name="wgtUnit" class="de.act.common.types.staticobjects.RSUnit" column="WGT_UNIT" access="property" /-->
+		<many-to-one name="cur3lc" class="de.act.common.types.staticobjects.RSCur" column="cur_3lc" access="property" not-found="ignore" />
+		<many-to-one name="cuc3lc" class="de.act.common.types.staticobjects.RSCuc" column="cuc_3lc" access="property" not-found="ignore" />
+		<many-to-one name="sticker" class="de.act.common.types.nonstaticobjects.RFStick" access="field" column="stick_id" not-found="ignore" cascade="all" />
+		<list name="acis" lazy="false" table="f_aci" access="field" cascade="all" inverse="true" batch-size="2"  >
+			<cache usage="transactional"/>					
+			<key column="att_id" />
+			<list-index column="aci_seq" />
+			<one-to-many class="de.act.common.types.nonstaticobjects.RFAci" not-found="ignore" />
+		</list>
+	</class>
+
+	<!-- mapping for table f_avi -->
+	<class name="CFormularAVI" table="f_avi"  dynamic-update="true" dynamic-insert="true" >
+		<cache usage="transactional"/>
+		<id name="id" column="att_id" >
+			<generator class="foreign" >
+				<param name="property" >metadata</param> 
+			</generator> 
+		</id>
+		<property name="corr" column="CORR" access="property" insert="false" update="false" />
+		<one-to-one name="metadata" class="de.act.common.types.attachment.CAviAttachment" cascade="all"  />
+		<property name="consOk" column="CONS_OK" access="property" />
+		<property name="acclim" column="ACCLIM" access="property" />
+		<property name="cites" column="CITES" access="property" />
+		<property name="otLeg" column="OT_LEG" access="property" />
+		<property name="reptiles" column="REPTILES" access="property" />
+		<property name="date" column="AVI_DATE" access="property" />
+		<many-to-one name="sticker" class="de.act.common.types.nonstaticobjects.RFStick" column="stick_id" not-found="ignore" cascade="all" />
+		<!--<many-to-one name="airWaybillNo" class="de.act.common.types.nonstaticobjects.RFAwbNo" column="F_ID" access="property" not-found="ignore"  update="false" insert="false" />-->
+	</class>
+
+	<!-- mapping for table f_dgr -->
+	<class name="CFormularDGR" table="f_dgr"  dynamic-update="true" dynamic-insert="true" >
+		<cache usage="transactional"/>
+		<id name="id" column="att_id" >
+			<generator class="foreign" >
+			 	<param name="property" >metadata</param> 
+			</generator> 
+		</id>
+		<property name="corr" column="CORR" access="property" insert="false" update="false"/>
+		<one-to-one name="metadata" class="de.act.common.types.attachment.CDgrAttachment" cascade="all" />
+		<property name="pages" column="PAGES" access="property" />
+		<!--property name="radio" column="RADIO" access="property" />
+		<property name="acOnly" column="AC_ONLY" access="property" /-->
+		<property name="date" column="DGR_DATE" access="property" />
+		<many-to-one name="sticker" class="de.act.common.types.nonstaticobjects.RFStick" column="stick_id" not-found="ignore" cascade="all" />
+	</class>
+
+	<!-- mapping for table f_bkg -->
+	<class name="CFormularBKG" table="f_bkg"  dynamic-update="true" dynamic-insert="true" >
+		<cache usage="transactional"/>
+		<id name="id" column="att_id" >
+			<generator class="foreign" >
+			 	<param name="property" >metadata</param> 
+			</generator> 
+		</id>
+		<!--property name="corr" column="CORR" access="property" /-->
+		<one-to-one name="metadata" class="de.act.common.types.attachment.CBookingAttachment" cascade="all" />
+		<many-to-one name="sticker" class="de.act.common.types.nonstaticobjects.RFStick" column="stick_id" not-found="ignore" cascade="all" />
+	</class>
+   	
+   	<class name="de.act.common.types.nonstaticobjects.RFForm" table="f_form"  dynamic-update="true" dynamic-insert="true" >
+   		<cache usage="transactional"/>
+		<id name="f_id" column="f_id" unsaved-value="-1">
+			<generator class="assigned"/>
+		</id>
+		<property name="name" column="name" />
+		<property name="readOnly" column="read_only" />
+		<property name="isLocal" column="is_local" />
+		<property name="status" column="status" />
+		<property name="setStamp" column="set_stamp" />
+		<property name="created" column="created" />
+		<property name="formular_name" column="formular_name" />
+		<property name="work_state" column="work_state" />
+		<property name="ca_id" column="ca_id" />
+		<many-to-one name="parent" class="de.act.common.types.nonstaticobjects.RFForm" column="f_parent" />
+		<property name="level" column="f_level" />
+		<property name="childrenCount" column="f_children" />		
+		<many-to-one name="creator" class="de.act.common.types.staticobjects.RSAdd" column="creator_id" />
+		<set name="childs" lazy="false" table="f_form" access="field" cascade="all" order-by="name asc,created asc" inverse="true" batch-size="1" >
+			<cache usage="transactional"/>
+			<key column="f_parent"/>
+		    	<one-to-many class="de.act.common.types.nonstaticobjects.RFForm" not-found="ignore" />
+		</set>
+		<many-to-one name="awbNo" class="de.act.common.types.nonstaticobjects.RFAwbNo" column="f_id" not-found="ignore" cascade="none" insert="false" update="false"/>
+		<many-to-one name="state" class="de.act.common.types.staticobjects.RSState" column="stat_id" not-found="ignore"/>
+		<property name="stateDescription" column="stat_descr" />
+		<many-to-one name="summary" class="de.act.common.types.nonstaticobjects.RFHouseForm" column="f_id" not-found="ignore" insert="false" update="false" cascade="none" />
+
+		<!--set name="distribute" lazy="false" table="f_distr" access="field" cascade="all" order-by="part asc,add_seq asc" batch-size="1" >
+			<key column="f_id"/>
+			<one-to-many class="de.act.common.types.nonstaticobjects.RFDistr" not-found="ignore" />
+		</set-->				
+   	</class>
+   	
+   	<class name="de.act.common.types.nonstaticobjects.RFHouseForm" table="f_sli_sum_view"  mutable="false" >
+   		<cache usage="transactional"/>
+   		<id name="f_id" column="f_id">
+			<generator class="assigned"/>
+		</id>
+		<property name="pcs" />
+		<property name="wgt" />
+		<property name="vol" />
+		<many-to-one name="des" column="arr_ap" class="de.act.common.types.staticobjects.RSAp" cascade="none" not-found="ignore"  />
+		<many-to-one name="dep" column="dep_ap" class="de.act.common.types.staticobjects.RSAp" cascade="none" not-found="ignore" />
+		<many-to-one name="commodity" column="com_id"	class="de.act.common.types.staticobjects.CCommodityTree" not-null="false" not-found="ignore" />
+		<many-to-one name="scc"  column="scc_3lc" class="de.act.common.types.staticobjects.RSScc" not-null="false" not-found="ignore" />
+		<!--property name="remarks" /-->
+		<property name="f_parent" />
+		<property name="ca_3dg" />
+		<property name="ffw_3lc" />
+		<property name="awb_stock" />
+		<property name="awb_no" />
+		<property name="att_id" />
+		<property name="att_no" />
+		<property name="corr" insert="false" update="false"/>
+		<many-to-one name="shp_add_id" 	class="de.act.common.types.staticobjects.RSAdd" column="shp_add_id"  not-null="false" not-found="ignore" />
+		<property name="shp_subt_id" />
+		<property name="stick_id" />
+		<property name="flightDate" column="dep_flt_date" />
+		<property name="flightTime" column="dep_time" />
+		<property name="flightNo" column="dep_flt_no" />
+    	<property name="ca2lc"  column="dep_ca_2lc" />
+   	</class>
+   	<!--
+ SELECT a.f_id
+ a.f_parent
+ b.ca_3dg
+ b.ffw_3lc
+ b.awb_stock
+ b.awb_no
+ c.att_id
+ c.att_no
+ c.corr
+ d.pcs
+ d.wgt
+ d.vol
+ d.com_id
+ d.scc_3lc
+ e1.bkg_flt_date AS dep_flt_date
+ e1.flt_row AS dep_flt_row
+ e1.flt_id AS dep_flt_id
+ f1.flt_no AS dep_flt_no
+ f1.ac_reg AS dep_ac_reg
+ f1.dep AS dep_time
+ g1.conx_id AS dep_conx_id
+ g1.dept AS dep_ap
+ e2.bkg_flt_date AS arr_flt_date
+ e2.flt_row AS arr_flt_row
+ e2.flt_id AS arr_flt_id
+ f2.flt_no AS arr_flt_no
+ f2.ac_reg AS arr_ac_reg
+ f2.arr AS arr_time
+ g2.conx_id AS arr_conx_id
+ g2.dest AS arr_ap
+ i.shp_add_id
+ i.shp_subt_id
+ k.stick_id
+   	-->
+	
+	<class name="CFormularAWB" table="f_awb"  dynamic-update="true" dynamic-insert="true" >
+		<cache usage="transactional"/>
+		<id name="id" column="att_id" >
+			<generator class="foreign" >
+				<param name="property" >metadata</param> 
+			</generator> 
+		</id>
+		<property name="corr" column="CORR" access="property" insert="false" update="false"/>
+		<one-to-one name="metadata" class="de.act.common.types.attachment.CAwbAttachment" cascade="all"  />
+		<property name="curRate" column="CUR_RATE" access="property" />
+		<property name="insuRate" column="INSU_RATE" access="property" />
+		<property name="date" column="AWB_DATE" access="property" />
+		<property name="place" column="AWB_PLACE" access="property" />
+		<property name="wgtCharges" column="WGT_CHRG" access="property" />
+		<property name="valCharges" column="VAL_CHRG" access="property" />
+		<property name="tax" column="TAX" access="property" />
+		<property name="curConvRate" column="CUR_CONV_RATE" access="property" />
+		<property name="mrnNo" column="MRN_NO" access="property" />
+		<many-to-one name="ccd" class="de.act.common.types.staticobjects.RSCcd" column="CCD_ID" access="property" not-found="ignore" />	
+		<set name="otherCharges" lazy="false" table="f_ot" access="property" cascade="all" order-by="ot_1lc asc,ot_2lc asc" inverse="true" batch-size="3" >
+			<cache usage="transactional"/>
+		    	<key column="att_id"/>
+		    <one-to-many class="de.act.common.types.nonstaticobjects.RFOt" not-found="ignore" />
+		</set>
+	</class>
+	<!-- 
+	(meta*,subselect?,cache?,synchronize*,comment?,
+	tuplizer*,
+	(id|composite-id),
+	discriminator?,
+	natural-id?,(version|timestamp)?,
+	(property|many-to-one|one-to-one|component|dynamic-component|properties|any|map|set|list|bag|idbag|array|primitive-array)*,((join*,subclass*)|joined-subclass*|union-subclass*),loader?,sql-insert?,sql-update?,sql-delete?,filter*,resultset*,(query|sql-query)*)".
+	-->
+	
+	<class name="de.act.common.types.nonstaticobjects.RFOt" table="f_ot" >
+		<cache usage="transactional"/>
+		 <id name="id" column="ot_id" type="java.lang.Long" unsaved-value="-1" >
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+		<!--
+		<natural-id >
+			<many-to-one name="metadata" class="CFormularAWB" column="att_id" access="property" cascade="all" />
+			<many-to-one name="ot_2lc" class="de.act.common.types.staticobjects.RSOt2lc" column="ot_2lc" access="property" />
+			<many-to-one name="ot_1lc" class="de.act.common.types.staticobjects.RSOt1lc" column="ot_1lc" access="property" />
+		</natural-id>
+		<timestamp column="corr" name="corr" access="property" unsaved-value="undefined" generated="always"/>
+		-->
+		<properties name="un" unique="true" >
+			<many-to-one name="metadata" class="CFormularAWB" column="att_id" access="property" cascade="none" />
+			<many-to-one name="ot_2lc" class="de.act.common.types.staticobjects.RSOt2lc" column="ot_2lc" access="property" />
+			<many-to-one name="ot_1lc" class="de.act.common.types.staticobjects.RSOt1lc" column="ot_1lc" access="property" />
+		</properties>
+		<property name="ot_rate" access="property" />
+		
+		<property name="otCur3lcFrom" type="java.lang.String">
+			<column name="ot_cur_3lc_from" length="3" />
+		</property>
+		<property name="otCur3lcTo" type="java.lang.String">
+			<column name="ot_cur_3lc_to" length="3" />
+		</property>
+		<property name="otConversionRate" type="java.lang.Double">
+			<column name="ot_conversion_rate" precision="21" scale="8" />
+		</property> 
+	</class>
+	
+	<!-- mapping for table f_dgr -->
+	<class name="CFormularDelivery" table="f_delivery"  dynamic-update="true" dynamic-insert="true" >
+		<cache usage="transactional"/>
+		<id name="id" column="att_id" >
+			<generator class="foreign" >
+				<param name="property" >metadata</param> 
+			</generator> 
+		</id>
+
+		<!--property name="corr" column="CORR" access="property" /-->
+		<one-to-one name="metadata" class="de.act.common.types.attachment.CDeliveryAttachment" cascade="all"/>
+		<property name="pcs" />
+		<property name="wgt" />
+		<property name="recipient_name" />
+		<property name="recipient_sign" />
+		<property name="customs_ref_no" />		
+		<property name="bank_release_no" />
+		<property name="invoice_no" />		
+		<property name="corr" insert="false" update="false"/>
+	</class>
+
+	<class name="CFormularNotify" table="f_deliver_noti"  dynamic-update="true" dynamic-insert="true" >
+		<cache usage="transactional"/>
+		<id name="id" column="att_id" >
+			<generator class="foreign" >
+				<param name="property" >metadata</param> 
+			</generator> 
+		</id>
+		<one-to-one name="metadata" class="de.act.common.types.attachment.CNotifyAttachment" cascade="all"/>
+		<property name="deliver_add_id" />
+		<property name="deliver_subt_id" />
+		<property name="contact_person" />
+		<property name="contact_type" />
+		<property name="pcs" />
+		<property name="wgt" />
+		<property name="remark" />
+		<property name="company_type" />
+		<property name="pcs_delivered" />
+		<property name="freight_chrgs" />
+		<property name="handling_chrgs" />
+		<property name="storage_chrgs" />
+		<property name="customs_chrgs" />
+		<property name="chrgs_512b" column="v12b_chrgs" />
+		<property name="cust_clear_req" />
+		<property name="bank_relea_req" />
+ 		<property name="payment_req" />
+		<property name="user_name" />
+		<property name="corr" insert="false" update="false"/>
+		<many-to-one name="company" column="deliver_add_id"  class="de.act.common.types.staticobjects.RSAdd" update="false" insert="false" access="property" not-found="ignore" />
+	</class>
+
+	<class name="de.act.common.types.views.BookingControlView" table="f_bkg_view2" mutable="false" >
+   		<cache usage="transactional"/>
+   		<id name="f_id" column="f_id">
+			<generator class="assigned"/>
+		</id>
+		<property name = "add_id" column = "add_id" />
+   		<property name = "awb_no" column = "awb_no" />
+   		<property name = "formular_name" column = "formular_name" />
+   		<property name = "pcs" column = "pcs" />
+   		<property name = "wgt" column = "wgt" />
+   		<property name = "vol" column = "vol" />
+   		<property name = "com_name" column = "com_name" />
+   		<property name = "scc_name" column = "scc_name" />
+   		<property name = "ca_id" column = "ca_id" />
+   		<property name = "ca_2lc" column = "ca_2lc" />
+   		<property name = "flt_no" column = "flt_no" />
+   		<property name = "bkg_flt_date" column = "bkg_flt_date" />
+   		<property name = "dept" column = "dept" />
+   		<property name = "dest" column = "dest" />
+   		<property name = "work_state" column = "work_state" />
+   		<property name = "bkg_status" column = "bkg_status" />
+   		<property name = "com_id" column = "com_id" />
+   		<property name = "ann_id" column = "ann_id" />
+   		<property name = "scc_3lc" column = "scc_3lc" />
+   		<property name = "flt_id" column = "flt_id" />
+   		<property name = "ca_3dg" column = "ca_3dg" />
+   		<property name = "awb_stock" column = "awb_stock" />
+   		<property name = "bkg_item_id" column = "bkg_item_id" />
+   	</class>
+   	
+   	<class name="de.act.common.types.views.MyShipmentView" table="v_my_shipment" mutable="false">
+	<cache usage="transactional" />
+		<composite-id>
+			<key-property name="seq_num" column="seq_num" />
+		</composite-id>
+		<property name="f_id" column="f_id" />
+		<property name="add_id" column="add_id" />
+		<property name="bkg_status" column="bkg_status" />
+		<property name="ca_id" column="ca_id" />
+		<property name="ca_2lc" column="ca_2lc" />
+		<property name="flt_no" column="flt_no" />
+		<property name="bkg_flt_date" column="bkg_flt_date" />
+		<property name="created_date" column="created_date" />
+		<property name="loaded_date" column="loaded_date" />
+		<property name="dept" column="dept" />
+		<property name="dest_hops" column="dest_hops" />
+		<property name="dest" column="dest" />
+		<property name="awb_no" column="awb_no" />
+		<property name="ca_3dg" column="ca_3dg" />
+		<property name="awb_stock" column="awb_stock" />
+		<property name="pcs" column="pcs" />
+		<property name="wgt" column="wgt" />
+		<property name="vol" column="vol" />
+		<property name="com_name" column="com_name" />
+		<property name="scc_3lc" column="scc_3lc" />
+		<property name="remark" column="remark" />
+		<property name="req_from" column="req_from" />
+		<property name="shp_add_id" column="shp_add_id" />
+		<property name="ffw_add_id" column="ffw_add_id" />
+		<property name="con_add_id" column="con_add_id" />
+		<property name="shp_add_name" column="shp_add_name" />
+		<property name="con_add_name" column="con_add_name" />
+		<property name="ffw_add_name" column="ffw_add_name" />
+		<property name="part" column="part" />
+		<property name="fpart" column="fpart" />
+		<many-to-one name="stat" column="stat_id" class="de.act.common.types.staticobjects.RSState" update="false" insert="false" not-found="ignore"  />
+	</class>
+   	
+    <class name="de.act.common.types.views.BookingControlView2" table="f_bkg_view4" mutable="false" >
+   		<cache usage="transactional"/>
+   		<!--id name="f_id" column="f_id">
+			<generator class="assigned"/>
+		</id-->
+		<!--id name="a_flt_id" column="a_flt_id">
+			<generator class="assigned"/>
+		</id-->
+		<composite-id> 
+			<!--key-property name="a_flt_id" /-->
+			<key-property name="bkg_item_id" />
+			<key-property name="flt_no" column="flt_no" />
+		</composite-id>
+		<property name = "creator_id" column = "creator_id" />
+		<property name = "add_id" column = "add_id" />
+   		<property name = "awb_no" column = "awb_no" />
+   		<property name = "non_standard" column = "non_standard" />
+   		<property name = "part" column = "part" />
+   		<property name = "pcs" column = "pcs" />
+   		<property name = "wgt" column = "wgt" />
+   		<property name = "vol" column = "vol" />
+   		<property name = "com_name" column = "com_name" />
+   		<property name = "scc_3lc" column = "scc_3lc" />
+   		<property name = "scc_name" column = "scc_name" />
+   		<property name = "ca_id" column = "ca_id" />
+   		<property name = "ca_2lc" column = "ca_2lc" />
+   		<!--property name = "flt_no" column = "flt_no" /-->
+   		<property name = "bkg_flt_date" column = "bkg_flt_date" />
+   		<property name = "dept" column = "dept" />
+   		<property name = "dest_hops" column = "dest_hops" />
+   		<property name = "dest" column = "dest" />
+   		<property name = "bkg_status" column = "bkg_status" />
+   		<!--property name = "flt_id" column = "flt_id" /-->
+   		<property name = "ca_3dg" column = "ca_3dg" />
+   		<property name = "awb_stock" column = "awb_stock" />
+   		<property name = "f_id" column = "f_id" />
+   		<property name ="bkg_flt_id" column = "bkg_flt_id" />
+   		<!--property name = "bkg_item_id" column = "bkg_item_id" /-->
+   		<property name = "a_flt_id" column = "a_flt_id" />
+   		<property name = "bkg_id_id" column = "bkg_id_id" />
+   		<property name = "shp_add_id" column = "shp_add_id" />
+   		<property name = "con_add_id" column = "con_add_id" />
+   		<property name = "ffw_add_id" column = "ffw_add_id" />
+   		<property name = "shp_add_name" column = "shp_add_name" />
+   		<property name = "con_add_name" column = "con_add_name" />
+   		<property name = "ffw_add_name" column = "ffw_add_name" />
+   		<property name="mani_item_id" column="mani_item_id" />
+   		<property name="flt_row" column="flt_row" />
+   		<property name="flt_id" column="flt_id" />
+   		<property name="stat_id" column="stat_id" />
+   		<property name="remark" column="remark" />
+   		<property name="cuc_3lc" column="cuc_3lc" />
+   		<property name="mani_stat_id" column="mani_stat_id" />
+   		<property name="shipment_discr_id" column="shipment_discr_id" />
+		<property name="shipment_discr_name" column="shipment_discr_name" />
+		<property name="shipment_discr_4lc" column="shipment_discr_4lc" />
+		<property name="shipment_discr_condition_flag" column="shipment_discr_condition_flag" />
+		<property name="shipment_discr_opposite_discr_id" column="shipment_discr_opposite_discr_id" />
+		<property name="awb_discr_id" column="awb_discr_id" />
+		<property name="awb_discr_name" column="awb_discr_name" />
+		<property name="awb_discr_4lc" column="awb_discr_4lc" />
+		<property name="awb_discr_condition_flag" column="awb_discr_condition_flag" />
+		<property name="awb_discr_opposite_discr_id" column="awb_discr_opposite_discr_id" />
+		<property name="created_date" column="created_date" />
+		<property name="req_from" column="req_from" />
+		<property name="loaded_date" column="loaded_date" />
+		<property name="priority" column="prio" />
+		<property name = "com_id" column = "com_id" />
+   		<property name = "ann_id" column = "ann_id" />
+   		<property name = "fpart" column = "fpart" />
+   		<property name = "dep" column = "dep" />
+   		<property name = "mani_id" column = "mani_id" />
+   		<many-to-one name="stat" column="stat_id" class="de.act.common.types.staticobjects.RSState" update="false" insert="false" not-found="ignore"  />
+   		<many-to-one name="transfer_ca" column="transfer_to_ca_id" class="de.act.common.types.staticobjects.Carrier" update="false" insert="false" not-found="ignore"  />
+   	</class>
+   	
+   	<class name = "de.act.common.types.views.AttachmentCurView" table = "f_att_cur_v" mutable = "false">
+   		<cache usage="transactional"/>
+   		<id name="att_id" column="att_id">
+   			<generator class="assigned"/>
+   		</id>
+		<property name="f_id" column = "f_id" />	
+		<property name="att_type" column = "att_type" />	
+		<property name="att_no" column = "att_no" />	
+		<property name="add_id" column = "add_id" />	
+		<property name="auth" column = "auth" />	
+		<property name="sign" column = "sign" />
+   	</class>
+   	
+   	<class name="de.act.common.types.FAuth" table="f_auth">
+   		<cache usage="transactional"/>
+   		<composite-id>
+   			<key-property name="f_id" column="f_id" />
+			<key-many-to-one name="airport" column="ap_3lc" class="de.act.common.types.staticobjects.RSAp" />
+			<key-property name="part" column="part" />
+   		</composite-id>
+   		<property name="user_name" column="user_name" />
+   		<property name="read_only" column="read_only" />
+   	</class>
+   	
+   	<!-- Added View Report -->
+   	<class name="de.act.common.types.views.CargoSalesReportView" table="f_cargo_sales_report_view" mutable="false" >
+   		<cache usage="transactional"/>
+		<composite-id>
+			<key-property name="ca3dg" column="ca_3dg"/>
+			<key-property name="awbStock" column="awb_stock"/> 
+			<key-property name="awb_no" column="awb_no"/>
+			<key-property name="flt_no" column="flt_no" />
+		</composite-id>
+		<property name = "dept" column = "dept" />
+		<property name = "dest" column = "dest" />
+   		<property name = "flt_date" column = "flt_date" />
+   		<property name = "com_name" column = "com_name" />
+   		<!-- <property name = "notNameColumn" column = "PP" /> -->
+   		<property name = "wgt" column = "wgt" />
+   		<property name = "chrgbl_wgt" column = "chrgbl_wgt" />
+   		<property name = "rate" column = "rate" />
+   		<property name = "total_charges" column = "total_charges" />
+   		<property name = "commission" column = "commission" />
+   		<property name = "total_commission" column = "total_commission" />
+   		<property name = "total_freightcharge" column = "total_freightcharge" />
+   		<property name = "full_surcharge" column = "full_surcharge" />
+   		<property name = "security_surcharge" column = "security_surcharge" />
+   		<property name = "other_charges" column = "other_charges" />
+   		<property name = "remark" column = "remark" />
+   		<property name = "stat_awb" column = "stat_awb" />
+   		<property name = "vat" column = "vat" />
+   		<property name = "ffw" column = "ffw" />
+   		<property name = "shipper" column = "shipper" />
+   	</class>
+   	
+   	<class name="de.act.common.types.views.ReportForSendMailView" table="f_report_for_sendmail_view" mutable="false" >
+   		<cache usage="transactional"/>
+		<composite-id> 
+			<key-property name="flt_no" column="flt_no"/>
+		</composite-id>
+		<property name = "date" column = "date" />
+   		<property name = "wgt" column = "book_load" />	
+   		<property name = "dept" column = "dept" />
+   		<property name = "dest" column = "dest" />
+   		<property name = "ca_2lc" column = "ca_2lc" />
+   		<property name = "ca_id" column = "ca_id" />
+   	</class>
+   	
+   	<class name="de.act.common.types.views.ReportPerdayView" table="f_report_perday_view" mutable="false" >
+   		<cache usage="transactional"/>
+		<composite-id> 
+			<key-property name="flt_id" column="flt_id"/>
+			<key-property name = "flt" column = "flt_no" />
+		</composite-id>
+		<property name = "dept" column = "dept" />
+		<property name = "dest" column = "dest" />
+		<property name = "schedule" column = "schedule" />
+   		<property name = "total_wgt" column = "total_wgt" />
+   		<property name = "date" column = "date" />
+   		<property name = "mmt" column = "mmt" />
+   		<property name = "caId" column = "ca_id" />
+   	</class>
+   	
+   	<class name="de.act.common.types.views.ReportPeriodView" table="f_report_view" mutable="false" >
+		<cache usage="transactional"/>
+		<composite-id> 
+			<key-property name="fltNo" column="flt_no"/>
+			<key-property name = "date" column = "date" />
+			<key-property name = "dept" column = "dept" />
+			<key-property name = "dest" column = "dest" />
+			<key-property name = "acReg" column = "ac_reg" />
+			<key-property name = "caId" column = "ca_id" />
+			<key-property name = "perday" column = "perday" />
+			<key-property name = "perweek" column = "perweek" />
+			<key-property name = "permonth" column = "permonth" />
+			<key-property name = "peryear" column = "peryear" />
+			<key-property name = "pcs" column = "pcs" />
+			<key-property name = "ffw" column = "ffw" />
+			<key-property name = "deptCo2lc" column = "dept_co_2lc" />
+			<key-property name = "deptCoName" column = "dept_co_name" />
+			<key-property name = "destCo2lc" column = "dest_co_2lc" />
+			<key-property name = "destCoName" column = "dest_co_name" />
+			<key-property name = "deptArCode" column = "dept_ar_code" />
+			<key-property name = "deptArName" column = "dept_ar_name" />
+			<key-property name = "destArCode" column = "dest_ar_code" />
+			<key-property name = "destArName" column = "dest_ar_name" />
+			<key-property name = "bookingDate" column = "booking_date" />
+		</composite-id>
+		<property name = "shipment" column = "shipment" />
+		<property name = "totalWgt" column = "total_wgt" />
+		<property name = "vol" column = "vol" />
+		<property name = "loadingDate" column = "v_o" />
+		<many-to-one name="carrier" column="ca_id" class="de.act.common.types.staticobjects.Carrier" update="false" insert="false" not-found="ignore"  />
+	</class>
+</hibernate-mapping>

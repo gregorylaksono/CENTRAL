@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="property" package="de.act.common.types.nonstaticobjects" >
+	<class name="de.act.common.types.nonstaticobjects.RFDeliveryNotification" table="f_deliverynotification_view2">	             
+		<cache usage="transactional"/>
+		<id  name="formId" type="java.lang.String" column="f_id" >
+			<generator class="assigned"/>
+		</id>		
+		<property name="awbNo" type="java.lang.String" column="awbno" />
+		<property name="isBank" type="java.lang.Integer" column="is_bank" />
+		<property name="isGoverment" type="java.lang.Integer" column="is_gov" />
+		
+		<!-- because there is possibility add_id more than 1 in DB, so we cannot use this method, because it could return more than 1 row
+		  
+		<many-to-one name="consigneAdd" class="de.act.common.types.staticobjects.RSAdd" property-ref="add_id" column="con_add_id"  not-null="true" not-found="exception" />
+		<many-to-one name="deliveryToAdd" class="de.act.common.types.staticobjects.RSAdd" property-ref="add_id" column="deliver_add_id"  not-null="true" not-found="exception" />											   
+		<many-to-one name="notifyAdd" class="de.act.common.types.staticobjects.RSAdd" property-ref="add_id" column="anotify_add_id"  not-null="true" not-found="exception" /> -->
+		
+		<property name="consigneAddId" type="java.lang.Integer" column="con_add_id" />
+		<property name="deliveryToAddId" type="java.lang.Integer" column="deliver_add_id" />
+		<property name="notifyAddId" type="java.lang.Integer" column="anotify_add_id" />
+		
+		<property name="pcs" type="java.lang.Integer" column="pcs" />
+		<property name="pcsDeliveredToConsigne" type="java.lang.Integer" column="pcs_delivered" />
+		<property name="pcsDelivered" type="java.lang.Integer" column="dlv" />
+		<property name="totaPcs" type="java.lang.Integer" column="total" />
+		<property name="weight" type="java.lang.Double" column="wgt" />
+		<property name="weightDelivered" type="java.lang.Double" column="dlv_wgt" />
+		<!-- <property name="discrepancyStatus" type="java.lang.String" column="discr_name" /> -->
+		<property name="endDestinationPoint" type="java.lang.String" column="ap_3lc" />
+		<property name="departure" type="java.lang.String" column="departure" />
+		<property name="destination" type="java.lang.String" column="destination" />
+		<property name="countryDeparture" type="java.lang.String" column="countrydeparture" />
+		<property name="countryDestination" type="java.lang.String" column="countrydestination" />
+		<property name="statusCCAfChrgs" type="java.lang.Integer" column="af_chrgs" />
+		<property name="statusCCOtChrgs" type="java.lang.Integer" column="ot_chrgs" />
+		<property name="afChrgs" type="java.lang.Double" column="afchrgs" />
+		<property name="otChrgs" type="java.lang.Double" column="otchrgs" />						
+	</class>	
+	
+</hibernate-mapping>

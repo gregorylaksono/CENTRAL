@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" package="de.act.common.types" >
+
+	<class name="de.act.common.types.nonstaticobjects.BookingRequestFlight" table="f_bkg_flt"   dynamic-update="true" dynamic-insert="true"  >
+		<cache usage="transactional"/>
+		<id name="bkg_flt_id" column="bkg_flt_id" unsaved-value="-1"  >
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+		<properties name="name" unique="true" >	
+			<many-to-one name="attachment" class="de.act.common.types.attachment.CBookingFlightAttachment" column="att_id" cascade="none" not-found="ignore" />
+			<many-to-one name="parent" column="bkg_item_id" class="de.act.common.types.packageitems.ItemBKG" cascade="none" />
+			<property name="flt_row" />
+		</properties>
+		<property name="centralBookingId" column="c_bkg_id" access="property"/>
+		<many-to-one name="flight" class="de.act.common.types.staticobjects.RSFlt" column="flt_id" access="property" />
+		<component name="flightdate" class="de.act.common.types.nonstaticobjects.FlightDate" >
+			<property name="date" column="bkg_flt_date" access="property"  />
+		</component>
+		<set name="flightStates" lazy="false" cascade="none" table="d_folder" inverse="true" batch-size="1" >
+			<key column="bkg_flt_id" />
+			<one-to-many class="de.act.common.types.nonstaticobjects.BookingFlightState" not-found="ignore" />
+		</set>
+	<!-- <many-to-one name="flightState" column="bkg_flt_id" class="de.act.common.types.nonstaticobjects.BookingFlightState" not-found="ignore" unique="true" update="false" insert="false"  />-->	
+	</class>
+
+	<class name="de.act.common.types.nonstaticobjects.BookingFlightState" table="f_bkg_flt_stat"   dynamic-update="true" dynamic-insert="true"  >
+		<cache usage="transactional"/>
+		<id name="bkg_flt_stat_id" column="bkg_flt_stat_id" unsaved-value="-1"  >
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+		<properties name="name" unique="true" >	
+			<many-to-one name="attachment" class="de.act.common.types.attachment.CBookingFlightAttachment" column="att_id" cascade="none" not-found="ignore" />
+			<many-to-one name="bookingFlight" column="bkg_flt_id" class="de.act.common.types.nonstaticobjects.BookingRequestFlight" unique="true" />
+		</properties>
+		<property name="bookingStatus" column="bkg_status" access="property"/>			
+		<property name="stat_descr" column="stat_descr" access="property"/>
+		<property name="corr" column="corr" access="property" insert="false" update="false"/>
+	</class>
+
+	<class name = "de.act.common.types.formulars.CFAttTemplate" table = "f_att">
+		<cache usage="transactional"/>
+		<id name="att_id" column="att_id" />
+		<property name="f_id" column = "f_id" />	
+		<property name="att_type" column = "att_type" />	
+		<property name="att_no" column = "att_no" />	
+		<property name="add_id" column = "add_id" />	
+		<property name="auth" column = "auth" />	
+		<property name="sign" column = "sign" />	
+	</class>
+	
+	<class name="de.act.common.types.nonstaticobjects.BookingRequestFlight2" table="f_bkg_flt"   dynamic-update="true" dynamic-insert="true"  >
+		<cache usage="transactional"/>
+		<id name="bkg_flt_id" column="bkg_flt_id" unsaved-value="-1"  >
+ 			<!--generator class="native">
+ 				<param name="sequence">d_db_seq</param>
+			</generator-->
+			<generator class="assigned"/>
+		</id>
+		<properties name="name" unique="true" >	
+			<many-to-one name="attachment" class="de.act.common.types.attachment.CBookingFlightAttachment" column="att_id" cascade="none" not-found="ignore" insert="false" update="false"/>
+			<many-to-one name="parent" column="bkg_item_id" class="de.act.common.types.packageitems.ItemBKG" cascade="none" />
+			<property name="flt_row" />
+		</properties>
+		<property name="att_id" column = "att_id" />
+		<property name="centralBookingId" column="c_bkg_id" access="property"/>
+		<many-to-one name="flight" class="de.act.common.types.staticobjects.RSFlt" column="flt_id" access="property" />
+		<component name="flightdate" class="de.act.common.types.nonstaticobjects.FlightDate" >
+			<property name="date" column="bkg_flt_date" access="property"  />
+		</component>
+		<set name="flightStates" lazy="false" cascade="none" table="d_folder" inverse="true" batch-size="1" >
+			<key column="bkg_flt_id" />
+			<one-to-many class="de.act.common.types.nonstaticobjects.BookingFlightState" not-found="ignore" />
+		</set>
+			
+	<!-- 
+		<many-to-one name="flightState" column="bkg_flt_id" class="de.act.common.types.nonstaticobjects.BookingFlightState" not-found="ignore" unique="true" update="false" insert="false"  />
+	-->	
+	</class>
+	
+	<class name="de.act.common.types.nonstaticobjects.BookingFlightState2" table="f_bkg_flt_stat"   dynamic-update="true" dynamic-insert="true"  >
+		<cache usage="transactional"/>
+		<id name="bkg_flt_stat_id" column="bkg_flt_stat_id" unsaved-value="-1"  >
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+		<properties name="name" unique="true" >	
+			<many-to-one name="attachment" class="de.act.common.types.attachment.CBookingFlightAttachment" column="att_id" cascade="none" not-found="ignore" insert="false" update="false" />
+			<many-to-one name="bookingFlight" column="bkg_flt_id" class="de.act.common.types.nonstaticobjects.BookingRequestFlight2" unique="true" insert="false" update="false"/>
+		</properties>
+		<property name="att_id" column = "att_id" />
+		<property name="bkg_flt_id" column = "bkg_flt_id" />
+	    <property name="bookingStatus" column="bkg_status" access="property"/>			
+		<property name="stat_descr" column="stat_descr" access="property"/>
+		<property name="corr" column="corr" access="property" insert="false" update="false"/>
+	</class>
+</hibernate-mapping>

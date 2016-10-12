@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" >
+
+	<!-- mapping for table f_distr -->
+	<class name="de.act.common.types.nonstaticobjects.RFDistr" table="f_distr">
+		<cache usage="transactional"/>
+		<id name="distr_id" >
+			<generator class="uuid" />
+		</id>
+		<properties name="name" unique="true" >
+		    <property name="F_ID" column="f_id" access="field" />
+			<property name="PART" column="part" access="field" />
+			<property name="ADD_ID" column="add_id" access="field" />
+			<property name="ADD_TYPE" column="add_type" access="field" />
+		</properties>
+		<property name="SENT"  column="sent" access="field" />
+		<property name="RCVD"  column="rcvd" access="field" />
+		<property name="WRITER"  column="writer" access="field" />
+	</class>
+
+</hibernate-mapping>
+
+	<!-- mapping for table f_stat -->
+	<!-- 
+	<class name="de.act.common.types.RFStat" table="f_stat">
+	<composite-id>
+	    <key-property name="F_ID" access="field" />
+	    <key-property name="STAT_ID" access="field" />
+	    <key-property name="PART" access="field" />
+	    <key-property name="STAT_TS" access="field" />
+	</composite-id>
+	<property name="STAT_PLACE" access="field" />
+	<property name="ADD_ID" access="field" />
+	</class>
+	-->
+	
+
+<!--
+EATE TABLE f_distr
+(
+  distr_id character varying(36) NOT NULL,
+  f_id character varying(36),
+  part smallint,
+  add_id character varying(36),
+  add_type cn_add_type,
+  rcvd timestamp without time zone,
+  sent timestamp without time zone,
+  writer cn_bool,
+
+f_id, part, add_id, add_type
+
+
+f_id varchar(21) NOT NULL,
+  name varchar(50),
+  read_only cn_bool,
+  is_local cn_bool,
+  status cn_form_stat,
+  set_stamp timestamp DEFAULT now(),
+  created timestamp DEFAULT now(),
+
+-->

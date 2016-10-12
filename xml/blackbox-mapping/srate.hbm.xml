@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" >
+
+	<class name="de.act.common.types.staticobjects.RSRateAuto" table="s_rate_auto">
+		<cache usage="transactional"/>
+		<id name="rate_id" column="rate_id">
+			<generator class="assigned" />
+		</id>
+		<property name="start_rate" column="start_rate" />
+		<property name="lowest_rate" column="lowest_rate" />
+		<property name="highest_rate" column="highest_rate" />
+		<property name="peak_time" column="peak_time" />
+		<property name="load_factor" column="load_factor" />
+		<property name="steps" column="steps" />
+		<property name="last_minute" column="last_minute" />
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />		
+	</class>
+
+	<class name="de.act.common.types.staticobjects.RSRate" table="s_rate">
+		<cache usage="transactional"/>
+		<id name="rate_id" column="rate_id">
+			<generator class="assigned" />
+		</id>
+		<property name="rate_class" column="rate_class" />
+		<property name="rate_type" column="rate_type" />
+		<property name="weight" column="weight" />
+		<property name="rate" column="rate" />
+		<property name="over_rt" column="over_rt" />
+		<property name="r_id" column="r_id" />
+		<property name="conx_id" column="conx_id" />
+		<property name="rate_mode" column="rate_mode" />
+		<many-to-one name="connection" column="conx_id" class="de.act.common.types.staticobjects.RSConx" insert="false" update="false" not-found="ignore"/>
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+		<set name="provisions" table="s_provision" lazy="false" cascade="all">
+			<cache usage="transactional"/>
+			<key column="rate_id"/>
+			<one-to-many class="de.act.common.types.staticobjects.RSProvision" />
+		</set>
+	</class>
+
+	<class name="de.act.common.types.staticobjects.SRate" table="s_rate" mutable="false"  batch-size="5">
+		<!-- rec <cache usage="read-only"/>--> 
+		<cache usage="transactional"/>
+		<id name="rateId" column="rate_id" unsaved-value="-1"  >
+			<generator class="assigned" />
+		</id>
+		<!--property name="conxId" column="conx_id" /-->
+		<property name="rateClass" column="rate_class" />
+		<property name="rateType" column="rate_type" />
+		<property name="wgt" column="weight" />
+		<property name="rate" column="rate" />
+		<property name="overRate" column="over_rt" />
+		<property name="ruleId" column="r_id" />
+		<!--property name="rateId" column="vad_id" /-->
+	</class>
+	
+	<class name="de.act.common.types.staticobjects.RSClassRate" table="s_class_rate">
+		<cache usage="transactional"/>
+		<id name="classRateId" column="class_rate_id" unsaved-value="-1">
+			<generator class="assigned" />
+		</id>
+		<property name="classId" column="class_id" />
+		<many-to-one name="arFrom" column="ar_from" class="de.act.common.types.staticobjects.RSAr" cascade="none" not-found="ignore" />
+		<many-to-one name="coFrom" column="co_from" class="de.act.common.types.staticobjects.RSCo"  not-found="ignore" update="false" />
+		<many-to-one name="arTo" column="ar_to" class="de.act.common.types.staticobjects.RSAr" cascade="none" not-found="ignore" />
+		<many-to-one name="coTo" column="co_to" class="de.act.common.types.staticobjects.RSCo" not-found="ignore" update="false" />
+		<property name="classType" column="class_rate_type" />
+		<property name="rateFactor" column="rate_factor" />
+		<property name="rate" column="rate" />
+		<many-to-one name="cur3lc" column="cur_3lc" class="de.act.common.types.staticobjects.RSCur" cascade="none" not-found="ignore" />
+		<property name="ruleId" column="r_id" />
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+	</class>
+	
+	<class name="de.act.common.types.staticobjects.RSProvision" table="s_provision">
+		<cache usage="transactional"/>
+		<id name="provisionId" column="provision_id">
+			<generator class="assigned" />
+		</id>
+		<property name="addId" column="add_id" />
+		<property name="rateId" column="rate_id" />
+		<many-to-one name="rate" column="rate_id" class="de.act.common.types.staticobjects.RSRate" insert="false" update="false" not-found="ignore"/>
+		<property name="provision" update="false" />
+		<property name="status" update="false" />
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+	</class>
+	
+	<class name="de.act.common.types.staticobjects.RSSalesRates" table="s_sales_rate" dynamic-update="true" dynamic-insert="true">
+		<cache usage="transactional"/>
+		<id name="salesRateId" column="sales_rate_id" unsaved-value="-1"  >
+		<generator class="native">
+			<param name="sequence">d_db_seq</param>
+		</generator>
+		</id>
+		<property name="rate" column="rate"/>
+		<property name="overRate" column="over_rate" />
+		<property name="rId" column="r_id" />
+		<property name="rateId" column="rate_id" />
+		<property name="conxId" column="conx_id" />
+		<!-- <many-to-one name="rateObj" column="rate_id" class="de.act.common.types.staticobjects.SRate" insert="false" update="false" not-found="ignore"/> -->
+		<many-to-one name="vad" column="vad_id" class="de.act.common.types.staticobjects.RSVad" not-found="ignore" />
+	</class>
+</hibernate-mapping>

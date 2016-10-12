@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-lazy="false"  default-access="field" >
+	
+	<class name="de.act.common.types.localobjects.RDDefault" table="d_default" mutable="true"  >
+		<cache usage="transactional"/>
+		<id name="add_id"  >
+			<generator class="assigned"/>
+		</id>
+
+		<property name="ap_3lc" />
+		<property name="ca_id" />
+		<property name="add_exp_agt" />
+		<property name="cur_3lc" />
+		<property name="def_overwrite" />
+		<property name="def_sign" />
+		<property name="def_ap" />
+		<property name="def_scc" />
+		<property name="def_ca" />
+		<property name="def_cuc" />
+		<property name="def_ot_chrgs" />
+		<property name="stor_id" />
+		<property name="def_unit_code" />
+		<property name="def_date_format" />
+
+		<!--many-to-one name="add" class="de.act.common.types.staticobjects.RSAdd" column="add_id" update="false" insert="false" />
+		<many-to-one name="extAdd" class="de.act.common.types.staticobjects.RSAdd" column="add_exp_agt" update="false" insert="false" /-->
+				
+		<!--many-to-one name="carrier" class="de.act.common.types.staticobjects.RSCaConx" column="ca_id" update="false" insert="false" />
+		<many-to-one name="userAddress" class="de.act.common.types.staticobjects.RSAdd" column="add_id" update="false" insert="false" not-null="false" not-found="ignore" />
+		<many-to-one name="airport" class="de.act.common.types.staticobjects.RSAp" column="ap_3lc" update="false" insert="false" not-null="false" not-found="ignore" />
+		<many-to-one name="storage" column="stor_id" class="de.act.common.types.localobjects.Storage" update="false" insert="false" not-null="false" not-found="ignore" /-->
+	</class>	
+	
+	<class name="de.act.common.types.UserObject" table="d_user" mutable="true"  >
+		<!--cache usage="read-write"/-->
+		<cache usage="transactional"/>
+		<id name="id"  column="user_id" >
+			<generator class="assigned"/>
+		</id>
+		<property name="name" column="user_name" />
+		<property name="firstName" column="user_first_name"  />
+		<property name="famName"  column="user_fam_name" />
+		<property name="password" column="user_password"  />
+		<property name="enabled"  column="user_enabled" type="java.lang.Integer" />
+		<property name="addId"  column="add_id" />
+		<property name="show_scheduler"  column="show_scheduler" />
+		<property name="alert_time"  column="alert_time" />
+		<property name="refresh_interval"  column="refresh_interval" />
+		<property name="desktop"  column="user_desk" />
+		<property name="sign"  column="user_sign" />
+		<property name="user_lang" column="user_lang" />
+		<property name="r_id" column="r_id" />
+		<property name="mani_interval_days"  column = "mani_interval_days" />
+		<property name="status"  column = "status" />
+		<property name="mani_interval_hours"  column = "mani_interval_hours" />
+		<!-- <many-to-one name="address" column="add_id" class="de.act.common.types.staticobjects.RSAdd" update="false" insert="false" not-found="ignore" />  -->
+	</class>
+	
+	<class name = "de.act.common.types.AuthRightDefault" table = "d_auth_right_default" mutable = "true">
+		<cache usage = "transactional" />
+		<id name = "auth_right_default_id" column = "auth_right_default_id">
+			<generator class = "assigned"/>
+		</id>
+		<many-to-one name="auth" class = "de.act.common.types.Auth" column = "auth_id" not-found="ignore"></many-to-one>
+		<many-to-one name="right"  class = "de.act.common.types.Right" column = "right_id" not-found = "ignore"></many-to-one>
+	</class>
+	
+	<class name = "de.act.common.types.Role" table = "d_role" mutable = "true">
+		<cache usage="transactional"/>
+		<id name = "role_id" column="role_id">
+			<generator class="assigned"/>
+		</id>
+		<property name = "role_name" column="role_name" />
+	</class>
+	
+	<class name = "de.act.common.types.Right" table = "d_right" mutable = "true">
+		<cache usage = "transactional"/>
+		<id name = "right_id" column = "right_id">
+			<generator class = "assigned"/>
+		</id>
+		<property name = "right_name" column="right_name"/>
+	</class>
+	
+	<class name = "de.act.common.types.Auth" table = "d_auth" mutable = "true">
+		<cache usage="transactional"/>
+		<id name = "auth_id" column = "auth_id">
+			<generator class="assigned"/>
+		</id>
+		<property name = "auth_name" column = "auth_name" />
+		<property name = "caption" column = "caption" />
+		<many-to-one name="role" class="de.act.common.types.Role" column="role_id" not-found="ignore"></many-to-one>
+	</class>
+	
+	<class name ="de.act.common.types.UserAuth" table = "d_user_auth" mutable = "true">
+		<cache usage="transactional"/>
+		<id name = "user_auth_id" column = "user_auth_id">
+			<generator class = "assigned"/>
+		</id>
+		
+		<many-to-one name="userObject" class = "de.act.common.types.UserObject" column = "user_id" not-found="ignore"></many-to-one>
+		<many-to-one name="auth" class = "de.act.common.types.Auth" column = "auth_id" not-found="ignore"></many-to-one>
+	</class>
+	
+	<class name="de.act.common.types.AuthRight" table = "d_auth_right" mutable = "true">
+		<cache usage = "transactional"/>
+		<id name = "auth_right_id" column = "auth_right_id">
+			<generator class = "assigned"/>
+		</id>
+		<many-to-one name="userAuth" class = "de.act.common.types.UserAuth" column = "user_auth_id" not-found="ignore"></many-to-one>
+		<many-to-one name="right"  class = "de.act.common.types.Right" column = "right_id" not-found = "ignore"></many-to-one>
+	</class>
+	
+	<class name="de.act.common.types.CurrencyRate" table="d_cur_rate" mutable="true">
+		<cache usage = "transactional" />
+		<composite-id>
+			<key-property name = "owner_add_id" column = "owner_add_id" />
+			<key-property name = "add_id" column = "add_id" />
+			<key-many-to-one name ="cur_3lc_from" column = "cur_3lc_from" class = "de.act.common.types.staticobjects.RSCur"/>
+			<key-many-to-one name = "cur_3lc_to" column = "cur_3lc_to" class = "de.act.common.types.staticobjects.RSCur"/>
+		</composite-id>
+		<property name = "cur_rate" column = "cur_rate" />
+	</class>
+	
+</hibernate-mapping>
+
+
+	<!--cache usage="read-write"/-->
+	<!--class name="de.act.common.types.UserRole" table="d_user_role" mutable="true"  >
+		
+		<cache usage="transactional"/>
+		<composite-id>
+			<key-many-to-one name="user" class="de.act.common.types.UserObject" column="user_id" />
+			<key-many-to-one name="role" class="de.act.common.types.Role" column="role_id" />
+		</composite-id>		
+	</class-->
+
+	<!--cache usage="read-write"/-->
+	<!--class name="de.act.common.types.Role" table="d_role" mutable="true"  >
+		<cache usage="transactional"/>
+		<id name="id"  column="role_id" >
+			<generator class="native">
+				<param name="sequence">d_db_seq</param>
+			</generator>
+		</id>
+		<property name="roleName" column="role_name" />
+	</class-->
+
+	<!--cache usage="read-write"/-->
+	<!--class name="de.act.common.types.RoleAuth" table="d_role_auth" mutable="true"  >
+		<cache usage="transactional"/>
+		<composite-id>
+			<key-many-to-one name="auth" class="de.act.common.types.Auth" column="auth_id" />
+			<key-many-to-one name="role" class="de.act.common.types.Role" column="role_id" />
+		</composite-id>				
+	</class-->	
+
+	<!--cache usage="read-write"/-->
+	<!--class name="de.act.common.types.Auth" table="d_auth" mutable="true"  >
+		<cache usage="transactional"/>
+		<id name="id"  column="auth_id" >
+			<generator class="assigned"/>
+		</id>
+		<property name="authName" column="auth_name" />
+	</class-->
+	
+<!--
+
+d_default
+(
+  add_id varchar(10) NOT NULL,
+  ap_3lc varchar(3),
+  add_exp_agt varchar(10),
+  cur_3lc varchar(3),
+  def_overwrite cn_bool,
+  def_sign cn_sign,
+  def_date_format cn_date_type,
+  def_ap cn_bool,
+  def_scc cn_bool,
+  def_ca cn_bool,
+  def_cuc cn_bool,
+  def_ot_chrgs cn_bool,
+
+ADD_ID			=null;
+    public String ADD_EXP_AGT = null;
+	public String AP_3LC			=null;
+	public String CUR_3LC  			=null;
+	public String DEF_OVERWRITE  	=null;
+	public String DEF_SIGN  		=null;
+	public String DEF_DATE_FORMAT	=null;
+	public String DEF_AP  			=null;
+	public String DEF_SCC  			=null;
+	public String DEF_CA  			=null;
+	public String DEF_CUC  			=null;
+	public String DEF_OT_CHRGS		=null;
+	
+    public RSAddField userAddress = new RSAddField();
+    public RSAp airport = new RSAp();
+    
+    public RSAdd add = null;
+
+-->
