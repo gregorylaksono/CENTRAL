@@ -11,6 +11,8 @@ import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 import javax.jms.TextMessage;
 
+import org.apache.log4j.Logger;
+
 import de.act.central.types.CFlt;
 import de.act.central.types.CentralBooking;
 import de.act.central.types.CentralFlights;
@@ -23,6 +25,7 @@ import de.act.common.types.Aflt;
 import de.act.common.types.nonstaticobjects.RCBkg;
 import de.act.common.types.staticobjects.RCAdd;
 
+
 /**
  * @author Henry
  *
@@ -32,7 +35,7 @@ public class CArea implements MessageListener{
 	private IUserRegistrationManager userRegistration;
 	private IFlightManager flightManager;
 	private IActernityGatewayServer jmsGateway;
-	
+	private static final Logger log = Logger.getLogger(CArea.class);
 	public void onMessage(Message message){
 		try{
 			if (message instanceof ObjectMessage){
@@ -42,6 +45,7 @@ public class CArea implements MessageListener{
 					SerializableObject serializableObject = (SerializableObject) obj;
 					if(serializableObject.getObjectTemplate() instanceof RCAdd){
 						RCAdd addressData = (RCAdd) serializableObject.getObjectTemplate();
+						log.debug("Create register user:"+addressData.getActUserName());
 						userRegistration.saveUserRegistration(addressData);
 					}
 					else if(serializableObject.getObjectTemplate() instanceof JMSFlightObject){

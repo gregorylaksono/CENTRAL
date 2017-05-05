@@ -26,6 +26,7 @@ public class CUserRegistrationManager implements IUserRegistrationManager{
 	
 	public void saveUserRegistration(RCAdd rca){
 //		rsa.setS_id(dbUserRegistration.);
+		log.info("Try to get the user next id");
 		rca.setAdd_id(dbUserRegistration.getNextAddressID());
 		
 		log.info("Email = " + rca.getEmailString());
