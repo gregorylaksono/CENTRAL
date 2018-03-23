@@ -77,18 +77,19 @@
 		</property>
 	</bean>
 
-	<!-- Central Area -->
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="post.strato.de" />
-		<property name="username" value="support@acternity.com" />
-		<property name="password" value="actsppt#2011" />
-	 	<property name="port" value="25" />
-	 	<property name="javaMailProperties">
-	   <props>
-       	      <prop key="mail.smtp.auth">true</prop>
-       	      <prop key="mail.smtp.starttls.enable">true</prop>
-       	   </props>
-	</property>
+		<property name="host" value="smtp.strato.de" />
+		<property name="username" value="support@acternity.net" />
+		<property name="password" value="cabbe4c734" />
+		<property name="port" value="465" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.transport.protocol">smtp</prop>
+				<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+			</props>
+		</property>
 	</bean>
 	
 	<bean id="formularArea" class="de.act.centralserver.applayer.gateway.FArea">
