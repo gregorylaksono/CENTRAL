@@ -1360,6 +1360,7 @@
 			<key-property name="email" column="email"/>		
 		</composite-id>
 		<property name="sent" column="emaiL_sent" />
+		<property name="type" column="type" />
    	</class>
    	
    	<class name="de.act.common.types.staticobjects.RSDbmWs" table="s_dbm_ws">
